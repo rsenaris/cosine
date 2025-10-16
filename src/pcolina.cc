@@ -7,24 +7,33 @@
 #include <n4-geometry.hh>
 #include <n4-vis-attributes.hh>
 
+#include "mesh.hh"
+
 auto pcolina() {
-  auto el_diam      = 32 * mm;
-  auto el_r         = el_diam / 2.0;
-  auto drift_length = 120 * mm;
-  auto form_factor  = 1.0; // ratio between drift length and cathode radius
-  auto cath_diam    = form_factor * drift_length + el_diam;
-  auto cath_r       = cath_diam / 2.0;
-  auto wall_thick   = 1 * mm;
+  auto el_diam         = 32 * mm;
+  auto el_r            = el_diam / 2.0;
+  auto drift_length    = 120 * mm;
+  auto form_factor     = 1.0; // ratio between drift length and cathode radius
+  auto cath_diam       = form_factor * drift_length + el_diam;
+  auto cath_r          = cath_diam / 2.0;
+  auto wall_thick      = 1 * mm;
+  auto d_gate_wire     = 5 * mm;
+  auto d_wire_shield   = 5 * mm;
+  auto mesh_wire_pitch = 0.5 * mm;
+  auto mesh_wire_diam  = 0.05 * mm;
+  auto neck_length     = d_gate_wire + d_wire_shield + mesh_wire_diam;
+
   auto air    = n4::material("G4_AIR");
   auto lxe    = LXe_with_properties();
   auto ptfe   = ptfe_with_properties();
-  auto world_size = 1.1 * cath_diam;
-
   auto tred = G4Colour {1, 0 ,0, 0.5 };
-  auto white = n4::vis_attributes().visible(true).color(G4Color::White());
-  auto red   = n4::vis_attributes().visible(true).color(tred);
-  auto frame = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
 
+  auto invisible = n4::vis_attributes().visible(false);
+  auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
+  auto red       = n4::vis_attributes().visible(true).color(tred);
+  auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
+
+  auto world_size   = 1.1 * cath_diam;
   auto world = n4::box("world")
     .cube(world_size)
     .vis(frame)
@@ -38,10 +47,9 @@ auto pcolina() {
     .vis(white)
     .place(ptfe)
     .in(world)
-    .now()
-    ;
+    .now();
 
-  n4::cons("active")
+  auto active = n4::cons("active")
     .r1(el_r)
     .r2(cath_r)
     .z(drift_length)
@@ -50,7 +58,33 @@ auto pcolina() {
     .in(world)
     .now();
 
+  n4::tubs("el_wall")
+    .r_inner(el_r)
+    .r_delta(wall_thick)
+    .z(neck_length)
+    .vis(white)
+    .place(ptfe)
+    .at_z(-(drift_length + neck_length) / 2)
+    .in(world)
+    .now();
 
+  auto el_liquid = n4::tubs("el_liquid")
+    .r(el_r)
+    .z(neck_length)
+    .vis(red)
+    .place(lxe)
+    .at_z(-(drift_length + neck_length) / 2)
+    .in(world)
+    .now();
+
+  auto mesh_el      = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
+  auto mesh_cathode = create_mesh(cath_diam, mesh_wire_pitch * 10, mesh_wire_diam);
+  mesh_el      -> SetVisAttributes(invisible);
+  mesh_cathode -> SetVisAttributes(invisible);
+
+  n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2              )).in(el_liquid).now(); // GATE
+  n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2 + neck_length)).in(el_liquid).now(); // SHIELD
+  n4::place(mesh_cathode).at_z( drift_length / 2  - mesh_wire_diam/2               ).in(active   ).now(); // CATHODE
 
   return n4::place(world).now();
 }
