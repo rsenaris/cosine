@@ -15,6 +15,8 @@
 #include <G4ThreeVector.hh>
 #include <cstdlib>
 
+#include "pcolina.hh"
+
 struct my {
   G4double       straw_radius{0.1 * m};
   G4double      bubble_radius{0.2 * m};
@@ -58,25 +60,6 @@ n4::actions* create_actions(my& my, unsigned& n_event) {
  -> set(  new n4::stepping_action{my_stepping_action});
 }
 
-auto my_geometry(const my& my) {
-  auto r_bub = my.bubble_radius;
-  auto r_str = my.straw_radius;
-  auto water  = n4::material("G4_WATER");
-  auto air    = n4::material("G4_AIR");
-  auto steel  = n4::material("G4_STAINLESS-STEEL");
-  auto world  = n4::box("world").cube(2*m).x(3*m).volume(water);
-
-  n4::sphere("bubble").r(r_bub)         .place(air).in(world).at  (1.3*m, 0.8*m, 0.3*m).now();
-  n4::tubs  ("straw" ).r(r_str).z(1.9*m).place(air).in(world).at_x(0.2*m              ).now();
-
-  n4       ::sphere("socket-cap" ).r(0.3*m).phi_delta(180*deg)
-    .sub(n4::box   ("socket-hole").cube(0.4*m))
-    .name("socket")
-    .place(steel).in(world).rotate_x(my.socket_rot).at(1*m, 0, 0.7*m).now();
-
-  return n4::place(world).now();
-}
-
 int main(int argc, char* argv[]) {
   unsigned n_event = 0;
 
@@ -104,7 +87,7 @@ int main(int argc, char* argv[]) {
     // .apply_command(...) // also possible after apply_early_macro
 
     .physics<FTFP_BERT>(physics_verbosity)
-    .geometry([&] { return my_geometry(my); })
+    .geometry(pcolina)
     .actions(create_actions(my, n_event))
 
     .apply_command("/my/particle e-")
