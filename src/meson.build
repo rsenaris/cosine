@@ -23,7 +23,7 @@ geant4 = dependency( 'Geant4'
 
 cosine_lib_deps     = [nain4, geant4]
 cosine_lib_include  = include_directories('.')
-cosine_lib_includes = ['LXe.hh']
+cosine_lib_includes = ['common.hh', 'LXe.hh']
 cosine_lib_sources  = ['LXe.cc']
 
 geant4_include = geant4.get_variable(cmake    : 'Geant4_INCLUDE_DIRS')

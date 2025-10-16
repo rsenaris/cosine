@@ -1,14 +1,11 @@
+#include "common.hh"
 #include "LXe.hh"
 
-#include <n4-all.hh>
+#include <n4-material.hh>
+#include <n4-sequences.hh>
 
 #include <G4SystemOfUnits.hh> // physical units such as `m` for metre
 
-
-
-const G4double OPTPHOT_MIN_E = 1    * eV;
-const G4double OPTPHOT_MAX_E = 8.21 * eV;
-const G4double NO_ABSORPTION = 1e8  * m; // approx. infinity
 
 G4double LXe_Scintillation(G4double energy) {
   using CLHEP::c_light;   using CLHEP::h_Planck;   using CLHEP::pi;
