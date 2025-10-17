@@ -39,11 +39,17 @@ auto pcolina() {
   auto red       = n4::vis_attributes().visible(true).color(tred);
   auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
 
-  auto world_size   = 1.1 * cath_diam;
+  auto world_size  = 1.2 * cath_diam;
+  auto liquid_size = 1.1 * cath_diam;
   auto world = n4::box("world")
     .cube(world_size)
     .vis(frame)
     .volume(air);
+
+  auto liquid = n4::box("liquid")
+    .cube(liquid_size)
+    .vis(red)
+    .volume(lxe);
 
   n4::cons("walls")
     .r1_inner(el_r)
@@ -52,16 +58,7 @@ auto pcolina() {
     .z(drift_length)
     .vis(white)
     .place(ptfe)
-    .in(world)
-    .now();
-
-  auto active = n4::cons("active")
-    .r1(el_r)
-    .r2(cath_r)
-    .z(drift_length)
-    .vis(red)
-    .place(lxe)
-    .in(world)
+    .in(liquid)
     .now();
 
   n4::tubs("el_wall")
@@ -71,16 +68,7 @@ auto pcolina() {
     .vis(white)
     .place(ptfe)
     .at_z(-(drift_length + neck_length) / 2)
-    .in(world)
-    .now();
-
-  auto el_liquid = n4::tubs("el_liquid")
-    .r(el_r)
-    .z(neck_length)
-    .vis(red)
-    .place(lxe)
-    .at_z(-(drift_length + neck_length) / 2)
-    .in(world)
+    .in(liquid)
     .now();
 
   auto mesh_el      = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
@@ -88,14 +76,14 @@ auto pcolina() {
   mesh_el      -> SetVisAttributes(invisible);
   mesh_cathode -> SetVisAttributes(invisible);
 
-  n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2              )).in(el_liquid).now(); // GATE
-  n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2 + neck_length)).in(el_liquid).now(); // SHIELD
-  n4::place(mesh_cathode).at_z( drift_length / 2  - mesh_wire_diam/2               ).in(active   ).now(); // CATHODE
+  n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2              )).in(liquid).now(); // GATE
+  n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2 + neck_length)).in(liquid).now(); // SHIELD
+  n4::place(mesh_cathode).at_z( drift_length / 2  - mesh_wire_diam/2               ).in(liquid).now(); // CATHODE
 
   auto sipm_array = build_sipm_array(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
   n4::place(sipm_array)
     .at_z(-drift_length / 2 - neck_length - sipm_thick)
-    .in(world)
+    .in(liquid)
     .copy_no(0)
     .name("near_plane")
     .now();
@@ -107,12 +95,13 @@ auto pcolina() {
       n4::place(sipm_array)
         .rot_y(180 * deg)
         .at(x, y, +drift_length / 2 + sipm_thick)
-        .in(world)
+        .in(liquid)
         .copy_no(n++)
         .name("far_plane")
         .now();
     }
   }
 
+  n4::place(liquid).in(world).now();
   return n4::place(world).now();
 }
