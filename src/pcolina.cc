@@ -96,8 +96,23 @@ auto pcolina() {
   n4::place(sipm_array)
     .at_z(-drift_length / 2 - neck_length - sipm_thick)
     .in(world)
+    .copy_no(0)
     .name("near_plane")
     .now();
+
+  auto delta = (sipm_size + sipm_gap) * n_sipm_side / 2.;
+  auto n = 1;
+  for   (auto x : {-delta, delta}) {
+    for (auto y : {-delta, delta}) {
+      n4::place(sipm_array)
+        .rot_y(180 * deg)
+        .at(x, y, +drift_length / 2 + sipm_thick)
+        .in(world)
+        .copy_no(n++)
+        .name("far_plane")
+        .now();
+    }
+  }
 
   return n4::place(world).now();
 }
