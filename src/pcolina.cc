@@ -2,12 +2,14 @@
 #include "G4Color.hh"
 #include "G4Colour.hh"
 #include "LXe.hh"
+#include "near_plane.hh"
 #include "ptfe.hh"
 
 #include <n4-geometry.hh>
 #include <n4-vis-attributes.hh>
 
 #include "mesh.hh"
+
 
 auto pcolina() {
   auto el_diam         = 32 * mm;
@@ -22,12 +24,16 @@ auto pcolina() {
   auto mesh_wire_pitch = 0.5 * mm;
   auto mesh_wire_diam  = 0.05 * mm;
   auto neck_length     = d_gate_wire + d_wire_shield + mesh_wire_diam;
+  auto sipm_size       = 6 * mm;
+  auto sipm_thick      = 1 * mm;
+  auto sipm_gap        = 0.5 * mm;
+  auto n_sipm_side     = 5;
 
   auto air    = n4::material("G4_AIR");
   auto lxe    = LXe_with_properties();
   auto ptfe   = ptfe_with_properties();
-  auto tred = G4Colour {1, 0 ,0, 0.5 };
 
+  auto tred      = G4Colour {1, 0 ,0, 0.1 };
   auto invisible = n4::vis_attributes().visible(false);
   auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
   auto red       = n4::vis_attributes().visible(true).color(tred);
@@ -85,6 +91,12 @@ auto pcolina() {
   n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2              )).in(el_liquid).now(); // GATE
   n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2 + neck_length)).in(el_liquid).now(); // SHIELD
   n4::place(mesh_cathode).at_z( drift_length / 2  - mesh_wire_diam/2               ).in(active   ).now(); // CATHODE
+
+  auto near_plane = build_near_plane(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
+  n4::place(near_plane)
+    .at_z(-drift_length / 2 - neck_length - sipm_thick)
+    .in(world)
+    .now();
 
   return n4::place(world).now();
 }
