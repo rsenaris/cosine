@@ -1,4 +1,4 @@
-#include "near_plane.hh"
+#include "sipm_array.hh"
 #include "ptfe.hh"
 #include "silicon.hh"
 
@@ -6,7 +6,7 @@
 #include <n4-geometry.hh>
 #include <n4-vis-attributes.hh>
 
-G4LogicalVolume* build_near_plane(G4double sipm_size, G4double sipm_thick, G4double sipm_gap, G4int n_sipm_side) {
+G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4double sipm_gap, G4int n_sipm_side) {
   auto odd          = n_sipm_side % 2 == 1;
   auto pitch        = sipm_size + sipm_gap;
   auto support_size = pitch * n_sipm_side;

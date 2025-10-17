@@ -2,7 +2,7 @@
 #include "G4Color.hh"
 #include "G4Colour.hh"
 #include "LXe.hh"
-#include "near_plane.hh"
+#include "sipm_array.hh"
 #include "ptfe.hh"
 
 #include <n4-geometry.hh>
@@ -92,10 +92,11 @@ auto pcolina() {
   n4::place(mesh_el     ).at_z(-(drift_length / 2 + mesh_wire_diam/2 + neck_length)).in(el_liquid).now(); // SHIELD
   n4::place(mesh_cathode).at_z( drift_length / 2  - mesh_wire_diam/2               ).in(active   ).now(); // CATHODE
 
-  auto near_plane = build_near_plane(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
-  n4::place(near_plane)
+  auto sipm_array = build_sipm_array(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
+  n4::place(sipm_array)
     .at_z(-drift_length / 2 - neck_length - sipm_thick)
     .in(world)
+    .name("near_plane")
     .now();
 
   return n4::place(world).now();
