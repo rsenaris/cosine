@@ -4,6 +4,7 @@
 #include "LXe.hh"
 #include "sipm_array.hh"
 #include "ptfe.hh"
+#include "steel.hh"
 
 #include <n4-geometry.hh>
 #include <n4-vis-attributes.hh>
@@ -28,14 +29,17 @@ auto pcolina() {
   auto sipm_thick      = 1 * mm;
   auto sipm_gap        = 0.5 * mm;
   auto n_sipm_side     = 5;
+  auto cath_thick      = 3 * sipm_thick;
 
-  auto air    = n4::material("G4_AIR");
-  auto lxe    = LXe_with_properties();
-  auto ptfe   = ptfe_with_properties();
+  auto air   = n4::material("G4_AIR");
+  auto lxe   = LXe_with_properties();
+  auto ptfe  = ptfe_with_properties();
+  auto steel = steel_with_properties();
 
   auto tred      = G4Colour {1, 0 ,0, 0.1 };
   auto invisible = n4::vis_attributes().visible(false);
   auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
+  auto gray      = n4::vis_attributes().visible(true).color(G4Color::Gray());
   auto red       = n4::vis_attributes().visible(true).color(tred);
   auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
 
@@ -75,14 +79,20 @@ auto pcolina() {
     .in(liquid)
     .now();
 
-  auto mesh_el      = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
-  auto mesh_cathode = create_mesh(cath_diam, mesh_wire_pitch * 10, mesh_wire_diam);
-  mesh_el      -> SetVisAttributes(invisible);
-  mesh_cathode -> SetVisAttributes(invisible);
+  auto mesh_el = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
+  mesh_el -> SetVisAttributes(invisible);
 
-  n4::place(mesh_el     )                                       .in(liquid).now(); // GATE
-  n4::place(mesh_el     ).at_z(- neck_length + mesh_wire_diam/2).in(liquid).now(); // SHIELD
-  n4::place(mesh_cathode).at_z(+drift_length - mesh_wire_diam/2).in(liquid).now(); // CATHODE
+  auto cathode = n4::tubs("cathode")
+    .r(cath_r + wall_thick)
+    .z(3 * sipm_thick)
+    .vis(gray)
+    .place(steel)
+    .at_z(drift_length + cath_thick / 2)
+    .in(liquid)
+    .now();
+
+  n4::place(mesh_el)                                       .in(liquid).now(); // GATE
+  n4::place(mesh_el).at_z(- neck_length + mesh_wire_diam/2).in(liquid).now(); // SHIELD
 
   auto sipm_array = build_sipm_array(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
   n4::place(sipm_array)
@@ -98,8 +108,8 @@ auto pcolina() {
     for (auto y : {-delta, delta}) {
       n4::place(sipm_array)
         .rot_y(180 * deg)
-        .at(x, y, +drift_length +sipm_thick)
-        .in(liquid)
+        .at(x, y, -cath_thick/2 + sipm_thick)
+        .in(cathode)
         .copy_no(n++)
         .name("far_plane")
         .now();
