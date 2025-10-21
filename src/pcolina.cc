@@ -7,6 +7,7 @@
 #include "steel.hh"
 
 #include <n4-geometry.hh>
+#include <n4-place.hh>
 #include <n4-vis-attributes.hh>
 
 #include "mesh.hh"
@@ -24,12 +25,13 @@ auto pcolina() {
   auto d_wire_shield   = 5 * mm;
   auto mesh_wire_pitch = 0.5 * mm;
   auto mesh_wire_diam  = 0.05 * mm;
-  auto neck_length     = d_gate_wire + d_wire_shield + mesh_wire_diam;
   auto sipm_size       = 6 * mm;
   auto sipm_thick      = 1 * mm;
   auto sipm_gap        = 0.5 * mm;
   auto n_sipm_side     = 5;
   auto cath_thick      = 3 * sipm_thick;
+  auto frame_thick     = 2 * mm;
+  auto neck_length     = d_gate_wire + d_wire_shield + frame_thick/2*2;
 
   auto sipms_on_fp = false;
   auto  ptfe_on_fp = true;
@@ -46,6 +48,8 @@ auto pcolina() {
   auto gray      = n4::vis_attributes().visible(true).color(G4Color::Gray());
   auto red       = n4::vis_attributes().visible(true).color(tred);
   auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
+
+  n4::place::check_overlaps_switch_on();
 
   auto world = n4::box("world")
     .cube(1.2 * cath_diam)
@@ -70,23 +74,45 @@ auto pcolina() {
     .vis(wireframe)
     .place(ptfe)
     .in(liquid)
-    .at_z(drift_length/2)
+    .at_z(frame_thick/2 + drift_length/2)
     .now();
 
-  n4::tubs("el_wall")
+  n4::tubs("gate_frame")
     .r_inner(el_r)
     .r_delta(wall_thick)
-    .z(neck_length)
-    .vis(white)
-    .place(ptfe)
-    .at_z(-neck_length / 2)
+    .z(frame_thick)
+    .vis(gray)
+    .place(steel)
     .in(liquid)
+    .now();
+
+  n4::tubs("wire_frame")
+    .r_inner(el_r)
+    .r_delta(wall_thick)
+    .z(frame_thick)
+    .vis(gray)
+    .place(steel)
+    .in(liquid)
+    .at_z(-d_gate_wire)
+    .now();
+
+  n4::tubs("shield_frame")
+    .r_inner(el_r)
+    .r_delta(wall_thick)
+    .z(frame_thick)
+    .vis(gray)
+    .place(steel)
+    .in(liquid)
+    .at_z(-neck_length + frame_thick/2)
     .now();
 
   auto mesh_el = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
   mesh_el -> SetVisAttributes(invisible);
 
-  auto z_cathode = drift_length + cath_thick / 2;
+  n4::place(mesh_el)                                   .in(liquid).now(); // GATE
+  n4::place(mesh_el).at_z(-neck_length + frame_thick/2).in(liquid).now(); // SHIELD
+
+  auto z_cathode = frame_thick/2 + drift_length + cath_thick / 2;
   z_cathode += ptfe_on_fp ? wall_thick : 0;
   auto cathode = n4::tubs("cathode")
     .r(cath_r + wall_thick)
@@ -103,13 +129,10 @@ auto pcolina() {
       .z(wall_thick)
       .vis(white)
       .place(ptfe)
-      .at_z(drift_length + wall_thick / 2)
+      .at_z(z_cathode - cath_thick/2 - wall_thick / 2)
       .in(liquid)
       .now();
   }
-
-  n4::place(mesh_el)                                       .in(liquid).now(); // GATE
-  n4::place(mesh_el).at_z(- neck_length + mesh_wire_diam/2).in(liquid).now(); // SHIELD
 
   auto sipm_array = build_sipm_array(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
   n4::place(sipm_array)
