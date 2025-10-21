@@ -23,8 +23,22 @@ geant4 = dependency( 'Geant4'
 
 cosine_lib_deps     = [nain4, geant4]
 cosine_lib_include  = include_directories('.')
-cosine_lib_includes = ['common.hh', 'ptfe.hh', 'LXe.hh', 'mesh.hh', 'silicon.hh', 'sipm_array.hh', 'steel.hh', 'wire_array.hh']
-cosine_lib_sources  = ['LXe.cc', 'ptfe.cc', 'pcolina.cc', 'mesh.cc', 'silicon.cc', 'sipm_array.cc', 'steel.cc', 'wire_array.cc']
+cosine_lib_files    = [
+ 'LXe',
+ 'mesh',
+ 'pcolina'
+ 'ptfe',
+ 'silicon',
+ 'sipm_array',
+ 'steel',
+ 'wire_array',
+]
+cosine_lib_includes = ['common.hh']
+cosine_lib_sources  = []
+foreach f : cosine_lib_files
+  cosine_lib_includes += [f + '.hh']
+  cosine_lib_sources  += [f + '.cc']
+endforeach
 
 geant4_include = geant4.get_variable(cmake    : 'Geant4_INCLUDE_DIRS')
 nain4_include  =  nain4.get_variable(pkgconfig: 'includedir'         )
