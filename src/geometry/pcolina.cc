@@ -8,33 +8,37 @@
 
 #include <G4SystemOfUnits.hh>
 #include <G4Color.hh>
+#include <G4Polyhedra.hh>
 
 #include <n4-geometry.hh>
 #include <n4-place.hh>
+#include <n4-volume.hh>
 #include <n4-vis-attributes.hh>
 
 auto pcolina() {
-  auto el_diam         = 32 * mm;
-  auto el_r            = el_diam / 2.0;
-  auto drift_length    = 120 * mm;
-  auto form_factor     = 1.0; // ratio between drift length and cathode radius
-  auto cath_diam       = form_factor * drift_length + el_diam;
-  auto cath_r          = cath_diam / 2.0;
-  auto wall_thick      = 1 * mm;
-  auto d_gate_wire     = 5 * mm;
-  auto d_wire_shield   = 5 * mm;
-  auto mesh_wire_pitch = 0.5 * mm;
-  auto mesh_wire_diam  = 0.05 * mm;
-  auto thin_wire_pitch = 5 * mm;
-  auto thin_wire_diam  = 0.01 * mm; // Use 0.1 * mm for visualization
-  auto thin_wire_rot   = 45 * deg;
-  auto sipm_size       = 6 * mm;
-  auto sipm_thick      = 1 * mm;
-  auto sipm_gap        = 0.5 * mm;
-  auto n_sipm_side     = 5;
-  auto cath_thick      = 3 * sipm_thick;
-  auto frame_thick     = 2 * mm;
-  auto neck_length     = d_gate_wire + d_wire_shield + frame_thick/2*2;
+  auto el_diam               = 32 * mm;
+  auto el_r                  = el_diam / 2.0;
+  auto drift_length          = 120 * mm;
+  auto form_factor           = 1.0; // ratio between drift length and cathode radius
+  auto cath_diam             = form_factor * drift_length + el_diam;
+  auto cath_r                = cath_diam / 2.0;
+  auto wall_thick            = 1 * mm;
+  auto d_gate_wire           = 5 * mm;
+  auto d_wire_shield         = 5 * mm;
+  auto mesh_hex_pitch        = 8 * mm;
+  auto mesh_thick            = 0.1 * mm;
+  auto mesh_hex_circumradius = 3 * mm;
+  auto thin_wire_pitch       = 5 * mm;
+  auto thin_wire_diam        = 0.01 * mm; // Use 0.1 * mm for visualization
+  auto thin_wire_rot         = 45 * deg;
+  auto sipm_size             = 6 * mm;
+  auto sipm_thick            = 1 * mm;
+  auto sipm_gap              = 0.5 * mm;
+  auto n_sipm_side           = 5;
+  auto cath_thick            = 3 * sipm_thick;
+  auto frame_thick           = 2 * mm;
+  auto frame_width           = wall_thick;
+  auto neck_length           = d_gate_wire + d_wire_shield + frame_thick/2*2;
 
   auto sipms_on_fp = false;
   auto  ptfe_on_fp = true;
@@ -48,11 +52,12 @@ auto pcolina() {
   auto invisible = n4::vis_attributes().visible(false);
   auto wireframe = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
   auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
+  auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
   auto gray      = n4::vis_attributes().visible(true).color(G4Color::Gray());
   auto red       = n4::vis_attributes().visible(true).color(tred);
   auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
 
-  n4::place::check_overlaps_switch_on();
+  //n4::place::check_overlaps_switch_on();
 
   auto world = n4::box("world")
     .cube(1.2 * cath_diam)
@@ -80,32 +85,14 @@ auto pcolina() {
     .at_z(frame_thick/2 + drift_length/2)
     .now();
 
-  n4::tubs("gate_frame")
-    .r_inner(el_r)
-    .r_delta(wall_thick)
-    .z(frame_thick)
-    .vis(gray)
-    .place(steel)
-    .in(liquid)
-    .now();
-
   auto wire_array = create_wire_array(el_diam, frame_thick, wall_thick,
                                       thin_wire_pitch, thin_wire_diam);
   wire_array -> SetVisAttributes(gray);
   n4::place(wire_array).rot_z(thin_wire_rot).at_z(-d_gate_wire).in(liquid).now();
 
-  n4::tubs("shield_frame")
-    .r_inner(el_r)
-    .r_delta(wall_thick)
-    .z(frame_thick)
-    .vis(gray)
-    .place(steel)
-    .in(liquid)
-    .at_z(-neck_length + frame_thick/2)
-    .now();
-
-  auto mesh_el = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
-  mesh_el -> SetVisAttributes(invisible);
+  auto mesh_el = create_hex_mesh(el_diam, frame_thick, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_circumradius);
+//  mesh_el -> SetVisAttributes(invisible);
+  mesh_el -> SetVisAttributes(green);
 
   n4::place(mesh_el)                                   .in(liquid).now(); // GATE
   n4::place(mesh_el).at_z(-neck_length + frame_thick/2).in(liquid).now(); // SHIELD
