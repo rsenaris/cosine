@@ -1,7 +1,4 @@
-#include <n4-all.hh>
-
 #include <G4GenericMessenger.hh>
-
 #include <G4PrimaryParticle.hh>
 #include <G4String.hh>
 #include <G4SystemOfUnits.hh>   // physical units such as `m` for metre
@@ -9,12 +6,13 @@
 #include <G4Box.hh>             // for creating shapes in the geometry
 #include <G4Sphere.hh>          // for creating shapes in the geometry
 #include <FTFP_BERT.hh>         // our choice of physics list
-#include <G4RandomDirection.hh> // for launching particles in random directions
 
+#include <n4-all.hh>
 
 #include <G4ThreeVector.hh>
 #include <cstdlib>
 
+#include "generators/geantinos.hh"
 #include "geometry/pcolina.hh"
 
 struct my {
@@ -25,20 +23,6 @@ struct my {
   G4double      particle_energy{511 * keV};
   G4ThreeVector particle_dir {};
 };
-
-auto my_generator(const my& my) {
-  return [&](G4Event* event) {
-    auto particle_type = n4::find_particle(my.particle_name);
-    auto vertex = new G4PrimaryVertex();
-    auto r = my.particle_dir.mag2() > 0 ? my.particle_dir : G4RandomDirection();
-    vertex -> SetPrimary(new G4PrimaryParticle(
-                           particle_type,
-                           r.x(), r.y(), r.z(),
-                           my.particle_energy
-                         ));
-    event  -> AddPrimaryVertex(vertex);
-  };
-}
 
 n4::actions* create_actions(my& my, unsigned& n_event) {
   auto my_stepping_action = [&] (const G4Step* step) {
@@ -55,9 +39,9 @@ n4::actions* create_actions(my& my, unsigned& n_event) {
      std::cout << "end of event " << n_event << std::endl;
   };
 
-  return (new n4::        actions{my_generator(my)  })
- -> set( (new n4::   event_action{                  }) -> end(my_event_action) )
- -> set(  new n4::stepping_action{my_stepping_action});
+  return  (  new n4::        actions{geantinos_at_z(20 * mm, 30 * mm, {0., 0., -1.})})
+    -> set( (new n4::   event_action{}) -> end(my_event_action) )
+    -> set(  new n4::stepping_action{my_stepping_action});
 }
 
 int main(int argc, char* argv[]) {
