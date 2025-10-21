@@ -31,6 +31,9 @@ auto pcolina() {
   auto n_sipm_side     = 5;
   auto cath_thick      = 3 * sipm_thick;
 
+  auto sipms_on_fp = false;
+  auto  ptfe_on_fp = true;
+
   auto air   = n4::material("G4_AIR");
   auto lxe   = LXe_with_properties();
   auto ptfe  = ptfe_with_properties();
@@ -38,6 +41,7 @@ auto pcolina() {
 
   auto tred      = G4Colour {1, 0 ,0, 0.1 };
   auto invisible = n4::vis_attributes().visible(false);
+  auto wireframe = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
   auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
   auto gray      = n4::vis_attributes().visible(true).color(G4Color::Gray());
   auto red       = n4::vis_attributes().visible(true).color(tred);
@@ -63,7 +67,7 @@ auto pcolina() {
     .r2_inner(cath_r)
     .r_delta(wall_thick)
     .z(drift_length)
-    .vis(white)
+    .vis(wireframe)
     .place(ptfe)
     .in(liquid)
     .at_z(drift_length/2)
@@ -82,14 +86,27 @@ auto pcolina() {
   auto mesh_el = create_mesh(el_diam, mesh_wire_pitch, mesh_wire_diam);
   mesh_el -> SetVisAttributes(invisible);
 
+  auto z_cathode = drift_length + cath_thick / 2;
+  z_cathode += ptfe_on_fp ? wall_thick : 0;
   auto cathode = n4::tubs("cathode")
     .r(cath_r + wall_thick)
-    .z(3 * sipm_thick)
+    .z(cath_thick)
     .vis(gray)
     .place(steel)
-    .at_z(drift_length + cath_thick / 2)
+    .at_z(z_cathode)
     .in(liquid)
     .now();
+
+  if (ptfe_on_fp) {
+    n4::tubs("ptfe_cathode")
+      .r(cath_r + wall_thick)
+      .z(wall_thick)
+      .vis(white)
+      .place(ptfe)
+      .at_z(drift_length + wall_thick / 2)
+      .in(liquid)
+      .now();
+  }
 
   n4::place(mesh_el)                                       .in(liquid).now(); // GATE
   n4::place(mesh_el).at_z(- neck_length + mesh_wire_diam/2).in(liquid).now(); // SHIELD
@@ -102,17 +119,19 @@ auto pcolina() {
     .name("near_plane")
     .now();
 
-  auto delta = (sipm_size + sipm_gap) * n_sipm_side / 2.;
-  auto n = 1;
-  for   (auto x : {-delta, delta}) {
-    for (auto y : {-delta, delta}) {
-      n4::place(sipm_array)
-        .rot_y(180 * deg)
-        .at(x, y, -cath_thick/2 + sipm_thick)
-        .in(cathode)
-        .copy_no(n++)
-        .name("far_plane")
-        .now();
+  if (sipms_on_fp) {
+    auto delta = (sipm_size + sipm_gap) * n_sipm_side / 2.;
+    auto n = 1;
+    for   (auto x : {-delta, delta}) {
+      for (auto y : {-delta, delta}) {
+        n4::place(sipm_array)
+          .rot_y(180 * deg)
+          .at(x, y, -cath_thick/2 + sipm_thick)
+          .in(cathode)
+          .copy_no(n++)
+          .name("far_plane")
+          .now();
+      }
     }
   }
 
