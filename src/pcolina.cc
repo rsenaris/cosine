@@ -11,6 +11,7 @@
 #include <n4-vis-attributes.hh>
 
 #include "mesh.hh"
+#include "wire_array.hh"
 
 
 auto pcolina() {
@@ -25,6 +26,9 @@ auto pcolina() {
   auto d_wire_shield   = 5 * mm;
   auto mesh_wire_pitch = 0.5 * mm;
   auto mesh_wire_diam  = 0.05 * mm;
+  auto thin_wire_pitch = 5 * mm;
+  auto thin_wire_diam  = 0.01 * mm; // Use 0.1 * mm for visualization
+  auto thin_wire_rot   = 45 * deg;
   auto sipm_size       = 6 * mm;
   auto sipm_thick      = 1 * mm;
   auto sipm_gap        = 0.5 * mm;
@@ -86,15 +90,10 @@ auto pcolina() {
     .in(liquid)
     .now();
 
-  n4::tubs("wire_frame")
-    .r_inner(el_r)
-    .r_delta(wall_thick)
-    .z(frame_thick)
-    .vis(gray)
-    .place(steel)
-    .in(liquid)
-    .at_z(-d_gate_wire)
-    .now();
+  auto wire_array = create_wire_array(el_diam, frame_thick, wall_thick,
+                                      thin_wire_pitch, thin_wire_diam);
+  wire_array -> SetVisAttributes(gray);
+  n4::place(wire_array).rot_z(thin_wire_rot).at_z(-d_gate_wire).in(liquid).now();
 
   n4::tubs("shield_frame")
     .r_inner(el_r)
