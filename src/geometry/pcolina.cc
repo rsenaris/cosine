@@ -25,6 +25,7 @@ auto pcolina() {
   auto wall_thick            = 1 * mm;
   auto d_gate_wire           = 5 * mm;
   auto d_wire_shield         = 5 * mm;
+  auto d_shield_sipms        = 3 * mm;
   auto mesh_hex_pitch        = 8 * mm;
   auto mesh_thick            = 0.1 * mm;
   auto mesh_hex_circumradius = 3 * mm;
@@ -38,7 +39,7 @@ auto pcolina() {
   auto cath_thick            = 3 * sipm_thick;
   auto frame_thick           = 2 * mm;
   auto frame_width           = wall_thick;
-  auto neck_length           = d_gate_wire + d_wire_shield + frame_thick/2*2;
+  auto neck_length           = d_gate_wire + d_wire_shield + frame_thick/2 + d_shield_sipms;
 
   auto sipms_on_fp = false;
   auto  ptfe_on_fp = true;
@@ -95,7 +96,7 @@ auto pcolina() {
   mesh_el -> SetVisAttributes(green);
 
   n4::place(mesh_el)                                   .in(liquid).now(); // GATE
-  n4::place(mesh_el).at_z(-neck_length + frame_thick/2).in(liquid).now(); // SHIELD
+  n4::place(mesh_el).at_z(-neck_length +d_shield_sipms).in(liquid).now(); // SHIELD
 
   auto z_cathode = frame_thick/2 + drift_length + cath_thick / 2;
   z_cathode += ptfe_on_fp ? wall_thick : 0;
