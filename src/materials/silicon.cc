@@ -1,5 +1,5 @@
 #include "common.hh"
-#include "silicon.hh"
+#include "materials/silicon.hh"
 
 #include <n4-material.hh>
 #include <n4-sequences.hh>

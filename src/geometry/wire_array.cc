@@ -1,14 +1,13 @@
-#include "wire_array.hh"
-#include "steel.hh"
+#include "geometry/wire_array.hh"
+#include "materials/steel.hh"
 
-#include "G4LogicalVolume.hh"
-#include "G4RotationMatrix.hh"
-#include "G4SubtractionSolid.hh"
-
+#include <G4LogicalVolume.hh>
+#include <G4RotationMatrix.hh>
 #include <G4MultiUnion.hh>
 
-#include <cmath>
 #include <n4-geometry.hh>
+
+#include <cmath>
 
 G4LogicalVolume* create_wire_array(G4double frame_diam, G4double frame_thick, G4double frame_width, G4double pitch, G4double wire_diam) {
   auto frame = n4::tubs("frame")

@@ -15,7 +15,7 @@
 #include <G4ThreeVector.hh>
 #include <cstdlib>
 
-#include "pcolina.hh"
+#include "geometry/pcolina.hh"
 
 struct my {
   G4double       straw_radius{0.1 * m};

@@ -24,14 +24,14 @@ geant4 = dependency( 'Geant4'
 cosine_lib_deps     = [nain4, geant4]
 cosine_lib_include  = include_directories('.')
 cosine_lib_files    = [
- 'LXe',
- 'mesh',
- 'pcolina'
- 'ptfe',
- 'silicon',
- 'sipm_array',
- 'steel',
- 'wire_array',
+ 'materials/LXe',
+ 'materials/ptfe',
+ 'materials/silicon',
+ 'materials/steel',
+ 'geometry/pcolina',
+ 'geometry/mesh',
+ 'geometry/sipm_array',
+ 'geometry/wire_array',
 ]
 cosine_lib_includes = ['common.hh']
 cosine_lib_sources  = []

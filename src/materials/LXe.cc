@@ -1,11 +1,10 @@
 #include "common.hh"
-#include "LXe.hh"
-
-#include <n4-material.hh>
-#include <n4-sequences.hh>
+#include "materials/LXe.hh"
 
 #include <G4SystemOfUnits.hh> // physical units such as `m` for metre
 
+#include <n4-material.hh>
+#include <n4-sequences.hh>
 
 G4double LXe_Scintillation(G4double energy) {
   using CLHEP::c_light;   using CLHEP::h_Planck;   using CLHEP::pi;

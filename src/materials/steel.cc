@@ -1,5 +1,5 @@
 #include "common.hh"
-#include "steel.hh"
+#include "materials/steel.hh"
 
 #include <n4-material.hh>
 

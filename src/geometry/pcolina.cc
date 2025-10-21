@@ -1,18 +1,17 @@
+#include "geometry/mesh.hh"
+#include "geometry/sipm_array.hh"
+#include "geometry/wire_array.hh"
+#include "materials/LXe.hh"
+#include "materials/ptfe.hh"
+#include "materials/steel.hh"
+
+
 #include <G4SystemOfUnits.hh>
-#include "G4Color.hh"
-#include "G4Colour.hh"
-#include "LXe.hh"
-#include "sipm_array.hh"
-#include "ptfe.hh"
-#include "steel.hh"
+#include <G4Color.hh>
 
 #include <n4-geometry.hh>
 #include <n4-place.hh>
 #include <n4-vis-attributes.hh>
-
-#include "mesh.hh"
-#include "wire_array.hh"
-
 
 auto pcolina() {
   auto el_diam         = 32 * mm;

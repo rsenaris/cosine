@@ -1,5 +1,5 @@
 #include "common.hh"
-#include "ptfe.hh"
+#include "materials/ptfe.hh"
 
 #include <n4-material.hh>
 #include <n4-sequences.hh>
