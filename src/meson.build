@@ -24,6 +24,7 @@ geant4 = dependency( 'Geant4'
 cosine_lib_deps     = [nain4, geant4]
 cosine_lib_include  = include_directories('.')
 cosine_lib_files    = [
+ 'actions/store_volume_crossing',
  'generators/geantinos',
  'materials/LXe',
  'materials/ptfe',

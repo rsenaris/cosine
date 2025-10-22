@@ -13,6 +13,7 @@
 #include <cstdlib>
 
 #include "generators/geantinos.hh"
+#include "actions/store_volume_crossing.hh"
 #include "geometry/pcolina.hh"
 
 struct my {
@@ -25,15 +26,6 @@ struct my {
 };
 
 n4::actions* create_actions(my& my, unsigned& n_event) {
-  auto my_stepping_action = [&] (const G4Step* step) {
-    auto pt = step -> GetPreStepPoint();
-    auto volume_name = pt -> GetTouchable() -> GetVolume() -> GetName();
-    if (volume_name == "straw" || volume_name == "bubble") {
-      auto pos = pt -> GetPosition();
-      std::cout << volume_name << " " << pos << std::endl;
-    }
-  };
-
   auto my_event_action = [&] (const G4Event*) {
      n_event++;
      std::cout << "end of event " << n_event << std::endl;
@@ -41,7 +33,7 @@ n4::actions* create_actions(my& my, unsigned& n_event) {
 
   return  (  new n4::        actions{geantinos_at_z(20 * mm, 30 * mm, {0., 0., -1.})})
     -> set( (new n4::   event_action{}) -> end(my_event_action) )
-    -> set(  new n4::stepping_action{my_stepping_action});
+    -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "")});
 }
 
 int main(int argc, char* argv[]) {
