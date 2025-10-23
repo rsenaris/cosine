@@ -21,7 +21,17 @@ geant4 = dependency( 'Geant4'
                    , components : ['ui_all', 'vis_all']
                    , modules    : nain4.get_variable(pkgconfig: 'geant4_modules').split(','))
 
-cosine_lib_deps     = [nain4, geant4]
+hdf5   = dependency( 'hdf5'
+                   , language: 'cpp'
+                   , required   : true
+                   )
+
+
+high5 = dependency( 'HighFive'
+                  , method  : 'cmake'
+                  , required: true)
+
+cosine_lib_deps     = [nain4, geant4, hdf5, high5]
 cosine_lib_include  = include_directories('.')
 cosine_lib_files    = [
  'actions/store_volume_crossing',
@@ -34,6 +44,7 @@ cosine_lib_files    = [
  'geometry/mesh',
  'geometry/sipm_array',
  'geometry/wire_array',
+ 'persistency/hdf5_writer'
 ]
 cosine_lib_includes = ['common.hh']
 cosine_lib_sources  = []

@@ -6,9 +6,11 @@
   inherit (nixpkgs.legacyPackages) pkgs;
   inherit (import ./helpers.nix {inherit pkgs;}) shell-shared;
   inherit (nain4.deps) args-from-cli make-app;
-  in {
+  in rec {
 
     packages.default = self.packages.cosine;
+
+    cosine-deps = with pkgs; [hdf5-cpp hdf5-cpp.dev highfive];
 
     # Executed by `nix run <URL of this flake>#cosine -- <args?>`
     # TODO: switch to clang environment
@@ -18,7 +20,7 @@
       src = "${self}/src";
       postInstall = "${pkgs.coreutils}/bin/cp -r ${self}/macs $out";
       nativeBuildInputs = [];
-      buildInputs = [ nain4.packages.nain4 ];
+      buildInputs = [ nain4.packages.nain4 ] ++ cosine-deps;
     };
 
     # Executed by `nix run <URL of this flake> -- <args?>`
@@ -37,13 +39,13 @@
     # Activated by `nix develop <URL to this flake>#clang`
     devShells.clang = pkgs.mkShell.override { stdenv = nain4.packages.clang_current.stdenv; } (shell-shared // {
       name = "cosine-clang-devenv";
-      packages = nain4.deps.dev-shell-packages ++ [ nain4.packages.clang_current ];
+      packages = nain4.deps.dev-shell-packages ++ [ nain4.packages.clang_current ] ++ cosine-deps;
     });
 
     # Activated by `nix develop <URL to this flake>#gcc`
     devShells.gcc = pkgs.mkShell (shell-shared // {
       name = "cosine-gcc-devenv";
-      packages = nain4.deps.dev-shell-packages;
+      packages = nain4.deps.dev-shell-packages ++ cosine-deps;
     });
 
     # 1. `nix build` .#singularity
