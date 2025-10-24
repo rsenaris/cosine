@@ -13,3 +13,7 @@ const G4double NO_ABSORPTION    = 1e8              *  m; // approx. infinity
 
 const std::vector<G4double> OPTPHOT_E_RANGE_EV{OPTPHOT_MIN_E_EV, OPTPHOT_MAX_E_EV};
 const std::vector<G4double> OPTPHOT_E_RANGE   {OPTPHOT_MIN_E, OPTPHOT_MAX_E};
+
+static const size_t SMALL_CHUNK_SIZE =   256; // 2** 8
+static const size_t INTER_CHUNK_SIZE =  4096; // 2**12
+static const size_t LARGE_CHUNK_SIZE = 65536; // 2**16
