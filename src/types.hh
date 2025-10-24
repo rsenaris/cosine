@@ -24,6 +24,16 @@ static const unsigned  LONGSTR = 300;
 using shortstr = char[SHORTSTR];
 using  longstr = char[ LONGSTR];
 
+
+////////////////////////////////////////////////////////////////////////////////
+// Custom types
+// Remember, these are transient representations. Persistent representations
+// are stored in persistency/hdf5_types. If you need to store any of these types:
+// - generate a struct here
+// - generate a HighFive::CompoundType in persistency/hdf5_types
+////////////////////////////////////////////////////////////////////////////////
+
+
 struct StepData {
   shortstr particle;
   shortstr  pre_volume;
