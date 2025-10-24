@@ -20,7 +20,7 @@ auto pcolina() {
   auto el_r                  = el_diam / 2.0;
   auto drift_length          = 120 * mm;
   auto form_factor           = 1.0; // ratio between drift length and cathode radius
-  auto cath_diam             = form_factor * drift_length + el_diam;
+  auto cath_diam             = 2 * form_factor * drift_length + el_diam;
   auto cath_r                = cath_diam / 2.0;
   auto wall_thick            = 1 * mm;
   auto d_gate_wire           = 5 * mm;
