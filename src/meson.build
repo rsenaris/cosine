@@ -4,7 +4,7 @@ project( 'cosine'
        , default_options : [ 'buildtype=debugoptimized'
                            , 'debug=true'
                            , 'optimization=2'
-                           , 'cpp_std=c++20'
+                           , 'cpp_std=c++17' # CAN'T GO TO C++20 DUE TO HIGHFIVE
                            , 'prefix=@0@/../install/cosine/'.format(meson.source_root())
                            , 'libdir=lib'
                            ]
@@ -44,6 +44,8 @@ cosine_lib_files    = [
  'geometry/mesh',
  'geometry/sipm_array',
  'geometry/wire_array',
+ 'persistency/hdf5_types',
+ 'persistency/hdf5_writer',
  'types',
 ]
 cosine_lib_includes = ['common.hh']
