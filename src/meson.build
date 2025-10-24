@@ -44,7 +44,6 @@ cosine_lib_files    = [
  'geometry/mesh',
  'geometry/sipm_array',
  'geometry/wire_array',
- 'persistency/hdf5_writer'
 ]
 cosine_lib_includes = ['common.hh']
 cosine_lib_sources  = []
