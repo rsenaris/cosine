@@ -35,6 +35,7 @@ cosine_lib_deps     = [nain4, geant4, hdf5, high5]
 cosine_lib_include  = include_directories('.')
 cosine_lib_files    = [
  'actions/store_volume_crossing',
+ 'actions/event',
  'generators/geantinos',
  'materials/LXe',
  'materials/ptfe',
