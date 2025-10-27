@@ -47,7 +47,7 @@ private:
   }
 };
 
-class HDF5Writer : public G4VPersistencyManager {
+class HDF5Writer {
 public:
   HDF5Writer(G4String filename, G4int start_event);
   ~HDF5Writer(){}

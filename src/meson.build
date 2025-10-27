@@ -46,6 +46,7 @@ cosine_lib_files    = [
  'geometry/wire_array',
  'persistency/hdf5_types',
  'persistency/hdf5_writer',
+ 'persistency/manager',
  'types',
 ]
 cosine_lib_includes = ['common.hh']
