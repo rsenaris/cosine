@@ -35,6 +35,7 @@ using  longstr = char[ LONGSTR];
 
 
 struct StepData {
+  i32      event;
   shortstr particle;
   shortstr  pre_volume;
   shortstr post_volume;
@@ -45,7 +46,8 @@ struct StepData {
   f32      post_y;
   f32      post_z;
 
-  StepData( const G4String&
+  StepData( const i32&
+          , const G4String&
           , const G4String&
           , const G4String&
           , const G4ThreeVector&

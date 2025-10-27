@@ -17,6 +17,7 @@
 
 HighFive::CompoundType create_step_data() {
   return {
+    {      "event", H(i32)     },
     {   "particle", H(shortstr)},
     { "pre_volume", H(shortstr)},
     {"post_volume", H(shortstr)},
