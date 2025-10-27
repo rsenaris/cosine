@@ -1,6 +1,11 @@
 #include "actions/store_volume_crossing.hh"
+#include "types.hh"
+
+#include <n4-inspect.hh>
 
 #include <cstdio>
+
+std::vector<StepData> step_data_container{};
 
 G4String get_name(const G4StepPoint *p) {
   if  (! p                                 ) return "No pointer";
@@ -11,6 +16,7 @@ G4String get_name(const G4StepPoint *p) {
 
 std::function<void(const G4Step *)>
 store_volume_crossing(G4String particle, G4String from, G4String to) {
+
   return [particle, from, to](const G4Step *step) {
     auto pre  = step -> GetPreStepPoint();
     auto post = step -> GetPostStepPoint();
@@ -25,6 +31,10 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
 
     auto  pre_pos =  pre -> GetPosition();
     auto post_pos = post -> GetPosition();
+
+    auto event = n4::event_number();
+    step_data_container.emplace_back(event, part_name, pre_name, post_name, pre_pos, post_pos);
+
     char line[200];
     sprintf( line
            , "Particle %s pre_volume %s post_volume %s pre_x %f pre_y %f pre_z %f post_x %f post_y %f post_z %f"
