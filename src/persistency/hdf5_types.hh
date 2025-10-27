@@ -11,3 +11,6 @@
   }
 
 DECLARE_HF_TYPE_BUILDER(StepData, create_step_data)
+
+
+#undef DECLARE_HF_TYPE_BUILDER
