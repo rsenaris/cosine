@@ -3,9 +3,9 @@
 #include <cstdio>
 
 G4String get_name(const G4StepPoint *p) {
-  if  (! p                                 ) return "None";
-  if  (! p -> GetTouchable()               ) return "None";
-  if  (! p -> GetTouchable() -> GetVolume()) return "None";
+  if  (! p                                 ) return "No pointer";
+  if  (! p -> GetTouchable()               ) return "No touchable";
+  if  (! p -> GetTouchable() -> GetVolume()) return "No volume";
   return p -> GetTouchable() -> GetVolume() -> GetName();
 }
 
