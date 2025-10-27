@@ -55,5 +55,10 @@ run *ARGS: install
   sh execute-with-nixgl-if-needed.sh ./install/cosine/bin/cosine "$@"
   exit $?
 
+run-no-install *ARGS:
+  #!/usr/bin/env sh
+  ./install/cosine/bin/cosine "$@"
+  exit $?
+
 clean:
   rm build install -rf
