@@ -12,18 +12,18 @@
 
 #include <cstring>
 
-using std::string;
 using namespace HighFive;
 
 
-HDF5Writer::HDF5Writer(G4String filename, G4int start_event)
+HDF5Writer::HDF5Writer(const std::string& filename, G4int start_event)
     : filename_(filename)
     , file_(nullptr)
     , step_writer_(nullptr)
-    , current_event_(start_event)
-{}
+{
+  open_file();
+}
 
-void HDF5Writer::store_steps(std::vector<StepData>&& steps) {
+void HDF5Writer::write_steps(std::vector<StepData>&& steps) {
   if (!step_writer_) {
     auto dataset = create_dataset("MC", "steps", create_step_data(), LARGE_CHUNK_SIZE);
     step_writer_ = new BufferedWriter<StepData>{std::move(dataset), LARGE_CHUNK_SIZE};
@@ -43,8 +43,8 @@ void HDF5Writer::close_file() {
   file_ -> flush();
 }
 
-DataSet HDF5Writer::create_dataset( string       const& group_name
-                                  , string       const&  node_name
+DataSet HDF5Writer::create_dataset( std::string  const& group_name
+                                  , std::string  const&  node_name
                                   , CompoundType const& type
                                   , hsize_t             chunk_size) {
   auto group =

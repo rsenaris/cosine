@@ -49,22 +49,15 @@ private:
 
 class HDF5Writer {
 public:
-  HDF5Writer(G4String filename, G4int start_event);
+  HDF5Writer(const std::string& filename, G4int start_event);
   ~HDF5Writer(){}
 
-  void  OpenFile(){ open_file();}
-  void CloseFile(){close_file();}
-
-  void store_steps(std::vector<StepData>&& steps);
-  void next_event(){current_event_++;}
+  void write_steps(std::vector<StepData>&& steps);
 
 private:
   std::string               filename_;
   HighFive::File*           file_;
   BufferedWriter<StepData>* step_writer_;
-  G4int                     current_event_;
-
-  std::string label(const std::vector<std::string> tokens) const;
 
   void  open_file();
   void close_file();
