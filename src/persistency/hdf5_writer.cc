@@ -11,37 +11,31 @@
 #include <highfive/H5Group.hpp>
 
 #include <cstring>
+#include <memory>
 #include <stdexcept>
 
 using namespace HighFive;
 
 
 HDF5Writer::HDF5Writer(const std::string& filename, G4int start_event)
-    : filename_(filename)
+    : step_writer_(nullptr)
     , file_(nullptr)
-    , step_writer_(nullptr)
 {
-  open_file();
+  auto options = File::Overwrite;
+  file_ = std::make_unique<File>(filename, options);
+}
+
+HDF5Writer::~HDF5Writer() {
+  step_writer_.reset();
+  file_.reset();
 }
 
 void HDF5Writer::write_steps(std::vector<StepData>&& steps) {
   if (!step_writer_) {
     auto dataset = create_dataset("MC", "steps", create_step_data(), LARGE_CHUNK_SIZE);
-    step_writer_ = new BufferedWriter<StepData>{std::move(dataset), LARGE_CHUNK_SIZE};
+    step_writer_ = std::make_unique<BufferedWriter<StepData>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   step_writer_ -> write(std::move(steps));
-}
-
-void HDF5Writer::open_file() {
-  file_ = new File{ filename_
-                  ,   File::ReadWrite
-                    | File::Create
-                    | File::Truncate
-                  };
-}
-
-void HDF5Writer::close_file() {
-  file_ -> flush();
 }
 
 DataSet HDF5Writer::create_dataset( std::string  const& group_name
