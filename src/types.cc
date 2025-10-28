@@ -7,22 +7,24 @@ void copy_str(char* to, const G4String& from) {
   to[sizeof(to) - 1] = '\0';
 }
 
-StepData::StepData( const i32&           event
-                  , const G4String&      particle_name
-                  , const G4String&       pre_volume_name
-                  , const G4String&      post_volume_name
-                  , const G4ThreeVector&  pre_pos
-                  , const G4ThreeVector& post_pos
-                  ) :
- event(event),
- pre_x( pre_pos.x()),
- pre_y( pre_pos.y()),
- pre_z( pre_pos.z()),
-post_x(post_pos.x()),
-post_y(post_pos.y()),
-post_z(post_pos.z())
+StepData make_step_data( const i32&           event
+                       , const G4String&      particle_name
+                       , const G4String&       pre_volume_name
+                       , const G4String&      post_volume_name
+                       , const G4ThreeVector&  pre_pos
+                       , const G4ThreeVector& post_pos
+                       )
 {
-  copy_str(   particle,    particle_name);
-  copy_str( pre_volume,  pre_volume_name);
-  copy_str(post_volume, post_volume_name);
+  StepData data;
+  data.event = event;
+  copy_str(data.   particle,    particle_name);
+  copy_str(data. pre_volume,  pre_volume_name);
+  copy_str(data.post_volume, post_volume_name);
+  data. pre_x =  pre_pos.x();
+  data. pre_y =  pre_pos.y();
+  data. pre_z =  pre_pos.z();
+  data.post_x = post_pos.x();
+  data.post_y = post_pos.y();
+  data.post_z = post_pos.z();
+  return data;
 }

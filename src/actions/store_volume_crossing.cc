@@ -33,7 +33,8 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
     auto post_pos = post -> GetPosition();
 
     auto event = n4::event_number();
-    step_data_container.emplace_back(event, part_name, pre_name, post_name, pre_pos, post_pos);
+    auto step_data = make_step_data(event, part_name, pre_name, post_name, pre_pos, post_pos);
+    step_data_container.push_back(std::move(step_data));
 
     char line[200];
     sprintf( line

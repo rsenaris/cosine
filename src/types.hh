@@ -45,11 +45,11 @@ struct StepData {
   f32      post_x;
   f32      post_y;
   f32      post_z;
-
-  StepData( const i32&
-          , const G4String&
-          , const G4String&
-          , const G4String&
-          , const G4ThreeVector&
-          , const G4ThreeVector&);
 };
+
+StepData make_step_data( const i32&
+                       , const G4String&
+                       , const G4String&
+                       , const G4String&
+                       , const G4ThreeVector&
+                       , const G4ThreeVector&);
