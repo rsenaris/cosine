@@ -50,7 +50,7 @@ cosine_lib_files    = [
  'persistency/manager',
  'types',
 ]
-cosine_lib_includes = ['common.hh']
+cosine_lib_includes = ['common.hh', 'utils.hh']
 cosine_lib_sources  = []
 foreach f : cosine_lib_files
   cosine_lib_includes += [f + '.hh']
