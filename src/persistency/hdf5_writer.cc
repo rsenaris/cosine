@@ -32,11 +32,11 @@ void HDF5Writer::write_steps(std::vector<StepData>&& steps) {
 }
 
 void HDF5Writer::open_file() {
-   file_ = new File{ filename_
-                   ,   File::ReadWrite
-                     | File::Create
-                     | File::Truncate
-               };
+  file_ = new File{ filename_
+                  ,   File::ReadWrite
+                    | File::Create
+                    | File::Truncate
+                  };
 }
 
 void HDF5Writer::close_file() {
