@@ -11,6 +11,7 @@
 #include <highfive/H5Group.hpp>
 
 #include <cstring>
+#include <stdexcept>
 
 using namespace HighFive;
 
@@ -53,7 +54,7 @@ DataSet HDF5Writer::create_dataset( std::string  const& group_name
     file_ -> createGroup(group_name) ;
 
   if (group.exist(node_name))
-    throw "Node " + node_name + " already exists";
+    throw std::runtime_error("Node " + node_name + " already exists");
 
   // To create a table than can be resized it has be of UNLIMITED dimension
   // and requires chunking of the data
