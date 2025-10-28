@@ -36,13 +36,13 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
     auto step_data = make_step_data(event, part_name, pre_name, post_name, pre_pos, post_pos);
     step_data_container.push_back(std::move(step_data));
 
-    char line[200];
-    sprintf( line
-           , "Particle %s pre_volume %s post_volume %s pre_x %f pre_y %f pre_z %f post_x %f post_y %f post_z %f"
-           , part_name.data(), pre_name.data(), post_name.data()
-           ,   pre_pos.x()   ,  pre_pos.y()   ,   pre_pos.z()
-           ,  post_pos.x()   , post_pos.y()   ,  post_pos.z()
-           );
-    std::cout << line << std::endl;
+    // char line[200];
+    // sprintf( line
+    //        , "Particle %s pre_volume %s post_volume %s pre_x %f pre_y %f pre_z %f post_x %f post_y %f post_z %f"
+    //        , part_name.data(), pre_name.data(), post_name.data()
+    //        ,   pre_pos.x()   ,  pre_pos.y()   ,   pre_pos.z()
+    //        ,  post_pos.x()   , post_pos.y()   ,  post_pos.z()
+    //        );
+    // std::cout << line << std::endl;
   };
 }
