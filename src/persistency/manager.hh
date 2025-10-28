@@ -5,7 +5,7 @@
 
 class PersistencyManager : public G4VPersistencyManager {
 private:
-   PersistencyManager(const std::string &filename, G4int start_id) : writer_(filename, start_id) {}
+   PersistencyManager(const std::string &filename, G4int start_id) : G4VPersistencyManager(), writer_(filename, start_id) {}
 public:
   ~PersistencyManager(){}
 
