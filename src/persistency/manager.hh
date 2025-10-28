@@ -2,6 +2,7 @@
 
 #include "G4VPersistencyManager.hh"
 #include "persistency/hdf5_writer.hh"
+#include <memory>
 
 class PersistencyManager : public G4VPersistencyManager {
 private:
@@ -24,3 +25,5 @@ public:
 private:
   HDF5Writer writer_;
 };
+
+extern std::unique_ptr<PersistencyManager> PERSISTENCY_MANAGER;
