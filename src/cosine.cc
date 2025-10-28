@@ -16,7 +16,7 @@
 
 n4::actions* create_actions() {
   return  (  new n4::        actions{geantinos_at_z(20 * mm, 30 * mm, {0., 0., -1.})})
-    -> set( (new n4::   event_action{}) -> end(store_event() ))
+    -> set( (new n4::   event_action{}) -> begin(count_event()) -> end(store_event() ))
     -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "")});
 }
 
