@@ -2,9 +2,9 @@
 
 #include <cstring>
 
-void copy_str(char* to, const G4String& from) {
-  std::strncpy(to, from.c_str(), sizeof(*to));
-  to[sizeof(to) - 1] = '\0';
+void copy_str(char *to, const G4String &from, size_t n) {
+  memset(to,   0, n);
+  std::strcpy(to, from.c_str());
 }
 
 StepData make_step_data( const i32&           event
@@ -17,9 +17,9 @@ StepData make_step_data( const i32&           event
 {
   StepData data;
   data.event = event;
-  copy_str(data.   particle,    particle_name);
-  copy_str(data. pre_volume,  pre_volume_name);
-  copy_str(data.post_volume, post_volume_name);
+  copy_str(data.   particle,    particle_name, SHORTSTR);
+  copy_str(data. pre_volume,  pre_volume_name, SHORTSTR);
+  copy_str(data.post_volume, post_volume_name, SHORTSTR);
   data. pre_x =  pre_pos.x();
   data. pre_y =  pre_pos.y();
   data. pre_z =  pre_pos.z();
