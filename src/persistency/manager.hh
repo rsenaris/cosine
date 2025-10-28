@@ -3,7 +3,7 @@
 #include "G4VPersistencyManager.hh"
 #include "persistency/hdf5_writer.hh"
 
-class PersistencyManager : G4VPersistencyManager {
+class PersistencyManager : public G4VPersistencyManager {
 private:
    PersistencyManager(const std::string &filename, G4int start_id) : writer_(filename, start_id) {}
 public:
