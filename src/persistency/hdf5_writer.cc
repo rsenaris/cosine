@@ -29,7 +29,7 @@ void HDF5Writer::write_steps(std::vector<StepData>&& steps) {
     auto dataset = create_dataset("MC", "steps", create_step_data(), LARGE_CHUNK_SIZE);
     step_writer_ = new BufferedWriter<StepData>{std::move(dataset), LARGE_CHUNK_SIZE};
   }
-  (*step_writer_)(std::move(steps));
+  step_writer_ -> write(std::move(steps));
 }
 
 void HDF5Writer::open_file() {

@@ -21,14 +21,14 @@ public:
 
   ~BufferedWriter() { flush(); }
 
-  void operator()(DATA&& item) {
+  void write(DATA&& item) {
     buffer_.push_back(std::move(item));
     if (buffer_.size() >= buffer_size_) { flush(); }
   }
 
-  void operator()(std::vector<DATA>&& items) {
+  void write(std::vector<DATA>&& items) {
     for (auto item : std::move(items)) {
-      (*this)(std::move(item));
+      this -> write(std::move(item));
     }
   }
 
