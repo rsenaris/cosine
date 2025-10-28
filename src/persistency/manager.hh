@@ -19,7 +19,7 @@ public:
   G4bool Retrieve(G4Event*&           ) override { return false; }
   G4bool Retrieve(G4VPhysicalVolume *&) override { return false; }
 
-  HDF5Writer& writer() { return writer_; }
+  HDF5Writer* writer() { return &writer_; }
 
 private:
   HDF5Writer writer_;
