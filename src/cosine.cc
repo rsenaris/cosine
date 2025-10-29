@@ -1,3 +1,4 @@
+#include <CLHEP/Units/SystemOfUnits.h>
 #include <G4GenericMessenger.hh>
 #include <G4SystemOfUnits.hh>   // physical units such as `m` for metre
 #include <G4Event.hh>           // needed to inject primary particles into an event
@@ -7,6 +8,7 @@
 
 #include <cstdlib>
 
+#include "G4ThreeVector.hh"
 #include "actions/event.hh"
 #include "generators/geantinos.hh"
 #include "actions/store_volume_crossing.hh"
@@ -14,15 +16,14 @@
 #include "persistency/hdf5_writer.hh"
 #include "persistency/manager.hh"
 
-n4::actions* create_actions() {
-  return  (  new n4::        actions{geantinos_at_z(20 * mm, 30 * mm, {0., 0., -1.})})
-    -> set( (new n4::   event_action{}) -> begin(count_event()) -> end(store_event() ))
-    -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "")});
+n4::actions *create_actions() {
+  auto pos = G4ThreeVector{0, 0, 5*mm};
+  return  (  new n4::        actions{geantinos(pos)} )
+    -> set( (new n4::   event_action{}) -> begin(count_event()) -> end(store_event()))
+    -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "fitted_mesh")});
 }
 
 int main(int argc, char* argv[]) {
-  unsigned n_event = 0;
-
   G4int physics_verbosity = 0;
 
   // The trailing slash after '/my_geometry' is CRUCIAL: without it, the
