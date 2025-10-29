@@ -37,6 +37,7 @@ cosine_lib_files    = [
  'actions/store_volume_crossing',
  'actions/event',
  'generators/geantinos',
+ 'generators/pointlike',
  'materials/LXe',
  'materials/ptfe',
  'materials/silicon',
