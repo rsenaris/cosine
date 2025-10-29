@@ -56,6 +56,7 @@ DataSet HDF5Writer::create_dataset( std::string  const& group_name
 
   DataSetCreateProps ds_props;
   ds_props.add(HighFive::Chunking(std::vector<hsize_t>{chunk_size}));
+//  ds_props.add(HighFive::Deflate(4));
   auto dataset = group.createDataSet(node_name, extensible_ds, type, ds_props);
   return dataset;
 }
