@@ -54,7 +54,8 @@ G4LogicalVolume* create_wire_mesh(G4double diam, G4double pitch, G4double wire_d
 }
 
 G4Polyhedra* hexagon(G4double circumradius, G4double thick) {
-  G4double z_planes[2] = {-thick, thick};
+  auto eps = 1e6 * thick;
+  G4double z_planes[2] = {-thick/2 - eps, thick/2 + eps};
   G4double  r_inner[2] = {0., 0.};
   G4double  r_outer[2] = {circumradius, circumradius};
   return new G4Polyhedra("hexahole", 0, CLHEP::twopi, 6, 2, z_planes, r_inner, r_outer);
@@ -90,7 +91,7 @@ void hexagon_positions(G4double x0, G4double y0, G4double pitch, G4double rmax2,
 }
 
 posvec generate_hexagon_positions(G4double pitch, G4double rmax) {
-  auto rmax2 = (rmax + pitch) * (rmax + pitch);
+  auto rmax2 = (rmax + pitch/2) * (rmax + pitch/2);
 
   std::vector<std::pair<G4double, G4double>> out;
   out.emplace_back(0, 0);
@@ -101,8 +102,8 @@ posvec generate_hexagon_positions(G4double pitch, G4double rmax) {
 
 G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4double frame_width, G4double pitch, G4double mesh_thick, G4double hex_inradius) {
   auto protomesh = n4::tubs("frame")
-    .r(frame_diam / 2 + frame_width)
-    .z(frame_thick)
+    .r(frame_diam / 2)
+    .z(mesh_thick)
     .solid();
 
   auto frame = n4::tubs("frame")
@@ -114,18 +115,6 @@ G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4do
   auto hex_r = 2 / std::sqrt(3) * hex_inradius; // circumradius
   auto hex   = hexagon(hex_r, mesh_thick);
 
-  // auto holes = new G4MultiUnion("holes");
-  // for (auto p: generate_hexagon_positions(pitch, frame_diam/2)) {
-  //   auto pos       = G4ThreeVector{p.first, p.second, 0};
-  //   auto transform = G4Transform3D(along_x_axis, pos);
-  //   holes -> AddNode(hex, transform);
-  // }
-
-  // holes -> Voxelize();
-
-  // auto overperforated_mesh = new G4SubtractionSolid("trimmed_mesh", protomesh, holes);
-  // auto         fitted_mesh = new G4UnionSolid      ( "fitted_mesh", frame    , overperforated_mesh);
-
   G4SubtractionSolid* mesh = nullptr;
   for (auto p: generate_hexagon_positions(pitch, frame_diam/2)) {
     auto pos = G4ThreeVector{p.first, p.second, 0};
@@ -134,6 +123,6 @@ G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4do
       new G4SubtractionSolid("mesh", protomesh, hex, nullptr, pos);
   }
 
-  auto fitted_mesh = new G4UnionSolid( "fitted_mesh", frame, mesh);
+  auto fitted_mesh = new G4UnionSolid("fitted_mesh", frame, mesh);
   return n4::volume(fitted_mesh, steel_with_properties());
 }
