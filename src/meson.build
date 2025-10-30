@@ -36,6 +36,7 @@ cosine_lib_include  = include_directories('.')
 cosine_lib_files    = [
  'actions/store_volume_crossing',
  'actions/event',
+ 'generators/generic',
  'generators/geantinos',
  'generators/pointlike',
  'materials/LXe',
