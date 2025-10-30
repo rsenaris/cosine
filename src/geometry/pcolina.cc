@@ -28,7 +28,7 @@ auto pcolina() {
   auto d_shield_sipms        = 3 * mm;
   auto mesh_hex_pitch        = 8 * mm;
   auto mesh_thick            = 0.1 * mm;
-  auto mesh_hex_circumradius = 3 * mm;
+  auto mesh_hex_inradius     = 1. * mm;
   auto thin_wire_pitch       = 5 * mm;
   auto thin_wire_diam        = 0.01 * mm; // Use 0.1 * mm for visualization
   auto thin_wire_rot         = 45 * deg;
@@ -91,9 +91,9 @@ auto pcolina() {
   wire_array -> SetVisAttributes(gray);
   n4::place(wire_array).rot_z(thin_wire_rot).at_z(-d_gate_wire).in(liquid).now();
 
-  auto mesh_el = create_hex_mesh(el_diam, frame_thick, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_circumradius);
 //  mesh_el -> SetVisAttributes(invisible);
   mesh_el -> SetVisAttributes(green);
+  auto mesh_el = create_hex_mesh(el_diam, frame_thick, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_inradius);
 
   n4::place(mesh_el)                                   .in(liquid).now(); // GATE
   n4::place(mesh_el).at_z(-neck_length +d_shield_sipms).in(liquid).now(); // SHIELD
