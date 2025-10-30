@@ -95,8 +95,8 @@ auto pcolina() {
   mesh_el -> SetVisAttributes(green);
   auto mesh_el = create_hex_mesh(el_diam, frame_thick, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_inradius);
 
-  n4::place(mesh_el)                                   .in(liquid).now(); // GATE
-  n4::place(mesh_el).at_z(-neck_length +d_shield_sipms).in(liquid).now(); // SHIELD
+  n4::place(mesh_el).name("gate")                                     .in(liquid).now();
+  n4::place(mesh_el).name("shield").at_z(-neck_length +d_shield_sipms).in(liquid).now();
 
   auto z_cathode = frame_thick/2 + drift_length + cath_thick / 2;
   z_cathode += ptfe_on_fp ? wall_thick : 0;

@@ -20,7 +20,7 @@ n4::actions *create_actions() {
   auto pos = G4ThreeVector{0, 0, 5*mm};
   return  (  new n4::        actions{geantinos(pos)} )
     -> set( (new n4::   event_action{}) -> begin(count_event()) -> end(store_event()))
-    -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "fitted_mesh")});
+    -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
 }
 
 int main(int argc, char* argv[]) {
