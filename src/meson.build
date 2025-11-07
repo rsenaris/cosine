@@ -50,6 +50,7 @@ cosine_lib_files    = [
  'persistency/hdf5_types',
  'persistency/hdf5_writer',
  'persistency/manager',
+ 'sensitive/sipm',
  'types',
 ]
 cosine_lib_includes = ['common.hh', 'utils.hh']
