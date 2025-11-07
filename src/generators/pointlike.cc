@@ -10,7 +10,9 @@ pointlike::pointlike(const G4String& particle_name, G4ThreeVector pos, u16 npart
   , energy_(energy)
   , npart_(nparticles)
   , polarization_()
-{}
+{
+  max_cos_theta(-0.5);
+}
 
 G4PrimaryVertex* pointlike::generate_vertex() const {
   auto vertex = new G4PrimaryVertex(pos_, 0.);
