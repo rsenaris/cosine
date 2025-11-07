@@ -6,8 +6,9 @@
 #include "materials/steel.hh"
 
 
-#include <G4SystemOfUnits.hh>
 #include <G4Color.hh>
+#include <G4LogicalSkinSurface.hh>
+#include <G4SystemOfUnits.hh>
 #include <G4Polyhedra.hh>
 
 #include <n4-geometry.hh>
@@ -22,31 +23,33 @@ auto pcolina() {
   auto form_factor           = 1.0; // ratio between drift length and cathode radius
   auto cath_diam             = 2 * form_factor * drift_length + el_diam;
   auto cath_r                = cath_diam / 2.0;
-  auto wall_thick            = 1 * mm;
-  auto d_gate_wire           = 5 * mm;
-  auto d_wire_shield         = 5 * mm;
-  auto d_shield_sipms        = 3 * mm;
-  auto mesh_hex_pitch        = 8 * mm;
-  auto mesh_thick            = 0.1 * mm;
-  auto mesh_hex_inradius     = 1. * mm;
-  auto thin_wire_pitch       = 5 * mm;
+  auto wall_thick            = 1    * mm;
+  auto d_gate_wire           = 5    * mm;
+  auto d_wire_shield         = 5    * mm;
+  auto d_shield_sipms        = 3    * mm;
+  auto mesh_hex_pitch        = 3    * mm;
+  auto mesh_thick            = 0.1  * mm;
+  auto mesh_hex_inradius     = 2.5  * mm;
+  auto thin_wire_pitch       = 5    * mm;
   auto thin_wire_diam        = 0.01 * mm; // Use 0.1 * mm for visualization
-  auto thin_wire_rot         = 45 * deg;
-  auto sipm_size             = 6 * mm;
-  auto sipm_thick            = 1 * mm;
-  auto sipm_gap              = 0.5 * mm;
+  auto thin_wire_rot         = 45   * deg;
+  auto sipm_size             = 6    * mm;
+  auto sipm_thick            = 1    * mm;
+  auto sipm_gap              = 0.5  * mm;
   auto n_sipm_side           = 5;
   auto cath_thick            = 3 * sipm_thick;
-  auto frame_thick           = 2 * mm;
+  auto frame_thick_mesh      = 2 * mm;
+  auto frame_thick_wires     = 4 * mm;
   auto frame_width           = wall_thick;
-  auto neck_length           = d_gate_wire + d_wire_shield + frame_thick/2 + d_shield_sipms;
+  auto neck_length           = d_gate_wire + d_wire_shield + frame_thick_wires/2 + d_shield_sipms;
 
-  auto sipms_on_fp = false;
-  auto  ptfe_on_fp = true;
+  auto sipms_on_fp    = false;
+  auto  ptfe_on_fp    = true;
+  auto  ptfe_on_walls = true;
 
   auto air   = n4::material("G4_AIR");
-  auto lxe   = LXe_with_properties();
-  auto ptfe  = ptfe_with_properties();
+  auto lxe   =   LXe_with_properties();
+  auto ptfe  =  ptfe_with_properties();
   auto steel = steel_with_properties();
 
   auto tred      = G4Colour {1, 0 ,0, 0.1 };
@@ -75,30 +78,34 @@ auto pcolina() {
     .in(world)
     .now();
 
-  n4::cons("walls")
-    .r1_inner(el_r)
-    .r2_inner(cath_r)
-    .r_delta(wall_thick)
-    .z(drift_length)
-    .vis(wireframe)
-    .place(ptfe)
-    .in(liquid)
-    .at_z(frame_thick/2 + drift_length/2)
-    .now();
+  if (ptfe_on_walls) {
+    auto ptfe_walls = n4::cons("ptfe_walls")
+      .r1_inner(el_r)
+      .r2_inner(cath_r)
+      .r_delta(wall_thick)
+      .z(drift_length)
+      .vis(wireframe)
+      .place(ptfe)
+      .in(liquid)
+      .at_z(frame_thick_mesh/2 + drift_length/2)
+      .now();
 
-  auto wire_array = create_wire_array(el_diam, frame_thick, wall_thick,
+    new G4LogicalSkinSurface("cath_surface", ptfe_walls -> GetLogicalVolume(), ptfe_surface());
+  }
+
+  auto wire_array = create_wire_array(el_diam, frame_thick_wires, wall_thick,
                                       thin_wire_pitch, thin_wire_diam);
   wire_array -> SetVisAttributes(gray);
   n4::place(wire_array).rot_z(thin_wire_rot).at_z(-d_gate_wire).in(liquid).now();
 
-//  mesh_el -> SetVisAttributes(invisible);
-  mesh_el -> SetVisAttributes(green);
-  auto mesh_el = create_hex_mesh(el_diam, frame_thick, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_inradius);
+  auto mesh_el = create_hex_mesh(el_diam, frame_thick_mesh, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_inradius);
+  mesh_el -> SetVisAttributes(invisible);
+//  mesh_el -> SetVisAttributes(green);
 
   n4::place(mesh_el).name("gate")                                     .in(liquid).now();
   n4::place(mesh_el).name("shield").at_z(-neck_length +d_shield_sipms).in(liquid).now();
 
-  auto z_cathode = frame_thick/2 + drift_length + cath_thick / 2;
+  auto z_cathode = frame_thick_mesh/2 + drift_length + cath_thick / 2;
   z_cathode += ptfe_on_fp ? wall_thick : 0;
   auto cathode = n4::tubs("cathode")
     .r(cath_r + wall_thick)
@@ -110,14 +117,16 @@ auto pcolina() {
     .now();
 
   if (ptfe_on_fp) {
-    n4::tubs("ptfe_cathode")
+    auto ptfe_cathode = n4::tubs("ptfe_cathode")
       .r(cath_r + wall_thick)
       .z(wall_thick)
       .vis(white)
       .place(ptfe)
-      .at_z(z_cathode - cath_thick/2 - wall_thick / 2)
+      .at_z(z_cathode - cath_thick / 2 - wall_thick / 2)
       .in(liquid)
       .now();
+
+    new G4LogicalSkinSurface("cath_surface", ptfe_cathode -> GetLogicalVolume(), ptfe_surface());
   }
 
   auto sipm_array = build_sipm_array(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
