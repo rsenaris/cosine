@@ -5,6 +5,7 @@
 #include <G4ThreeVector.hh>
 
 #include "highfive/H5PropertyList.hpp"
+#include "types.hh"
 #include <highfive/H5DataSpace.hpp>
 #include <highfive/H5DataType.hpp>
 #include <highfive/H5File.hpp>
@@ -19,7 +20,8 @@ using namespace HighFive;
 
 HDF5Writer::HDF5Writer(const std::string& filename, G4int start_event)
     : step_writer_(nullptr)
-    , file_(nullptr)
+    , sens_writer_(nullptr)
+    , file_       (nullptr)
 {
   auto options = File::Overwrite;
   file_ = std::make_unique<File>(filename, options);
@@ -36,6 +38,14 @@ void HDF5Writer::write_steps(std::vector<StepData>&& steps) {
     step_writer_ = std::make_unique<BufferedWriter<StepData>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   step_writer_ -> write(std::move(steps));
+}
+
+void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
+  if (!sens_writer_) {
+    auto dataset = create_dataset("MC", "hits", create_sensor_hit(), LARGE_CHUNK_SIZE);
+    sens_writer_ = std::make_unique<BufferedWriter<SensorHit>>(std::move(dataset), LARGE_CHUNK_SIZE);
+  }
+  sens_writer_ -> write(std::move(hits));
 }
 
 DataSet HDF5Writer::create_dataset( std::string  const& group_name
