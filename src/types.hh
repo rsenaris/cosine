@@ -47,9 +47,19 @@ struct StepData {
   f32      post_z;
 };
 
+struct SensorHit {
+  u32 event;
+  u16 sensor_id;
+  f32 time;
+};
+
 StepData make_step_data( const i32&
                        , const G4String&
                        , const G4String&
                        , const G4String&
                        , const G4ThreeVector&
                        , const G4ThreeVector&);
+
+SensorHit make_sensor_hit( const u32&
+                         , const u16&
+                         , const f32&);

@@ -10,7 +10,8 @@
     template <> DataType create_datatype<TYPE_NAME>(); \
   }
 
-DECLARE_HF_TYPE_BUILDER(StepData, create_step_data)
+DECLARE_HF_TYPE_BUILDER(StepData , create_step_data )
+DECLARE_HF_TYPE_BUILDER(SensorHit, create_sensor_hit)
 
 
 #undef DECLARE_HF_TYPE_BUILDER

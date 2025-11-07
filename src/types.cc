@@ -28,3 +28,7 @@ StepData make_step_data( const i32&           event
   data.post_z = post_pos.z();
   return data;
 }
+
+SensorHit make_sensor_hit(const u32& event, const u16& sensor_id, const f32& time) {
+  return {event, sensor_id, time};
+}

@@ -31,6 +31,14 @@ HighFive::CompoundType create_step_data() {
 }
 REGISTER_HF_TYPE(StepData, create_step_data)
 
+HighFive::CompoundType create_sensor_hit() {
+  return {
+    {      "event", H(u32)},
+    {  "sensor_id", H(u16)},
+    {       "time", H(f32)},
+  };
+}
+REGISTER_HF_TYPE(SensorHit, create_sensor_hit)
 
 
 #undef REGISTER_HF_TYPE
