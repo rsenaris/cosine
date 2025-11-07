@@ -1,6 +1,7 @@
 #include "geometry/sipm_array.hh"
 #include "materials/ptfe.hh"
 #include "materials/silicon.hh"
+#include "sensitive/sipm.hh"
 
 #include <n4-geometry.hh>
 #include <n4-vis-attributes.hh>
@@ -20,16 +21,18 @@ G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4dou
   auto blue  = n4::vis_attributes().visible(true).color(G4Color::Blue());
   auto brown = n4::vis_attributes().visible(true).color(G4Color::Brown());
 
-  auto support = n4::box("near_plane_support")
+  auto support = n4::box("support")
     .xy(support_size)
     .z(2 * sipm_thick)
     .vis(brown)
     .volume(ptfe);
 
+  auto sens = sensitive_sipm();
   auto sipm = n4::box("sipm")
     .xy(sipm_size)
     .z(sipm_thick)
     .vis(blue)
+    .sensitive(sens.release())
     .volume(silicon);
 
   auto z = sipm_thick / 2;
