@@ -38,7 +38,7 @@ cosine_lib_files    = [
  'actions/event',
  'generators/generic',
  'generators/geantinos',
- 'generators/samplers',
+ 'generators/position',
  'generators/pointlike',
  'materials/LXe',
  'materials/ptfe',
