@@ -7,3 +7,19 @@ GenericGenerator::GenericGenerator(const G4String& particle_name, u16 nparticles
   , nparticles_(nparticles)
 {
 }
+
+
+G4PrimaryVertex* GenericGenerator::generate_vertex() const {
+  auto vertex = new G4PrimaryVertex(generate_position(), 0.);
+
+  for (auto i=0; i<nparticles_; i++) {
+    auto dir = generate_direction();
+    auto pol = generate_polarization();
+    auto ene = generate_energy();
+    auto particle = new G4PrimaryParticle(particle_, dir.x(), dir.y(), dir.z(), ene);
+
+    particle -> SetPolarization(pol);
+    vertex   -> SetPrimary(particle);
+  }
+  return vertex;
+}
