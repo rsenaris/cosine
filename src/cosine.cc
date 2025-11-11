@@ -3,6 +3,7 @@
 #include <G4SystemOfUnits.hh>   // physical units such as `m` for metre
 #include <G4Event.hh>           // needed to inject primary particles into an event
 #include <FTFP_BERT.hh>         // our choice of physics list
+#include <G4GenericPhysicsList.hh>         // our choice of physics list
 
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
@@ -44,13 +45,15 @@ int main(int argc, char* argv[]) {
 
   PersistencyManager::Initialize("output_file.h5", 0);
 
+  auto physics_list = std::make_unique<G4GenericPhysicsList>(physics_verbosity);
+
   n4::run_manager::create()
     .ui("cosine", argc, argv)
     .macro_path("macs")
     .apply_cli_early() // CLI --early executed at this point
 
     // Important! physics list has to be set before the generator!
-    .physics<FTFP_BERT>(physics_verbosity)
+    .physics(physics_list.release())
     .geometry(pcolina)
     .actions(create_actions(1))
 
