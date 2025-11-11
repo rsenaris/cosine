@@ -21,7 +21,11 @@ n4::actions *create_actions(u16 nphot) {
   auto pos = std::make_unique<conical_volume_generator>(12 * cm, 32 * mm, 152 * mm);
   pos -> offset_z(6*cm);
 
-  auto gen = new generic_generator("opticalphoton", nphot);
+  auto gen = (new generic_generator("opticalphoton", nphot))
+    -> pos(std::move(pos))
+    -> dir(std::make_unique<n4::random::direction>())
+    -> pol(std::make_unique<n4::random::direction>())
+    -> fix_ene(7.81 * eV);
 
   return  (  new n4::        actions{ gen })
     -> set( (new n4::   event_action{}) -> begin(count_event()) -> end(store_event()))
