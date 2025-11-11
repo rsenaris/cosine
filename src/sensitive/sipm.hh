@@ -9,4 +9,4 @@
 
 std::unique_ptr<n4::sensitive_detector> sensitive_sipm();
 
-extern std::vector<SensorHit> sensor_hits;
+extern std::vector<SensorHit> SENSOR_HITS;

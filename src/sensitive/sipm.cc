@@ -21,9 +21,9 @@ G4int get_sensor_id(const G4VTouchable* touch) {
 }
 
 std::unique_ptr<n4::sensitive_detector> sensitive_sipm() {
-  sensor_hits.reserve(LARGE_CHUNK_SIZE);
+  SENSOR_HITS.reserve(LARGE_CHUNK_SIZE);
 
-  auto reset_hit_store = [](G4HCofThisEvent*) { sensor_hits.clear(); };
+  auto reset_hit_store = [](G4HCofThisEvent*) { SENSOR_HITS.clear(); };
 
   auto record_hits = [](G4Step *step) -> bool {
     static G4ParticleDefinition* photon = dynamic_cast<G4ParticleDefinition*>(G4OpticalPhoton::Definition());
@@ -34,7 +34,7 @@ std::unique_ptr<n4::sensitive_detector> sensitive_sipm() {
     auto event = n4::event_number();
     auto sensor_id = get_sensor_id(step -> GetPostStepPoint() -> GetTouchable());
     auto time = step -> GetPostStepPoint() -> GetGlobalTime();
-    sensor_hits.push_back(make_sensor_hit(event, sensor_id, time));
+    SENSOR_HITS.push_back(make_sensor_hit(event, sensor_id, time));
     return true;
   };
 
