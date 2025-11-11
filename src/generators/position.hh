@@ -16,10 +16,10 @@ struct random_position {
 
   G4ThreeVector get() const { return generate() + offset_; }
 
-  template<class DERIVED> DERIVED& offset  (f64 x, f64 y, f64 z){ offset_ = {        x  ,         y  ,         z  }; return (*this); }
-  template<class DERIVED> DERIVED& offset_x(f64 x              ){ offset_ = {        x  , offset_.y(), offset_.z()}; return (*this); }
-  template<class DERIVED> DERIVED& offset_y(       f64 y       ){ offset_ = {offset_.x(),         y  , offset_.z()}; return (*this); }
-  template<class DERIVED> DERIVED& offset_z(              f64 z){ offset_ = {offset_.x(), offset_.y(),         z  }; return (*this); }
+  random_position& offset  (f64 x, f64 y, f64 z){ offset_ = {        x  ,         y  ,         z  }; return (*this); }
+  random_position& offset_x(f64 x              ){ offset_ = {        x  , offset_.y(), offset_.z()}; return (*this); }
+  random_position& offset_y(       f64 y       ){ offset_ = {offset_.x(),         y  , offset_.z()}; return (*this); }
+  random_position& offset_z(              f64 z){ offset_ = {offset_.x(), offset_.y(),         z  }; return (*this); }
 
 private:
   G4ThreeVector offset_;
