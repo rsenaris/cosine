@@ -6,6 +6,7 @@
 #include <n4-material.hh>
 #include <n4-sequences.hh>
 
+
 G4double LXe_Scintillation(G4double energy) {
   using CLHEP::c_light;   using CLHEP::h_Planck;   using CLHEP::pi;
   // K. Fuji et al., "High accuracy measurement of the emission spectrum of liquid xenon
@@ -66,7 +67,7 @@ G4double LXe_refractive_index(G4double energy) {
 }
 
 
-G4MaterialPropertiesTable* LXe_optical_material_properties() {
+G4MaterialPropertiesTable* LXe_mpt() {
   /// The time constants are taken from E. Hogenbirk et al 2018 JINST 13 P10031
 
   // Sampling from ~151 nm to 200 nm <----> from 6.20625 eV to 8.21 eV // TODO convert here
@@ -91,6 +92,12 @@ G4MaterialPropertiesTable* LXe_optical_material_properties() {
 G4Material* LXe_with_properties() {
   auto opts = n4::material_options {.state = kStateLiquid};
   auto LXe  = n4::material_from_elements_N("n4_lXe", 2.98*g/cm3, opts, {{"Xe", 1}});
-  LXe -> SetMaterialPropertiesTable(LXe_optical_material_properties());
+  LXe -> SetMaterialPropertiesTable(LXe_mpt());
   return LXe;
+}
+
+G4OpticalSurface *LXe_surface() {
+  auto surface = new G4OpticalSurface("LXe surface", unified, ground, dielectric_dielectric, .01);
+  surface -> SetMaterialPropertiesTable(LXe_mpt());
+  return surface;
 }

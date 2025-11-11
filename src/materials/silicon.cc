@@ -6,8 +6,9 @@
 
 using CLHEP::eV;
 
-G4Material* si_with_properties() {
-  auto silicon = n4::material("G4_Si");
+G4MaterialPropertiesTable *silicon_mpt() {
+  // reflectivity from https://refractiveindex.info/?shelf=main&book=Si&page=Franta-100K
+  auto reflectivity = 0.65;
 
   auto energies = n4::scale_by(eV, { OPTPHOT_MIN_E_EV, 1.0       , 1.3       , 1.3776022 , 1.4472283 , 1.52041305,
                                            1.59290956, 1.66341179, 1.72546158, 1.78169885, 1.8473836 , 1.90593775,
@@ -25,11 +26,21 @@ G4Material* si_with_properties() {
                                           0.22893024, 0.20156831, 0.18538152, 0.15444223, 0.12549548, 0.1040183 ,
                                           0.0902669 , 0.05498552, 0.02944706, 0.0       , 0.0       , 0.0       });
 
-  auto mpt = n4::material_properties()
+  return n4::material_properties()
     .add("EFFICIENCY", energies, efficiencies)
-    .add("REFLECTIVITY", energies, 0.)
+    .add("REFLECTIVITY", energies, reflectivity)
     .done();
+}
 
-  silicon -> SetMaterialPropertiesTable(mpt);
+G4Material* silicon_with_properties() {
+  auto silicon = n4::material("G4_Si");
+
+  silicon -> SetMaterialPropertiesTable(silicon_mpt());
   return silicon;
+}
+
+G4OpticalSurface* silicon_surface() {
+  auto surface = new G4OpticalSurface("silicon_surface", unified, polished, dielectric_metal);
+  surface -> SetMaterialPropertiesTable(silicon_mpt());
+  return surface;
 }
