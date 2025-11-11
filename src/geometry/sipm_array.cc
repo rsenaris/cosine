@@ -1,4 +1,5 @@
 #include "geometry/sipm_array.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "materials/ptfe.hh"
 #include "materials/silicon.hh"
 #include "sensitive/sipm.hh"
@@ -15,8 +16,8 @@ G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4dou
   auto start        = -(n_sipm_side / 2) * pitch;
   start            += odd ? 0 : 0.5*pitch;
 
-  auto silicon = si_with_properties();
-  auto ptfe    = ptfe_with_properties();
+  auto silicon = silicon_with_properties();
+  auto ptfe    =    ptfe_with_properties();
 
   auto blue  = n4::vis_attributes().visible(true).color(G4Color::Blue());
   auto brown = n4::vis_attributes().visible(true).color(G4Color::Brown());
@@ -27,6 +28,8 @@ G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4dou
     .vis(brown)
     .volume(ptfe);
 
+  new G4LogicalSkinSurface("support_surface", support, ptfe_surface());
+
   auto sens = sensitive_sipm();
   auto sipm = n4::box("sipm")
     .xy(sipm_size)
@@ -34,6 +37,8 @@ G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4dou
     .vis(blue)
     .sensitive(sens.release())
     .volume(silicon);
+
+  new G4LogicalSkinSurface("sipm_surface", sipm, silicon_surface());
 
   auto z = sipm_thick / 2;
   auto n = 0;
