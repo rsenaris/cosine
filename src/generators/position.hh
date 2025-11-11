@@ -28,8 +28,9 @@ private:
 struct union_random_position : public random_position {
   typedef std::vector<std::unique_ptr<random_position>> GenVec;
 
-  union_random_position(GenVec&& gens, std::vector<f32> weights);
-  union_random_position(std::unique_ptr<random_position>&&, std::unique_ptr<random_position>&&, f32 w1, f32 w2);
+   union_random_position(GenVec&& gens, std::vector<f32> weights);
+   union_random_position(std::unique_ptr<random_position>&&, std::unique_ptr<random_position>&&, f32 w1, f32 w2);
+  ~union_random_position() override {};
 
   G4ThreeVector generate() const override;
 
