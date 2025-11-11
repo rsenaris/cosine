@@ -41,14 +41,14 @@ private:
 
 struct conical_volume_generator : public random_position {
   conical_volume_generator(f64 length, f64 r1, f64 r2)
-      : hlength_(length/2), r1_(r1), r2_(r2), r1_2(r1*r1), r2_2(r2*r2) {}
+      : hlength_(length/2), r1_(r1), r2_(r2) {}
 
   ~conical_volume_generator() override {}
   G4ThreeVector generate() const override;
 
 private:
   f64 hlength_;
-  f64 r1_, r2_, r1_2, r2_2;
+  f64 r1_, r2_;
 };
 
 struct cylindrical_volume_generator : public random_position {

@@ -45,20 +45,16 @@ G4ThreeVector union_random_position::generate() const {
 }
 
 G4ThreeVector conical_volume_generator::generate() const {
-  auto r = std::sqrt(n4::random::uniform(r1_2, r2_2));
-  auto z = n4::random::uniform(-hlength_, hlength_);
-  if (r > r1_) {
-    auto slope_cone = (r2_ - r1_) / 2 / hlength_;
-    auto slope_pos  = (r   - r1_) / (z + hlength_);
-    if (slope_pos > slope_cone) {
-      z = -z;
-      r = r2_ - (r - r1_);
-    }
-  }
+  static auto gen_z = n4::random::piecewise_linear_distribution({0, 2*hlength_}, {r1_*r1_, r2_*r2_});
+  static auto slope = (r2_ - r1_) / 2 / hlength_;
+
+  auto z = gen_z.sample();
+  auto u = r1_ + slope * z;
+  auto r = std::sqrt(n4::random::uniform(0, u*u));
   auto p = n4::random::uniform(0, CLHEP::twopi);
   auto x = r * std::cos(p);
   auto y = r * std::sin(p);
-  return {x, y, z};
+  return {x, y, z - hlength_};
 }
 
 G4ThreeVector cylindrical_volume_generator::generate() const {
