@@ -49,6 +49,14 @@ void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
   sens_writer_ -> write(std::move(hits));
 }
 
+void HDF5Writer::write_interaction(Interaction&& intrs) {
+  if (!interaction_writer_) {
+    auto dataset = create_dataset("MC", "interactions", create_interaction(), LARGE_CHUNK_SIZE);
+    interaction_writer_ = std::make_unique<BufferedWriter<Interaction>>(std::move(dataset), LARGE_CHUNK_SIZE);
+  }
+  interaction_writer_->write(std::move(intrs));
+}
+
 DataSet HDF5Writer::create_dataset( std::string  const& group_name
                                   , std::string  const&  node_name
                                   , CompoundType const& type
