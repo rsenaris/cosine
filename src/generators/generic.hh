@@ -4,9 +4,11 @@
 #include "generators/scalar.hh"
 #include "types.hh"
 
+#include <G4Event.hh>
 #include <G4PrimaryVertex.hh>
 #include <G4ParticleDefinition.hh>
 #include <G4ThreeVector.hh>
+#include <G4VUserPrimaryGeneratorAction.hh>
 
 #include <n4-random.hh>
 
@@ -16,20 +18,30 @@
 
 #define random_direction n4::random::direction
 
-struct GenericGenerator {
-  GenericGenerator(const G4String &particle_name, u16 nparticles);
-
-  GenericGenerator& fix_pos(const G4ThreeVector& vec) { pos_ = vec; return *this;}
-  GenericGenerator& fix_dir(const G4ThreeVector& vec) { dir_ = vec; return *this;}
-  GenericGenerator& fix_pol(const G4ThreeVector& vec) { pol_ = vec; return *this;}
-  GenericGenerator& fix_ene(G4double             val) { ene_ = val; return *this;}
-
-  GenericGenerator& pos(std::unique_ptr<random_position> && gen) { pos_ = std::move(gen); return *this;}
-  GenericGenerator& dir(std::unique_ptr<random_direction>&& gen) { dir_ = std::move(gen); return *this;}
-  GenericGenerator& pol(std::unique_ptr<random_direction>&& gen) { pol_ = std::move(gen); return *this;}
-  GenericGenerator& ene(std::unique_ptr<random_scalar>   && gen) { ene_ = std::move(gen); return *this;}
+struct generic_generator : G4VUserPrimaryGeneratorAction {
+   generic_generator(const G4String &particle_name, u16 nparticles);
+  ~generic_generator() = default;
 
   G4PrimaryVertex* generate_vertex() const;
+
+  // move-only
+  generic_generator(const generic_generator&) = delete;
+  generic_generator& operator=(const generic_generator&) = delete;
+  generic_generator(generic_generator&&) noexcept = default;
+  generic_generator &operator=(generic_generator &&) noexcept = default;
+
+  void GeneratePrimaries(G4Event *event) override { event -> AddPrimaryVertex(generate_vertex()); }
+
+  generic_generator&& fix_pos(const G4ThreeVector& vec) { pos_ = vec; return std::move(*this);}
+  generic_generator&& fix_dir(const G4ThreeVector& vec) { dir_ = vec; return std::move(*this);}
+  generic_generator&& fix_pol(const G4ThreeVector& vec) { pol_ = vec; return std::move(*this);}
+  generic_generator&& fix_ene(G4double             val) { ene_ = val; return std::move(*this);}
+
+  generic_generator&& pos(std::unique_ptr<random_position> && gen) { pos_ = std::move(gen); return std::move(*this);}
+  generic_generator&& dir(std::unique_ptr<random_direction>&& gen) { dir_ = std::move(gen); return std::move(*this);}
+  generic_generator&& pol(std::unique_ptr<random_direction>&& gen) { pol_ = std::move(gen); return std::move(*this);}
+  generic_generator&& ene(std::unique_ptr<random_scalar>   && gen) { ene_ = std::move(gen); return std::move(*this);}
+
 
 private:
   #define GET(VAR, T1, T2) VAR.index() == 0 ? std::get<T1>(VAR) : std::get<std::unique_ptr<T2>>(VAR) -> get()

@@ -2,14 +2,14 @@
 
 #include <n4-inspect.hh>
 
-GenericGenerator::GenericGenerator(const G4String& particle_name, u16 nparticles)
+generic_generator::generic_generator(const G4String& particle_name, u16 nparticles)
   : particle_(n4::find_particle(particle_name))
   , nparticles_(nparticles)
 {
 }
 
 
-G4PrimaryVertex* GenericGenerator::generate_vertex() const {
+G4PrimaryVertex* generic_generator::generate_vertex() const {
   auto vertex = new G4PrimaryVertex(generate_position(), 0.);
 
   for (auto i=0; i<nparticles_; i++) {
