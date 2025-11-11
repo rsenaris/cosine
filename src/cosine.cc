@@ -28,7 +28,7 @@ n4::actions *create_actions(u16 nphot) {
     -> pos(std::move(pos))
     -> dir(std::make_unique<n4::random::direction>())
     -> pol(std::make_unique<n4::random::direction>())
-    -> fix_ene(7.81 * eV);
+    -> fix_ene(7.21 * eV);
 
   return  (  new n4::        actions{ gen })
     -> set( (new n4::   event_action{}) -> begin(join(count_event(), store_primaries())) -> end(store_event()))
