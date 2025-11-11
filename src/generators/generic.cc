@@ -16,8 +16,9 @@ G4PrimaryVertex* generic_generator::generate_vertex() const {
     auto dir = generate_direction();
     auto pol = generate_polarization();
     auto ene = generate_energy();
-    auto particle = new G4PrimaryParticle(particle_, dir.x(), dir.y(), dir.z(), ene);
 
+    auto particle = new G4PrimaryParticle(particle_, dir.x(), dir.y(), dir.z());
+    particle -> SetKineticEnergy(ene);
     particle -> SetPolarization(pol);
     vertex   -> SetPrimary(particle);
   }
