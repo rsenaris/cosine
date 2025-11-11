@@ -32,15 +32,15 @@ struct generic_generator : G4VUserPrimaryGeneratorAction {
 
   void GeneratePrimaries(G4Event *event) override { event -> AddPrimaryVertex(generate_vertex()); }
 
-  generic_generator&& fix_pos(const G4ThreeVector& vec) { pos_ = vec; return std::move(*this);}
-  generic_generator&& fix_dir(const G4ThreeVector& vec) { dir_ = vec; return std::move(*this);}
-  generic_generator&& fix_pol(const G4ThreeVector& vec) { pol_ = vec; return std::move(*this);}
-  generic_generator&& fix_ene(G4double             val) { ene_ = val; return std::move(*this);}
+  generic_generator* fix_pos(const G4ThreeVector& vec) { pos_ = vec; return this;}
+  generic_generator* fix_dir(const G4ThreeVector& vec) { dir_ = vec; return this;}
+  generic_generator* fix_pol(const G4ThreeVector& vec) { pol_ = vec; return this;}
+  generic_generator* fix_ene(G4double             val) { ene_ = val; return this;}
 
-  generic_generator&& pos(std::unique_ptr<random_position> && gen) { pos_ = std::move(gen); return std::move(*this);}
-  generic_generator&& dir(std::unique_ptr<random_direction>&& gen) { dir_ = std::move(gen); return std::move(*this);}
-  generic_generator&& pol(std::unique_ptr<random_direction>&& gen) { pol_ = std::move(gen); return std::move(*this);}
-  generic_generator&& ene(std::unique_ptr<random_scalar>   && gen) { ene_ = std::move(gen); return std::move(*this);}
+  generic_generator* pos(std::unique_ptr<random_position> && gen) { pos_ = std::move(gen); return this;}
+  generic_generator* dir(std::unique_ptr<random_direction>&& gen) { dir_ = std::move(gen); return this;}
+  generic_generator* pol(std::unique_ptr<random_direction>&& gen) { pol_ = std::move(gen); return this;}
+  generic_generator* ene(std::unique_ptr<random_scalar>   && gen) { ene_ = std::move(gen); return this;}
 
 
 private:
