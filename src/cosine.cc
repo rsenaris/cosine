@@ -1,24 +1,29 @@
-#include <CLHEP/Units/SystemOfUnits.h>
+#include <G4SystemOfUnits.hh>
 #include <G4GenericMessenger.hh>
 #include <G4SystemOfUnits.hh>   // physical units such as `m` for metre
 #include <G4Event.hh>           // needed to inject primary particles into an event
 #include <FTFP_BERT.hh>         // our choice of physics list
 
-#include <n4-all.hh>
-
-#include <cstdlib>
-
-#include "G4ThreeVector.hh"
 #include "actions/event.hh"
-#include "generators/geantinos.hh"
 #include "actions/store_volume_crossing.hh"
+#include "generators/generic.hh"
+#include "generators/position.hh"
 #include "geometry/pcolina.hh"
-#include "persistency/hdf5_writer.hh"
 #include "persistency/manager.hh"
 
-n4::actions *create_actions() {
-  auto pos = G4ThreeVector{0, 0, 5*mm};
-  return  (  new n4::        actions{geantinos(pos)} )
+#include <n4-all.hh>
+#include <n4-random.hh>
+
+#include <cstdlib>
+#include <memory>
+
+n4::actions *create_actions(u16 nphot) {
+  auto pos = std::make_unique<conical_volume_generator>(12 * cm, 32 * mm, 152 * mm);
+  pos -> offset_z(6*cm);
+
+  auto gen = new generic_generator("opticalphoton", nphot);
+
+  return  (  new n4::        actions{ gen })
     -> set( (new n4::   event_action{}) -> begin(count_event()) -> end(store_event()))
     -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
 }
@@ -41,7 +46,7 @@ int main(int argc, char* argv[]) {
     // Important! physics list has to be set before the generator!
     .physics<FTFP_BERT>(physics_verbosity)
     .geometry(pcolina)
-    .actions(create_actions())
+    .actions(create_actions(1))
 
     .apply_cli_late() // CLI --late executed at this point
 
