@@ -34,7 +34,7 @@ using  longstr = char[ LONGSTR];
 ////////////////////////////////////////////////////////////////////////////////
 
 
-struct StepData {
+struct VolumeChange {
   i32      event;
   shortstr particle;
   shortstr  pre_volume;
@@ -53,13 +53,13 @@ struct SensorHit {
   f32 time;
 };
 
-StepData make_step_data( const i32&
-                       , const G4String&
-                       , const G4String&
-                       , const G4String&
-                       , const G4ThreeVector&
-                       , const G4ThreeVector&);
+VolumeChange make_volume_change(       i32
+                               , const G4String&
+                               , const G4String&
+                               , const G4String&
+                               , const G4ThreeVector&
+                               , const G4ThreeVector&);
 
-SensorHit make_sensor_hit( const u32&
-                         , const u16&
-                         , const f32&);
+SensorHit make_sensor_hit( u32
+                         , u16
+                         , f32);

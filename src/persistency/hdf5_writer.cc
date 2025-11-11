@@ -19,25 +19,25 @@ using namespace HighFive;
 
 
 HDF5Writer::HDF5Writer(const std::string& filename, G4int start_event)
-    : step_writer_(nullptr)
-    , sens_writer_(nullptr)
-    , file_       (nullptr)
+    : vol_change_writer_(nullptr)
+    , sens_writer_      (nullptr)
+    , file_             (nullptr)
 {
   auto options = File::Overwrite;
   file_ = std::make_unique<File>(filename, options);
 }
 
 HDF5Writer::~HDF5Writer() {
-  step_writer_.reset();
+  vol_change_writer_.reset();
   file_.reset();
 }
 
-void HDF5Writer::write_steps(std::vector<StepData>&& steps) {
-  if (!step_writer_) {
-    auto dataset = create_dataset("MC", "steps", create_step_data(), LARGE_CHUNK_SIZE);
-    step_writer_ = std::make_unique<BufferedWriter<StepData>>(std::move(dataset), LARGE_CHUNK_SIZE);
+void HDF5Writer::write_steps(std::vector<VolumeChange>&& steps) {
+  if (!vol_change_writer_) {
+    auto dataset = create_dataset("MC", "volume_changes", create_volume_change(), LARGE_CHUNK_SIZE);
+    vol_change_writer_ = std::make_unique<BufferedWriter<VolumeChange>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
-  step_writer_ -> write(std::move(steps));
+  vol_change_writer_ -> write(std::move(steps));
 }
 
 void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {

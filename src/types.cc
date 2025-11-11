@@ -7,15 +7,15 @@ void copy_str(char *to, const G4String &from, size_t n) {
   std::strcpy(to, from.c_str());
 }
 
-StepData make_step_data( const i32&           event
-                       , const G4String&      particle_name
-                       , const G4String&       pre_volume_name
-                       , const G4String&      post_volume_name
-                       , const G4ThreeVector&  pre_pos
-                       , const G4ThreeVector& post_pos
-                       )
+VolumeChange make_volume_change(       i32            event
+                               , const G4String&      particle_name
+                               , const G4String&       pre_volume_name
+                               , const G4String&      post_volume_name
+                               , const G4ThreeVector&  pre_pos
+                               , const G4ThreeVector& post_pos
+                               )
 {
-  StepData data;
+  VolumeChange data;
   data.event = event;
   copy_str(data.   particle,    particle_name, SHORTSTR);
   copy_str(data. pre_volume,  pre_volume_name, SHORTSTR);
@@ -29,6 +29,6 @@ StepData make_step_data( const i32&           event
   return data;
 }
 
-SensorHit make_sensor_hit(const u32& event, const u16& sensor_id, const f32& time) {
+SensorHit make_sensor_hit(u32 event, u16 sensor_id, f32 time) {
   return {event, sensor_id, time};
 }

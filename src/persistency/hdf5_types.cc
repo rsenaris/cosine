@@ -15,7 +15,7 @@
 
 
 
-HighFive::CompoundType create_step_data() {
+HighFive::CompoundType create_volume_change() {
   return {
     {      "event", H(i32)     },
     {   "particle", H(shortstr)},
@@ -29,7 +29,7 @@ HighFive::CompoundType create_step_data() {
     {     "post_z", H(f32)     },
   };
 }
-REGISTER_HF_TYPE(StepData, create_step_data)
+REGISTER_HF_TYPE(VolumeChange, create_volume_change)
 
 HighFive::CompoundType create_sensor_hit() {
   return {

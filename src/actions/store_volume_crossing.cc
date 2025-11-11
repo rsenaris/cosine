@@ -5,7 +5,7 @@
 
 #include <cstdio>
 
-std::vector<StepData> step_data_container{};
+std::vector<VolumeChange> VOLUME_CHANGES{};
 
 G4String get_name(const G4StepPoint *p) {
   if  (! p                                 ) return "No pointer";
@@ -33,8 +33,8 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
     auto post_pos = post -> GetPosition();
 
     auto event = n4::event_number();
-    auto step_data = make_step_data(event, part_name, pre_name, post_name, pre_pos, post_pos);
-    step_data_container.push_back(std::move(step_data));
+    auto volume_change = make_volume_change(event, part_name, pre_name, post_name, pre_pos, post_pos);
+    VOLUME_CHANGES.push_back(std::move(volume_change));
 
     // char line[200];
     // sprintf( line

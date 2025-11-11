@@ -49,13 +49,13 @@ public:
   HDF5Writer(const std::string& filename, G4int start_event);
   ~HDF5Writer();
 
-  void write_steps(std::vector<StepData >&& steps);
-  void write_hits (std::vector<SensorHit>&&  hits);
+  void write_steps(std::vector<VolumeChange>&& steps);
+  void write_hits (std::vector<SensorHit>&&     hits);
 
 private:
-  std::unique_ptr<BufferedWriter<StepData >> step_writer_;
-  std::unique_ptr<BufferedWriter<SensorHit>> sens_writer_;
-  std::unique_ptr<HighFive::File>            file_;
+  std::unique_ptr<BufferedWriter<VolumeChange>> vol_change_writer_;
+  std::unique_ptr<BufferedWriter<SensorHit>>    sens_writer_;
+  std::unique_ptr<HighFive::File>               file_;
 
   HighFive::DataSet create_dataset( std::string            const& group_name
                                   , std::string            const&  node_name
