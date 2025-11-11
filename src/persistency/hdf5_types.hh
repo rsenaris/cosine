@@ -12,6 +12,7 @@
 
 DECLARE_HF_TYPE_BUILDER(VolumeChange, create_volume_change)
 DECLARE_HF_TYPE_BUILDER(SensorHit   , create_sensor_hit)
+DECLARE_HF_TYPE_BUILDER(Interaction , create_interaction)
 
 
 #undef DECLARE_HF_TYPE_BUILDER

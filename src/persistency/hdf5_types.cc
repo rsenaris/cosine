@@ -40,5 +40,16 @@ HighFive::CompoundType create_sensor_hit() {
 }
 REGISTER_HF_TYPE(SensorHit, create_sensor_hit)
 
+HighFive::CompoundType create_interaction() {
+  return {
+    { "x", H(f32)},
+    { "y", H(f32)},
+    { "z", H(f32)},
+    { "e", H(f32)},
+    { "n", H(u16)},
+  };
+}
+REGISTER_HF_TYPE(Interaction, create_interaction)
+
 
 #undef REGISTER_HF_TYPE

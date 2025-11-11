@@ -30,7 +30,9 @@ using  longstr = char[ LONGSTR];
 // Remember, these are transient representations. Persistent representations
 // are stored in persistency/hdf5_types. If you need to store any of these types:
 // - generate a struct here
+// - it is usually useful to make a function-ctor here as well (.cc)
 // - generate a HighFive::CompoundType in persistency/hdf5_types
+// - generate a function-ctor for the HighFive::CompountType (in .cc)
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -53,6 +55,11 @@ struct SensorHit {
   f32 time;
 };
 
+struct Interaction {
+  f32 x, y, z, e;
+  u16 n;
+};
+
 VolumeChange make_volume_change(       i32
                                , const G4String&
                                , const G4String&
@@ -63,3 +70,7 @@ VolumeChange make_volume_change(       i32
 SensorHit make_sensor_hit( u32
                          , u16
                          , f32);
+
+Interaction make_interaction( const G4ThreeVector &
+                            , f32
+                            , u16);
