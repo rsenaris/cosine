@@ -22,9 +22,9 @@
 
 #include "utils.hh"
 
-n4::actions *create_actions(u16 nphot) {
-  auto pos = std::make_unique<conical_volume_generator>(12 * cm, 32 * mm, 152 * mm);
-  pos -> offset_z(6*cm);
+n4::actions *create_actions(u16 nphot, const geometry_config& c) {
+  auto pos = std::make_unique<conical_volume_generator>(c.drift_length, c.el_diam, c.cath_diam);
+  pos -> offset_z(c.neck_length + c.drift_length/2);
 
   auto gen = (new generic_generator("opticalphoton", nphot))
     -> pos(std::move(pos))
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
     .geometry([&geoconf](){return pcolina(geoconf);})
-    .actions(create_actions(1))
+    .actions(create_actions(1, geoconf))
 
     .apply_cli_late() // CLI --late executed at this point
 
