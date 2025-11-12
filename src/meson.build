@@ -36,6 +36,7 @@ cosine_lib_include  = include_directories('.')
 cosine_lib_files    = [
  'actions/store_volume_crossing',
  'actions/event',
+ 'config',
  'generators/geantinos',
  'generators/generic',
  'generators/pointlike',
@@ -55,7 +56,7 @@ cosine_lib_files    = [
  'sensitive/sipm',
  'types',
 ]
-cosine_lib_includes = ['common.hh', 'config.hh', 'utils.hh']
+cosine_lib_includes = ['common.hh', 'utils.hh']
 cosine_lib_sources  = []
 foreach f : cosine_lib_files
   cosine_lib_includes += [f + '.hh']

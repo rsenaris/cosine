@@ -41,6 +41,9 @@ struct geometry_config {
   bool  ptfe_on_fp;
   bool ptfe_on_walls;
 
+  const std::vector<f64>& wire_poss() const;
+  const std::vector<f64>& wire_lengths() const;
+
   static geometry_config pcolina();
   static geometry_config colina();
 };
