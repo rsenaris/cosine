@@ -109,11 +109,8 @@ auto pcolina(const geometry_config& c) {
     new G4LogicalSkinSurface("cath_surface", ptfe_walls -> GetLogicalVolume(), ptfe_surface());
   }
 
-  auto wire_array = create_wire_array( c.el_diam
-                                     , c.frame_thick_wires
-                                     , c.wall_thick
-                                     , c.thin_wire_pitch
-                                     , c.thin_wire_diam);
+  auto wire_array = create_wire_array(c);
+
   wire_array -> SetVisAttributes(gray);
   n4::place(wire_array)
     .rot_z(c.thin_wire_rot)
