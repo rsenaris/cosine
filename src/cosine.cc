@@ -7,6 +7,7 @@
 
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
+#include "config.hh"
 #include "generators/generic.hh"
 #include "generators/position.hh"
 #include "generators/scalar.hh"
@@ -50,6 +51,8 @@ int main(int argc, char* argv[]) {
 
   auto physics_list = std::make_unique<G4GenericPhysicsList>(physics_verbosity);
 
+  auto geoconf = geometry_config::colina();
+
   n4::run_manager::create()
     .ui("cosine", argc, argv)
     .macro_path("macs")
@@ -57,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
-    .geometry(pcolina)
+    .geometry([&geoconf](){return pcolina(geoconf);})
     .actions(create_actions(1))
 
     .apply_cli_late() // CLI --late executed at this point
