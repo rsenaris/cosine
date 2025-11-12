@@ -39,7 +39,7 @@ std::unique_ptr<n4::sensitive_detector> sensitive_sipm() {
   };
 
   auto sipm = std::make_unique<n4::sensitive_detector>("SiPM", record_hits);
-  sipm -> end_of_event(reset_hit_store);
+  sipm -> initialize(reset_hit_store);
   n4::fully_activate_sensitive_detector(sipm.get());
   return sipm;
 }
