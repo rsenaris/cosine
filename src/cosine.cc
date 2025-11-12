@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
 
   auto geoconf = geometry_config::colina();
 
+  auto nphot = intpow(10,6);
   n4::run_manager::create()
     .ui("cosine", argc, argv)
     .macro_path("macs")
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
     .geometry([&geoconf](){return pcolina(geoconf);})
-    .actions(create_actions(1, geoconf))
+    .actions(create_actions(nphot, geoconf))
 
     .apply_cli_late() // CLI --late executed at this point
 
