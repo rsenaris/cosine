@@ -1,4 +1,6 @@
 #include "geometry/mesh.hh"
+#include "G4LogicalSkinSurface.hh"
+#include "G4LogicalSurface.hh"
 #include "materials/steel.hh"
 
 #include <CLHEP/Units/SystemOfUnits.h>
@@ -50,7 +52,10 @@ G4LogicalVolume* create_wire_mesh(G4double diam, G4double pitch, G4double wire_d
   mesh -> Voxelize();
 
   G4SubtractionSolid* fitted_mesh = new G4SubtractionSolid("fitted_mesh", mesh, envelope);
-  return n4::volume(fitted_mesh, steel_with_properties());
+  auto wire_mesh = n4::volume(fitted_mesh, steel_with_properties());
+
+  new G4LogicalSkinSurface("wire_mesh_surface", wire_mesh, steel_surface());
+  return wire_mesh;
 }
 
 G4Polyhedra* hexagon(G4double circumradius, G4double thick) {
@@ -123,6 +128,9 @@ G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4do
       new G4SubtractionSolid("mesh", protomesh, hex, nullptr, pos);
   }
 
-  auto fitted_mesh = new G4UnionSolid("fitted_mesh", frame, mesh);
-  return n4::volume(fitted_mesh, steel_with_properties());
+  auto fitted_mesh  = new G4UnionSolid("fitted_mesh", frame, mesh);
+  auto logical_mesh = n4::volume(fitted_mesh, steel_with_properties());
+
+  new G4LogicalSkinSurface("mesh_surface", logical_mesh, steel_surface());
+  return logical_mesh;
 }

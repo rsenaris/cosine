@@ -1,4 +1,5 @@
 #include "geometry/wire_array.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "materials/steel.hh"
 
 #include <G4LogicalVolume.hh>
@@ -34,5 +35,8 @@ G4LogicalVolume* create_wire_array(G4double frame_diam, G4double frame_thick, G4
 
   mesh -> Voxelize();
 
-  return frame.add(mesh).volume(steel_with_properties());
+  auto wire_array = frame.add(mesh).volume(steel_with_properties());
+
+  new G4LogicalSkinSurface("wires_surface", wire_array, steel_surface());
+  return wire_array;
 }

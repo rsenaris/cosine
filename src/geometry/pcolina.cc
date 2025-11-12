@@ -116,6 +116,8 @@ auto pcolina() {
     .in(liquid)
     .now();
 
+  new G4LogicalSkinSurface("cathode_surface", cathode -> GetLogicalVolume(), steel_surface());
+
   if (ptfe_on_fp) {
     auto ptfe_cathode = n4::tubs("ptfe_cathode")
       .r(cath_r + wall_thick)
