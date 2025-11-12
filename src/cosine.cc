@@ -4,6 +4,8 @@
 #include <G4Event.hh>           // needed to inject primary particles into an event
 #include <FTFP_BERT.hh>         // our choice of physics list
 #include <G4GenericPhysicsList.hh>         // our choice of physics list
+#include <G4Exception.hh>
+#include <G4ExceptionSeverity.hh>
 
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
@@ -22,9 +24,21 @@
 
 #include "utils.hh"
 
-n4::actions *create_actions(u16 nphot, const geometry_config& c) {
-  auto pos = std::make_unique<conical_volume_generator>(c.drift_length, c.el_diam, c.cath_diam);
-  pos -> offset_z(c.neck_length + c.drift_length/2);
+n4::actions *create_actions(u16 nphot, const sim_config& s, const geometry_config& g) {
+
+  std::unique_ptr<random_position> pos;
+
+  if (s.generator == "s1") {
+    pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_diam, g.cath_diam);
+    pos -> offset_z(g.neck_length + g.drift_length/2);
+  }
+  else if (s.generator == "s2") {
+    pos = std::make_unique<el_generator>(g.wire_poss(), g.wire_lengths(), g.thin_wire_diam/2, 40 * um);
+    pos -> offset_z(-g.mesh_thick -g.d_gate_wire);
+  }
+  else {
+    G4Exception("[create_actions]", "", FatalErrorInArgument, "Unknown generator");
+  }
 
   auto gen = (new generic_generator("opticalphoton", nphot))
     -> pos(std::move(pos))
@@ -52,8 +66,8 @@ int main(int argc, char* argv[]) {
   auto physics_list = std::make_unique<G4GenericPhysicsList>(physics_verbosity);
 
   auto geoconf = geometry_config::colina();
+  auto simconf =      sim_config::s2();
 
-  auto nphot = intpow(10,6);
   n4::run_manager::create()
     .ui("cosine", argc, argv)
     .macro_path("macs")
@@ -62,7 +76,7 @@ int main(int argc, char* argv[]) {
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
     .geometry([&geoconf](){return pcolina(geoconf);})
-    .actions(create_actions(nphot, geoconf))
+    .actions(create_actions(simconf.nparticles, simconf, geoconf))
 
     .apply_cli_late() // CLI --late executed at this point
 
