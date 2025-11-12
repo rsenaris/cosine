@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <memory>
+#include <numeric>
 
 
 struct random_position {
@@ -22,7 +23,7 @@ struct random_position {
   random_position& offset_z(              f64 z){ offset_ = {offset_.x(), offset_.y(),         z  }; return (*this); }
 
 private:
-  G4ThreeVector offset_;
+  G4ThreeVector offset_{};
 };
 
 struct union_random_position : public random_position {
@@ -65,4 +66,13 @@ private:
   f64 r2_at(f64 z) {
     return 0;
   }
+};
+
+struct el_generator : public random_position {
+  el_generator(const std::vector<f64>& pos, const std::vector<f64>& length, f64 wire_r, f64 range);
+  ~el_generator() override {}
+  G4ThreeVector generate() const override { return gen_ -> generate(); }
+
+private:
+  std::unique_ptr<union_random_position> gen_;
 };

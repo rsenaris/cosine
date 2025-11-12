@@ -65,3 +65,21 @@ G4ThreeVector cylindrical_volume_generator::generate() const {
   auto y = r * std::sin(p);
   return {x, y, z};
 }
+
+el_generator::el_generator(const std::vector<f64>& pos, const std::vector<f64>& length, f64 wire_r, f64 range)
+    : gen_(nullptr)
+{
+    std::vector<std::unique_ptr<random_position>> gens;
+    std::vector<f32> probs;
+
+    auto norm = std::accumulate(length.cbegin(), length.cend(), 0);
+    for (auto i = 0; i < pos.size(); i++) {
+      auto gen = std::make_unique<cylindrical_volume_generator>(length[i], wire_r, wire_r + range);
+      gen -> offset_x(pos[i]);
+
+      gens .push_back(std::move(gen));
+      probs.push_back(length[i] / norm);
+    }
+
+    gen_ = std::make_unique<union_random_position>(std::move(gens), probs);
+}
