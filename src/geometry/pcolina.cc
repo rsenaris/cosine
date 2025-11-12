@@ -13,13 +13,14 @@
 
 #include <n4-geometry.hh>
 #include <n4-place.hh>
+#include <n4-shape.hh>
 #include <n4-volume.hh>
 #include <n4-vis-attributes.hh>
 
 auto pcolina() {
-  auto el_diam               = 32 * mm;
+  auto el_diam               = 64   * mm;
   auto el_r                  = el_diam / 2.0;
-  auto drift_length          = 120 * mm;
+  auto drift_length          = 240  * mm;
   auto form_factor           = 1.0; // ratio between drift length and cathode radius
   auto cath_diam             = 2 * form_factor * drift_length + el_diam;
   auto cath_r                = cath_diam / 2.0;
@@ -27,21 +28,31 @@ auto pcolina() {
   auto d_gate_wire           = 5    * mm;
   auto d_wire_shield         = 5    * mm;
   auto d_shield_sipms        = 3    * mm;
-  auto mesh_hex_pitch        = 3    * mm;
-  auto mesh_thick            = 0.1  * mm;
-  auto mesh_hex_inradius     = 2.5  * mm;
+  auto mesh_hex_pitch        = 10.2 * mm;
+  auto mesh_thick            = 0.2  * mm;
+  auto mesh_hex_inradius     = 10.0 * mm;
   auto thin_wire_pitch       = 5    * mm;
-  auto thin_wire_diam        = 0.01 * mm; // Use 0.1 * mm for visualization
+  auto thin_wire_diam        = 10   * um; // Use 0.1 * mm for visualization
   auto thin_wire_rot         = 45   * deg;
   auto sipm_size             = 6    * mm;
   auto sipm_thick            = 1    * mm;
   auto sipm_gap              = 0.5  * mm;
-  auto n_sipm_side           = 5;
+  auto n_sipm_side           = 10;        // array of NxN
   auto cath_thick            = 3 * sipm_thick;
   auto frame_thick_mesh      = 2 * mm;
   auto frame_thick_wires     = 4 * mm;
   auto frame_width           = wall_thick;
-  auto neck_length           = d_gate_wire + d_wire_shield + frame_thick_wires/2 + d_shield_sipms;
+  auto      neck_length      = 10 * mm;
+  auto full_neck_length      = neck_length
+                             + mesh_thick // gate thickness
+                             + d_gate_wire   - frame_thick_wires/2
+                             + d_wire_shield - frame_thick_wires/2
+                             + mesh_thick // shield thickness
+                             + d_shield_sipms;
+  auto fc_rings              = 8;
+  auto fc_ring_pitch         = 30 * mm;
+  auto fc_ring_width         =  5 * mm;
+  auto fc_ring_thick         =  2 * mm;
 
   auto sipms_on_fp    = false;
   auto  ptfe_on_fp    = true;
@@ -69,7 +80,7 @@ auto pcolina() {
     .vis(frame)
     .volume(air);
 
-  auto liquid_length = (drift_length + neck_length) * 2.1;
+  auto liquid_length = (drift_length + full_neck_length) * 2.1;
   auto liquid = n4::box("liquid")
     .cube(1.1 * cath_diam)
     .z(liquid_length)
@@ -77,6 +88,42 @@ auto pcolina() {
     .place(lxe)
     .in(world)
     .now();
+
+  auto neck = n4::tubs("neck")
+    .r_inner(el_r)
+    .r_delta(wall_thick)
+    .z(neck_length)
+    .vis(white)
+    .place(ptfe)
+    .in(liquid)
+    .at_z(neck_length/2)
+    .now();
+
+  new G4LogicalSkinSurface("neck_surface", neck -> GetLogicalVolume(), ptfe_surface());
+
+
+  // Field cage rings
+  for (auto i=0; i<fc_rings; i++) {
+    char name[20];
+    auto z  = fc_ring_pitch*i + fc_ring_width/2;
+    auto r1 = el_r + form_factor * (z - fc_ring_width/2);
+    auto r2 = el_r + form_factor * (z + fc_ring_width/2);
+    std::sprintf(name, "field_cage_ring_%d", i);
+    auto ring = n4::cons(name)
+      .r1_inner(r1)
+      .r2_inner(r2)
+      .r_delta(fc_ring_thick)
+      .z(fc_ring_width)
+      .vis(gray)
+      .place(steel)
+      .in(liquid)
+      .at_z(neck_length + z)
+      .now();
+
+    char name2[30];
+    std::sprintf(name2, "%s_surface", name);
+    new G4LogicalSkinSurface(name2, ring -> GetLogicalVolume(), steel_surface());
+  }
 
   if (ptfe_on_walls) {
     auto ptfe_walls = n4::cons("ptfe_walls")
@@ -87,25 +134,37 @@ auto pcolina() {
       .vis(wireframe)
       .place(ptfe)
       .in(liquid)
-      .at_z(frame_thick_mesh/2 + drift_length/2)
+      .at_z(neck_length + drift_length/2)
       .now();
 
     new G4LogicalSkinSurface("cath_surface", ptfe_walls -> GetLogicalVolume(), ptfe_surface());
   }
 
-  auto wire_array = create_wire_array(el_diam, frame_thick_wires, wall_thick,
-                                      thin_wire_pitch, thin_wire_diam);
+  auto wire_array = create_wire_array( el_diam
+                                     , frame_thick_wires
+                                     , wall_thick
+                                     , thin_wire_pitch
+                                     , thin_wire_diam);
   wire_array -> SetVisAttributes(gray);
-  n4::place(wire_array).rot_z(thin_wire_rot).at_z(-d_gate_wire).in(liquid).now();
+  n4::place(wire_array)
+    .rot_z(thin_wire_rot)
+    .at_z(-mesh_thick - d_gate_wire)
+    .in(liquid)
+    .now();
 
-  auto mesh_el = create_hex_mesh(el_diam, frame_thick_mesh, frame_width, mesh_hex_pitch, mesh_thick, mesh_hex_inradius);
+  auto mesh_el = create_hex_mesh( el_diam
+                                , frame_thick_mesh
+                                , frame_width
+                                , mesh_hex_pitch
+                                , mesh_thick
+                                , mesh_hex_inradius);
   mesh_el -> SetVisAttributes(invisible);
-//  mesh_el -> SetVisAttributes(green);
+  // mesh_el -> SetVisAttributes(green);
 
-  n4::place(mesh_el).name("gate")                                     .in(liquid).now();
-  n4::place(mesh_el).name("shield").at_z(-neck_length +d_shield_sipms).in(liquid).now();
+  n4::place(mesh_el).name("gate"  ).at_z(-mesh_thick/2                                        ).in(liquid).now();
+  n4::place(mesh_el).name("shield").at_z(-mesh_thick -d_gate_wire -d_wire_shield -mesh_thick/2).in(liquid).now();
 
-  auto z_cathode = frame_thick_mesh/2 + drift_length + cath_thick / 2;
+  auto z_cathode = neck_length + drift_length + cath_thick/2;
   z_cathode += ptfe_on_fp ? wall_thick : 0;
   auto cathode = n4::tubs("cathode")
     .r(cath_r + wall_thick)
@@ -124,7 +183,7 @@ auto pcolina() {
       .z(wall_thick)
       .vis(white)
       .place(ptfe)
-      .at_z(z_cathode - cath_thick / 2 - wall_thick / 2)
+      .at_z(z_cathode -cath_thick/2 -wall_thick/2)
       .in(liquid)
       .now();
 
@@ -133,7 +192,7 @@ auto pcolina() {
 
   auto sipm_array = build_sipm_array(sipm_size, sipm_thick, sipm_gap, n_sipm_side);
   n4::place(sipm_array)
-    .at_z(-neck_length -sipm_thick)
+    .at_z(-full_neck_length -sipm_thick)
     .in(liquid)
     .copy_no(0)
     .name("near_plane")
