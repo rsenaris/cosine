@@ -1,9 +1,28 @@
 #pragma once
 
 #include "types.hh"
+#include "utils.hh"
 
 #include <G4SystemOfUnits.hh>
 
+#include <string>
+
+
+struct sim_config {
+  std::string generator;
+  u32 nparticles;
+
+  static sim_config s1();
+  static sim_config s2();
+};
+
+inline sim_config sim_config::s1() {
+  return {.generator="s1", .nparticles=intpow((u32) 10, 7)};
+}
+
+inline sim_config sim_config::s2() {
+  return {.generator="s2", .nparticles=intpow((u32) 10, 6)};
+}
 
 struct geometry_config {
   f64 el_diam;
