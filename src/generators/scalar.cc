@@ -2,12 +2,15 @@
 #include "materials/LXe.hh"
 #include "types.hh"
 
+#include <G4Exception.hh>
+#include <G4ExceptionSeverity.hh>
 #include <G4SystemOfUnits.hh>
 
 #include <n4-constants.hh>
 #include <n4-random.hh>
 #include <n4-sequences.hh>
 
+#include <cstdlib>
 #include <cassert>
 #include <numeric>
 
@@ -27,7 +30,7 @@ lxe_scintillation::lxe_scintillation()
   for (auto i=1; i<pdf.size(); i++)
     cdf_.push_back(cdf_[i-1] + pdf[i] / pdfsum);
 
-  half_bin_size = (energy_[1] - energy_[0]) / 2;
+  half_bin_size = std::abs(energy_[1] - energy_[0]) / 2;
 }
 
 f64 lxe_scintillation::generate() const {
@@ -38,5 +41,6 @@ f64 lxe_scintillation::generate() const {
       return energy_[i] + n4::random::uniform(-half_bin_size, half_bin_size);
 
   /// unreachable!
+  G4Exception("[lxe_scintillation::generate]", "", FatalException, "UNREACHABLE");
   return -1;
 }
