@@ -15,6 +15,7 @@
 #include "generators/position.hh"
 #include "generators/scalar.hh"
 #include "geometry/pcolina.hh"
+#include "messenger.hh"
 #include "persistency/manager.hh"
 
 #include <n4-all.hh>
@@ -55,21 +56,13 @@ n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_confi
 }
 
 int main(int argc, char* argv[]) {
-  G4int physics_verbosity = 0;
-
-  // The trailing slash after '/my_geometry' is CRUCIAL: without it, the
-  // messenger violates the principle of least surprise.
-  auto messenger = new G4GenericMessenger{nullptr, "/my/", "docs: bla bla bla"};
-  messenger -> DeclareProperty        ("physics_verbosity" ,        physics_verbosity );
-
   PersistencyManager::Initialize("output_file.h5", 0);
 
-  auto physics_list = std::make_unique<G4GenericPhysicsList>(physics_verbosity);
+  auto physics_list = std::make_unique<G4GenericPhysicsList>(0);
 
   auto geoconf = geometry_config::colina();
   auto simconf =      sim_config::s2();
-
-  G4Random::setTheSeed(simconf.seed);
+  auto msg     = messenger(simconf, geoconf);
 
   n4::run_manager::create()
     .ui("cosine", argc, argv)
