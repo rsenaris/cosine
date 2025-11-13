@@ -11,7 +11,10 @@ messenger::messenger(sim_config& s, geometry_config& g)
 {
   msg_ = std::make_unique<G4GenericMessenger>(this, "/sim/", "Simulation parameters");
 
+  // This one is better implemented as a method because there is no nice way of
+  // inserting it in the flow
   msg_ -> DeclareMethod  ("seed", &messenger::set_seed, "Set the random seed");
+
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
   SET(nparticles);
   SET(store_steps);
