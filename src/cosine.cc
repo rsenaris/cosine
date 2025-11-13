@@ -6,6 +6,7 @@
 #include <G4GenericPhysicsList.hh>         // our choice of physics list
 #include <G4Exception.hh>
 #include <G4ExceptionSeverity.hh>
+#include <Randomize.hh>
 
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
@@ -67,6 +68,8 @@ int main(int argc, char* argv[]) {
 
   auto geoconf = geometry_config::colina();
   auto simconf =      sim_config::s2();
+
+  G4Random::setTheSeed(simconf.seed);
 
   n4::run_manager::create()
     .ui("cosine", argc, argv)
