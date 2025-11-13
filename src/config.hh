@@ -14,6 +14,10 @@ struct sim_config {
   u32 nparticles;
   u64 seed = 1234567890;
 
+  bool store_steps        = false;
+  bool store_sens         = true;
+  bool store_interactions = true;
+
   static sim_config s1();
   static sim_config s2();
 };

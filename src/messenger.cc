@@ -12,7 +12,10 @@ messenger::messenger(sim_config& s, geometry_config& g)
   msg_ = std::make_unique<G4GenericMessenger>(this, "/sim/", "Simulation parameters");
 
   msg_ -> DeclareMethod  ("seed", &messenger::set_seed, "Set the random seed");
-  msg_ -> DeclareProperty("nparticles", s_.nparticles);
+  msg_ -> DeclareProperty("nparticles"        , s_.nparticles);
+  msg_ -> DeclareProperty("store_steps"       , s_.store_steps);
+  msg_ -> DeclareProperty("store_sens"        , s_.store_sens);
+  msg_ -> DeclareProperty("store_interactions", s_.store_interactions);
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, g_.VAR)
 #define SETU(VAR, UNIT) msg_-> DeclarePropertyWithUnit(#VAR, #UNIT, g_.VAR)
