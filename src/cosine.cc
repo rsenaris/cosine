@@ -26,7 +26,7 @@
 
 #include "utils.hh"
 
-n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_config& g) {
+n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_config& g) {
 
   std::unique_ptr<random_position> pos;
 
@@ -50,9 +50,17 @@ n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_confi
     -> fix_ene(7.21 * eV)
     ;
 
-  return  (  new n4::        actions{ gen })
-    -> set( (new n4::   event_action{}) -> begin(join(count_event(), store_primaries())) -> end(store_event()))
-    -> set(  new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
+  auto begin_event = count_event();
+  if (s.store_interactions) begin_event = join(begin_event, store_primaries());
+
+  auto actions = (new n4::actions{gen})
+    ->set((new n4::event_action{})
+          ->begin(begin_event)
+          ->end(store_event(s)));
+
+  if (s.store_steps)
+    actions = actions->set(new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
+  return actions;
 }
 
 int main(int argc, char* argv[]) {

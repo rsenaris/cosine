@@ -1,5 +1,6 @@
 #pragma once
 
+#include "config.hh"
 #include "types.hh"
 
 #include <G4Event.hh>
@@ -27,4 +28,4 @@ private:
 
 std::function<void(const G4Event*)> count_event();
 std::function<void(const G4Event*)> store_primaries();
-std::function<void(const G4Event*)> store_event();
+std::function<void(const G4Event*)> store_event(const sim_config& s);
