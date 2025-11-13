@@ -50,6 +50,7 @@ cosine_lib_files    = [
  'geometry/mesh',
  'geometry/sipm_array',
  'geometry/wire_array',
+ 'messenger',
  'persistency/hdf5_types',
  'persistency/hdf5_writer',
  'persistency/manager',
