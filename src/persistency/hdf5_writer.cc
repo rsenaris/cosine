@@ -22,10 +22,8 @@ HDF5Writer::HDF5Writer(const std::string& filename, G4int start_event)
     : vol_change_writer_(nullptr)
     , sens_writer_      (nullptr)
     , file_             (nullptr)
-{
-  auto options = File::Overwrite;
-  file_ = std::make_unique<File>(filename, options);
-}
+    , filename_         (filename)
+{}
 
 HDF5Writer::~HDF5Writer() {
   vol_change_writer_.reset();
@@ -61,6 +59,8 @@ DataSet HDF5Writer::create_dataset( std::string  const& group_name
                                   , std::string  const&  node_name
                                   , CompoundType const& type
                                   , hsize_t             chunk_size) {
+  if (!file_) open_file();
+
   auto group =
     file_ -> exist      (group_name) ?
     file_ -> getGroup   (group_name) :
@@ -78,4 +78,9 @@ DataSet HDF5Writer::create_dataset( std::string  const& group_name
 //  ds_props.add(HighFive::Deflate(4));
   auto dataset = group.createDataSet(node_name, extensible_ds, type, ds_props);
   return dataset;
+}
+
+void HDF5Writer::open_file() {
+  auto options = File::Overwrite;
+  file_ = std::make_unique<File>(filename_, options);
 }

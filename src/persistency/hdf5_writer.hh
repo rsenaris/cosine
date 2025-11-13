@@ -63,9 +63,12 @@ private:
   std::unique_ptr<BufferedWriter<SensorHit>>           sens_writer_;
   std::unique_ptr<BufferedWriter<Interaction>>  interaction_writer_;
   std::unique_ptr<HighFive::File>               file_;
+  std::string                                   filename_;
 
   HighFive::DataSet create_dataset( std::string            const& group_name
                                   , std::string            const&  node_name
                                   , HighFive::CompoundType const& type
                                   , hsize_t                       chunk_size);
+
+  void open_file();
 };
