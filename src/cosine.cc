@@ -31,7 +31,7 @@ n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_confi
   std::unique_ptr<random_position> pos;
 
   if (s.generator == "s1") {
-    pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_diam, g.cath_diam);
+    pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_diam, g.cath_diam());
     pos -> offset_z(g.neck_length + g.drift_length/2);
   }
   else if (s.generator == "s2") {

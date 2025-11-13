@@ -44,14 +44,14 @@ auto pcolina(const geometry_config& c) {
   //n4::place::check_overlaps_switch_on();
 
   auto world = n4::box("world")
-    .cube(1.2 * c.cath_diam)
+    .cube(1.2 * c.cath_diam())
     .z(2.5 * c.drift_length)
     .vis(frame)
     .volume(air);
 
   auto liquid_length = (c.drift_length + full_neck_length) * 2.1;
   auto liquid = n4::box("liquid")
-    .cube(1.1 * c.cath_diam)
+    .cube(1.1 * c.cath_diam())
     .z(liquid_length)
     .vis(red)
     .place(lxe)
@@ -59,7 +59,7 @@ auto pcolina(const geometry_config& c) {
     .now();
 
   auto neck = n4::tubs("neck")
-    .r_inner(c.el_r)
+    .r_inner(c.el_r())
     .r_delta(c.wall_thick)
     .z(c.neck_length)
     .vis(white)
@@ -74,9 +74,9 @@ auto pcolina(const geometry_config& c) {
   // Field cage rings
   for (auto i=0; i<c.fc_rings; i++) {
     char name[20];
-    auto z  = c.fc_ring_pitch*i + c.fc_ring_width/2;
-    auto r1 = c.el_r + c.form_factor * (z - c.fc_ring_width/2);
-    auto r2 = c.el_r + c.form_factor * (z + c.fc_ring_width/2);
+    auto z  = c.fc_ring_zpitch*i + c.fc_ring_width/2;
+    auto r1 = c.el_r() + c.form_factor * (z - c.fc_ring_width/2);
+    auto r2 = c.el_r() + c.form_factor * (z + c.fc_ring_width/2);
     std::sprintf(name, "field_cage_ring_%d", i);
     auto ring = n4::cons(name)
       .r1_inner(r1)
@@ -96,8 +96,8 @@ auto pcolina(const geometry_config& c) {
 
   if (c.ptfe_on_walls) {
     auto ptfe_walls = n4::cons("ptfe_walls")
-      .r1_inner(c.el_r)
-      .r2_inner(c.cath_r)
+      .r1_inner(c.el_r())
+      .r2_inner(c.cath_r())
       .r_delta(c.wall_thick)
       .z(c.drift_length)
       .vis(wireframe)
@@ -133,7 +133,7 @@ auto pcolina(const geometry_config& c) {
   auto z_cathode = c.neck_length + c.drift_length + c.cath_thick/2;
   z_cathode += c.ptfe_on_fp ? c.wall_thick : 0;
   auto cathode = n4::tubs("cathode")
-    .r(c.cath_r + c.wall_thick)
+    .r(c.cath_r() + c.wall_thick)
     .z(c.cath_thick)
     .vis(gray)
     .place(steel)
@@ -145,7 +145,7 @@ auto pcolina(const geometry_config& c) {
 
   if (c.ptfe_on_fp) {
     auto ptfe_cathode = n4::tubs("ptfe_cathode")
-      .r(c.cath_r + c.wall_thick)
+      .r(c.cath_r() + c.wall_thick)
       .z(c.wall_thick)
       .vis(white)
       .place(ptfe)
