@@ -1,0 +1,26 @@
+/sim/form_factor       1.0
+/sim/el_diam            64  mm
+/sim/drift_length      240  mm
+/sim/wall_thick        1.0  mm
+/sim/d_gate_wire       5    mm
+/sim/d_wire_shield     5    mm
+/sim/d_shield_sipms    3    mm
+/sim/mesh_hex_pitch    10.2 mm
+/sim/mesh_thick        0.2  mm
+/sim/mesh_hex_inradius 10.0 mm
+/sim/thin_wire_pitch   5    mm
+/sim/thin_wire_diam    10   um  # Use 0.1 mm for visualization
+/sim/thin_wire_rot     45   deg
+/sim/sipm_size         6    mm
+/sim/sipm_thick        1    mm
+/sim/sipm_gap          0.2  mm
+/sim/n_sipm_side       10       # array of NxN
+/sim/cath_thick        3 mm
+/sim/frame_thick_mesh  2 mm
+/sim/frame_thick_wires 4 mm
+/sim/frame_width       1 mm
+/sim/neck_length       10 mm
+/sim/fc_rings          8
+/sim/fc_ring_zpitch    30 mm
+/sim/fc_ring_width      5 mm
+/sim/fc_ring_thick      2 mm
