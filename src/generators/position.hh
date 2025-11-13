@@ -1,5 +1,6 @@
 #pragma once
 
+#include "config.hh"
 #include "types.hh"
 
 #include <G4ThreeVector.hh>
@@ -69,10 +70,11 @@ private:
 };
 
 struct el_generator : public random_position {
-  el_generator(const std::vector<f64>& pos, const std::vector<f64>& length, f64 wire_r, f64 range);
+   el_generator(const geometry_config& g, f64 range);
   ~el_generator() override {}
-  G4ThreeVector generate() const override { return gen_ -> generate(); }
+  G4ThreeVector generate() const override;
 
 private:
   std::unique_ptr<union_random_position> gen_;
+  f64 wire_rotation_;
 };

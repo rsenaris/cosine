@@ -33,7 +33,7 @@ n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_confi
     pos -> offset_z(g.neck_length + g.drift_length/2);
   }
   else if (s.generator == "s2") {
-    pos = std::make_unique<el_generator>(g.wire_poss(), g.wire_lengths(), g.thin_wire_diam/2, 40 * um);
+    pos = std::make_unique<el_generator>(g, 40 * um);
     pos -> offset_z(-g.mesh_thick -g.d_gate_wire);
   }
   else {

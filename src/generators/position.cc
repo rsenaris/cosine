@@ -1,3 +1,4 @@
+#include "config.hh"
 #include "generators/position.hh"
 
 #include <G4ThreeVector.hh>
@@ -66,11 +67,15 @@ G4ThreeVector cylindrical_volume_generator::generate() const {
   return {x, y, z};
 }
 
-el_generator::el_generator(const std::vector<f64>& pos, const std::vector<f64>& length, f64 wire_r, f64 range)
+el_generator::el_generator(const geometry_config& g, f64 range)
     : gen_(nullptr)
 {
     std::vector<std::unique_ptr<random_position>> gens;
     std::vector<f32> probs;
+
+    const auto& pos = g.wire_poss();
+    const auto& length = g.wire_lengths();
+    auto wire_r = g.thin_wire_diam / 2;
 
     auto norm = std::accumulate(length.cbegin(), length.cend(), 0);
     for (auto i = 0; i < pos.size(); i++) {
@@ -82,4 +87,13 @@ el_generator::el_generator(const std::vector<f64>& pos, const std::vector<f64>& 
     }
 
     gen_ = std::make_unique<union_random_position>(std::move(gens), probs);
+    wire_rotation_ = g.thin_wire_rot;
+}
+
+G4ThreeVector el_generator::generate() const {
+  // wires are laid in the yz plane, need to orient them correctly
+  auto p = gen_->generate();
+  p.rotateZ(CLHEP::halfpi);
+  p.rotateY(wire_rotation_);
+  return p;
 }
