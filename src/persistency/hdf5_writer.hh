@@ -49,9 +49,13 @@ private:
   }
 };
 
+/// Important!!!
+/// The input string must be non-const references in order to allow them to
+/// change from macro or CLI
+
 class HDF5Writer {
 public:
-  HDF5Writer(const std::string& filename, G4int start_event);
+  HDF5Writer(std::string& filename, G4int start_event);
   ~HDF5Writer();
 
   void write_steps      (std::vector<VolumeChange>&& steps);
@@ -63,7 +67,7 @@ private:
   std::unique_ptr<BufferedWriter<SensorHit>>           sens_writer_;
   std::unique_ptr<BufferedWriter<Interaction>>  interaction_writer_;
   std::unique_ptr<HighFive::File>               file_;
-  std::string                                   filename_;
+  std::string&                                  filename_;
 
   HighFive::DataSet create_dataset( std::string            const& group_name
                                   , std::string            const&  node_name

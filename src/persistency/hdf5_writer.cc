@@ -18,7 +18,7 @@
 using namespace HighFive;
 
 
-HDF5Writer::HDF5Writer(const std::string& filename, G4int start_event)
+HDF5Writer::HDF5Writer(std::string& filename, G4int start_event)
     : vol_change_writer_(nullptr)
     , sens_writer_      (nullptr)
     , file_             (nullptr)
