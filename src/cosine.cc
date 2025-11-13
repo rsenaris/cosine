@@ -44,7 +44,8 @@ n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_confi
     -> pos(std::move(pos))
     -> dir(std::make_unique<n4::random::direction>())
     -> pol(std::make_unique<n4::random::direction>())
-    -> ene(std::make_unique<lxe_scintillation>())
+//    -> ene(std::make_unique<lxe_scintillation>())
+    -> fix_ene(7.21 * eV)
     ;
 
   return  (  new n4::        actions{ gen })
