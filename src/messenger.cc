@@ -6,7 +6,7 @@
 
 #include <memory>
 
-messenger::messenger(sim_config &s, geometry_config &g)
+messenger::messenger(sim_config& s, geometry_config& g)
     : s_(s), g_(g), msg_(nullptr)
 {
   msg_ = std::make_unique<G4GenericMessenger>(this, "/sim/", "Simulation parameters");
@@ -14,36 +14,38 @@ messenger::messenger(sim_config &s, geometry_config &g)
   msg_ -> DeclareMethod  ("seed", &messenger::set_seed, "Set the random seed");
   msg_ -> DeclareProperty("nparticles", s_.nparticles);
 
-#define SET(VAR) msg_-> DeclareProperty("VAR", g_.VAR)
-  SET(el_diam);
-  SET(drift_length);
-  SET(form_factor);
-  SET(wall_thick);
-  SET(d_gate_wire);
-  SET(d_wire_shield);
-  SET(d_shield_sipms);
-  SET(mesh_hex_pitch);
-  SET(mesh_thick);
-  SET(mesh_hex_inradius);
-  SET(thin_wire_pitch);
-  SET(thin_wire_diam);
-  SET(thin_wire_rot);
-  SET(sipm_size);
-  SET(sipm_thick);
-  SET(sipm_gap);
-  SET(n_sipm_side);
-  SET(cath_thick);
-  SET(frame_thick_mesh);
-  SET(frame_thick_wires);
-  SET(frame_width);
-  SET(neck_length);
-  SET(fc_rings);
-  SET(fc_ring_zpitch);
-  SET(fc_ring_width);
-  SET(fc_ring_thick);
-  SET(sipms_on_fp);
-  SET( ptfe_on_fp);
-  SET(ptfe_on_walls);
+#define  SET(VAR      ) msg_-> DeclareProperty(#VAR, g_.VAR)
+#define SETU(VAR, UNIT) msg_-> DeclarePropertyWithUnit(#VAR, #UNIT, g_.VAR)
+  SETU(el_diam          ,  mm);
+  SETU(drift_length     ,  mm);
+  SET (form_factor           );
+  SETU(wall_thick       ,  mm);
+  SETU(d_gate_wire      ,  mm);
+  SETU(d_wire_shield    ,  mm);
+  SETU(d_shield_sipms   ,  mm);
+  SETU(mesh_hex_pitch   ,  mm);
+  SETU(mesh_thick       ,  mm);
+  SETU(mesh_hex_inradius,  mm);
+  SETU(thin_wire_pitch  ,  mm);
+  SETU(thin_wire_diam   ,  mm);
+  SETU(thin_wire_rot    , deg);
+  SETU(sipm_size        ,  mm);
+  SETU(sipm_thick       ,  mm);
+  SETU(sipm_gap         ,  mm);
+  SET (n_sipm_side           );
+  SETU(cath_thick       ,  mm);
+  SETU(frame_thick_mesh ,  mm);
+  SETU(frame_thick_wires,  mm);
+  SETU(frame_width      ,  mm);
+  SETU(neck_length      ,  mm);
+  SET (fc_rings              );
+  SETU(fc_ring_zpitch   ,  mm);
+  SETU(fc_ring_width    ,  mm);
+  SETU(fc_ring_thick    ,  mm);
+  SET (sipms_on_fp            );
+  SET ( ptfe_on_fp            );
+  SET (ptfe_on_walls          );
+#undef SETU
 #undef SET
 
   set_seed(s_.seed);
