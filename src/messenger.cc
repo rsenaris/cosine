@@ -16,6 +16,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   msg_ -> DeclareMethod  ("seed", &messenger::set_seed, "Set the random seed");
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
+  SET(outputfile);
   SET(nparticles);
   SET(store_steps);
   SET(store_sens);
