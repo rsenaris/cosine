@@ -9,21 +9,21 @@
 
 
 struct sim_config {
-  std::string outputfile;
+  std::string outputfile = "output_file.h5";
   std::string generator;
   u32 nparticles;
-  u64 seed;
+  u64 seed = 1234567890;
 
   static sim_config s1();
   static sim_config s2();
 };
 
 inline sim_config sim_config::s1() {
-  return {.outputfile="output_file.h5", .generator="s1", .nparticles=intpow<u32>(10, 7), .seed=1234567890};
+  return {.generator="s1", .nparticles=intpow<u32>(10, 7)};
 }
 
 inline sim_config sim_config::s2() {
-  return {.outputfile="output_file.h5", .generator="s2", .nparticles=intpow<u32>(10, 6), .seed=1234567890};
+  return {.generator="s2", .nparticles=intpow<u32>(10, 6)};
 }
 
 struct geometry_config {
