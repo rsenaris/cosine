@@ -57,7 +57,7 @@ struct SensorHit {
 
 struct Interaction {
   f32 x, y, z, e;
-  u16 n;
+  u32 n;
 };
 
 VolumeChange make_volume_change(       i32
@@ -73,4 +73,4 @@ SensorHit make_sensor_hit( u32
 
 Interaction make_interaction( const G4ThreeVector &
                             , f32
-                            , u16);
+                            , u32);

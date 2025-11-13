@@ -19,7 +19,7 @@
 #define random_direction n4::random::direction
 
 struct generic_generator : G4VUserPrimaryGeneratorAction {
-   generic_generator(const G4String &particle_name, u16 nparticles);
+   generic_generator(const G4String &particle_name, u32 nparticles);
   ~generic_generator() = default;
 
   G4PrimaryVertex* generate_vertex() const;
@@ -59,7 +59,7 @@ private:
   #undef GET
 
   G4ParticleDefinition* particle_;
-  u16 nparticles_;
+  u32 nparticles_;
   std::variant<G4ThreeVector, std::unique_ptr<random_position >> pos_;
   std::variant<G4ThreeVector, std::unique_ptr<random_direction>> dir_;
   std::variant<G4ThreeVector, std::unique_ptr<random_direction>> pol_;

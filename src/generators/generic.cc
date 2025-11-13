@@ -2,7 +2,7 @@
 
 #include <n4-inspect.hh>
 
-generic_generator::generic_generator(const G4String& particle_name, u16 nparticles)
+generic_generator::generic_generator(const G4String& particle_name, u32 nparticles)
   : particle_(n4::find_particle(particle_name))
   , nparticles_(nparticles)
 {

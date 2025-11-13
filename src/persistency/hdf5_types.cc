@@ -46,7 +46,7 @@ HighFive::CompoundType create_interaction() {
     { "y", H(f32)},
     { "z", H(f32)},
     { "e", H(f32)},
-    { "n", H(u16)},
+    { "n", H(u32)},
   };
 }
 REGISTER_HF_TYPE(Interaction, create_interaction)
