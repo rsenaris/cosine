@@ -56,13 +56,14 @@ n4::actions *create_actions(u32 nphot, const sim_config& s, const geometry_confi
 }
 
 int main(int argc, char* argv[]) {
-  PersistencyManager::Initialize("output_file.h5", 0);
 
   auto physics_list = std::make_unique<G4GenericPhysicsList>(0);
 
   auto geoconf = geometry_config::colina();
   auto simconf =      sim_config::s2();
   auto msg     = messenger(simconf, geoconf);
+
+  PersistencyManager::Initialize(simconf.outputfile, 0);
 
   n4::run_manager::create()
     .ui("cosine", argc, argv)
@@ -71,12 +72,10 @@ int main(int argc, char* argv[]) {
 
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
-    .geometry([&geoconf](){return pcolina(geoconf);})
+    .geometry([&geoconf]() { return pcolina(geoconf); })
     .actions(create_actions(simconf.nparticles, simconf, geoconf))
 
     .apply_cli_late() // CLI --late executed at this point
 
     .run();
-
-
 }
