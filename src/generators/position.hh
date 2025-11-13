@@ -37,8 +37,8 @@ struct union_random_position : public random_position {
   G4ThreeVector generate() const override;
 
 private:
-  GenVec           gens;
-  std::vector<f32> weights;
+  GenVec           gens_;
+  std::vector<f32> weights_;
 };
 
 struct conical_volume_generator : public random_position {
