@@ -29,7 +29,6 @@ struct geometry_config {
   f64 el_diam;
   f64 drift_length;
   f64 form_factor;
-  f64 cath_diam;
   f64 wall_thick;
   f64 d_gate_wire;
   f64 d_wire_shield;
@@ -50,16 +49,19 @@ struct geometry_config {
   f64 frame_width;
   f64 neck_length;
   u16 fc_rings;
-  f64 fc_ring_pitch;
+  f64 fc_ring_zpitch;
   f64 fc_ring_width;
   f64 fc_ring_thick;
-
-  f64   el_r;
-  f64 cath_r;
 
   bool sipms_on_fp;
   bool  ptfe_on_fp;
   bool ptfe_on_walls;
+
+  f64 cath_diam() const { return 2 * form_factor * drift_length + el_diam; }
+  f64 cath_r   () const { return cath_diam()/2; }
+  f64 el_r     () const { return el_diam/2; }
+
+  void check() const;
 
   const std::vector<f64>& wire_poss() const;
   const std::vector<f64>& wire_lengths() const;
@@ -69,19 +71,11 @@ struct geometry_config {
 };
 
 inline geometry_config geometry_config::colina() {
-  auto form_factor  = 1.0; // ratio between drift length and cathode radius
-  auto drift_length = 240 * mm;
-  auto el_diam      = 64 * mm;
-  auto cath_diam    = 2 * form_factor * drift_length + el_diam;
-  auto sipm_thick   = 1 * mm;
-  auto wall_thick   = 1 * mm;
-
   return {
-  .el_diam               = el_diam,
-  .drift_length          = drift_length,
-  .form_factor           = form_factor,
-  .cath_diam             = cath_diam,
-  .wall_thick            = wall_thick,
+  .el_diam               =  64  * mm,
+  .drift_length          = 240  * mm,
+  .form_factor           = 1.0,
+  .wall_thick            = 1.0  * mm,
   .d_gate_wire           = 5    * mm,
   .d_wire_shield         = 5    * mm,
   .d_shield_sipms        = 3    * mm,
@@ -92,21 +86,18 @@ inline geometry_config geometry_config::colina() {
   .thin_wire_diam        = 10   * um, // Use 0.1 * mm for visualization
   .thin_wire_rot         = 45   * deg,
   .sipm_size             = 6    * mm,
-  .sipm_thick            = sipm_thick,
-  .sipm_gap              = 0.5  * mm,
+  .sipm_thick            = 1    * mm,
+  .sipm_gap              = 0.2  * mm,
   .n_sipm_side           = 10,        // array of NxN
-  .cath_thick            = 3 * sipm_thick,
+  .cath_thick            = 3 * mm,
   .frame_thick_mesh      = 2 * mm,
   .frame_thick_wires     = 4 * mm,
-  .frame_width           = wall_thick,
-  .     neck_length      = 10 * mm,
+  .frame_width           = 1 * mm,
+  .neck_length           = 10 * mm,
   .fc_rings              = 8,
-  .fc_ring_pitch         = 30 * mm,
+  .fc_ring_zpitch        = 30 * mm,
   .fc_ring_width         =  5 * mm,
   .fc_ring_thick         =  2 * mm,
-
-  .el_r   = el_diam / 2.0,
-  .cath_r = cath_diam / 2,
 
   .sipms_on_fp   = false,
   . ptfe_on_fp   = true,
