@@ -62,3 +62,28 @@ run-no-install *ARGS:
 
 clean:
   rm build install -rf
+
+parallelize n_jobs n_evt first pattern seed *ARGS: install
+  #!/usr/bin/env sh
+  njobs=$(({{n_jobs}} - 1))
+  for i in `seq 0 $njobs`; do
+      i=$((i + {{first}}))
+      seed=$(({{seed}} + $i))
+      filename="{{pattern}}_$i.h5"
+      logfile="log/$i.log"
+      start="$((startid + i * {{n_evt}}))"
+      stdbuf -oL                      \
+      ./install/cosine/bin/cosine -e  \
+          "/sim/seed       $seed"     \
+          "/sim/outputfile $filename" \
+          "/sim/start_id   $start"    \
+          -n {{n_evt}}                \
+          "${@:6}" 2>&1 > $logfile &
+      echo "JOB $i has PID $!"
+      if [ $((i % 12)) -eq 11 ]; then
+          echo "Waiting to schedule more jobs ($((njobs-i)) remaining)"
+          wait
+      fi
+  done
+  echo "Waiting for last few jobs to finish"
+  wait
