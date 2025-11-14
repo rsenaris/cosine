@@ -7,7 +7,7 @@ void copy_str(char *to, const G4String &from, size_t n) {
   std::strcpy(to, from.c_str());
 }
 
-VolumeChange make_volume_change(       i32            event
+VolumeChange make_volume_change(       u64            event
                                , const G4String&      particle_name
                                , const G4String&       pre_volume_name
                                , const G4String&      post_volume_name
@@ -29,7 +29,7 @@ VolumeChange make_volume_change(       i32            event
   return data;
 }
 
-SensorHit make_sensor_hit(u32 event, u16 sensor_id, f32 time) {
+SensorHit make_sensor_hit(u64 event, u16 sensor_id, f32 time) {
   return {event, sensor_id, time};
 }
 

@@ -17,7 +17,7 @@
 
 HighFive::CompoundType create_volume_change() {
   return {
-    {      "event", H(i32)     },
+    {      "event", H(u64)     },
     {   "particle", H(shortstr)},
     { "pre_volume", H(shortstr)},
     {"post_volume", H(shortstr)},
@@ -33,7 +33,7 @@ REGISTER_HF_TYPE(VolumeChange, create_volume_change)
 
 HighFive::CompoundType create_sensor_hit() {
   return {
-    {      "event", H(u32)},
+    {      "event", H(u64)},
     {  "sensor_id", H(u16)},
     {       "time", H(f32)},
   };

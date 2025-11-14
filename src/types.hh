@@ -37,7 +37,7 @@ using  longstr = char[ LONGSTR];
 
 
 struct VolumeChange {
-  i32      event;
+  u64      event;
   shortstr particle;
   shortstr  pre_volume;
   shortstr post_volume;
@@ -50,7 +50,7 @@ struct VolumeChange {
 };
 
 struct SensorHit {
-  u32 event;
+  u64 event;
   u16 sensor_id;
   f32 time;
 };
@@ -60,14 +60,14 @@ struct Interaction {
   u32 n;
 };
 
-VolumeChange make_volume_change(       i32
+VolumeChange make_volume_change(       u64
                                , const G4String&
                                , const G4String&
                                , const G4String&
                                , const G4ThreeVector&
                                , const G4ThreeVector&);
 
-SensorHit make_sensor_hit( u32
+SensorHit make_sensor_hit( u64
                          , u16
                          , f32);
 
