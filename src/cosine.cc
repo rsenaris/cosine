@@ -76,8 +76,8 @@ int main(int argc, char* argv[]) {
   n4::run_manager::create()
     .ui("cosine", argc, argv)
     .macro_path("macs")
+    .apply_early_macro("physics_em_optical.mac")
     .apply_cli_early() // CLI --early executed at this point
-
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
     .geometry([&geoconf]() { return pcolina(geoconf); })
