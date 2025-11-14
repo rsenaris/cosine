@@ -18,6 +18,9 @@
 #include "messenger.hh"
 #include "persistency/manager.hh"
 
+#include <chrono>
+#include <cmath>
+#include <cstdio>
 #include <n4-all.hh>
 #include <n4-random.hh>
 
@@ -73,6 +76,9 @@ int main(int argc, char* argv[]) {
 
   PersistencyManager::Initialize(simconf.outputfile);
 
+  using clock = std::chrono::high_resolution_clock;
+  auto  t0    = clock::now();
+
   n4::run_manager::create()
     .ui("cosine", argc, argv)
     .macro_path("macs")
@@ -86,4 +92,10 @@ int main(int argc, char* argv[]) {
     .apply_cli_late() // CLI --late executed at this point
 
     .run();
+
+  auto t1 = clock::now();
+  auto dt = std::chrono::duration<float>(t1 - t0).count();
+  char message[1000];
+  sprintf(message, "Program run in %d min, %f s", static_cast<u16>(std::floor(dt/60)), std::fmod(dt, 60));
+  std::cout << message << std::endl;
 }
