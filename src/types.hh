@@ -56,6 +56,7 @@ struct SensorHit {
 };
 
 struct Interaction {
+  u64 event;
   f32 x, y, z, e;
   u32 n;
 };
@@ -71,6 +72,7 @@ SensorHit make_sensor_hit( u64
                          , u16
                          , f32);
 
-Interaction make_interaction( const G4ThreeVector &
+Interaction make_interaction( u64
+                            , const G4ThreeVector &
                             , f32
                             , u32);

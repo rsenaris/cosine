@@ -33,8 +33,9 @@ SensorHit make_sensor_hit(u64 event, u16 sensor_id, f32 time) {
   return {event, sensor_id, time};
 }
 
-Interaction make_interaction(const G4ThreeVector &v, f32 e, u32 n) {
-  return { static_cast<f32>(v.x())
+Interaction make_interaction(u64 event, const G4ThreeVector &v, f32 e, u32 n) {
+  return { event
+         , static_cast<f32>(v.x())
          , static_cast<f32>(v.y())
          , static_cast<f32>(v.z())
          , e

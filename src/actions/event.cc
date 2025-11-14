@@ -1,10 +1,13 @@
 #include "actions/event.hh"
-#include "G4PrimaryVertex.hh"
 #include "actions/store_volume_crossing.hh"
 #include "config.hh"
 #include "persistency/manager.hh"
 #include "sensitive/sipm.hh"
 #include "types.hh"
+
+#include <G4PrimaryVertex.hh>
+
+#include <n4-inspect.hh>
 
 #include <vector>
 
@@ -33,7 +36,9 @@ std::function<void(const G4Event*)> store_primaries() {
       e += p -> GetKineticEnergy();
     }
     e /= static_cast<f32>(n);
-    PRIMARIES = make_interaction(pos, e, n);
+
+    auto event_no = n4::event_number();
+    PRIMARIES = make_interaction(event_no, pos, e, n);
   };
 }
 
