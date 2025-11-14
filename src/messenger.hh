@@ -11,7 +11,8 @@ struct messenger {
    messenger(sim_config &s, geometry_config &g);
   ~messenger() {}
 
-  void set_seed(u64 s);
+  void set_seed    (u64);
+  void set_start_id(u64);
 
 private:
   sim_config& s_;

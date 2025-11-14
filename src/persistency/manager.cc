@@ -5,9 +5,9 @@
 
 std::unique_ptr<PersistencyManager> PERSISTENCY_MANAGER = nullptr;
 
-void PersistencyManager::Initialize(std::string &filename, G4int start_id) {
+void PersistencyManager::Initialize(std::string &filename) {
   if (G4VPersistencyManager::GetPersistencyManager())
     G4Exception("[Persistency::Initialize]", "", FatalException, "Persistency manager initialized twice");
 
-  PERSISTENCY_MANAGER.reset(new PersistencyManager(filename, start_id));
+  PERSISTENCY_MANAGER.reset(new PersistencyManager(filename));
 }

@@ -10,11 +10,11 @@
 
 class PersistencyManager : public G4VPersistencyManager {
 private:
-   PersistencyManager(std::string &filename, G4int start_id) : G4VPersistencyManager(), writer_(filename, start_id) {}
+   PersistencyManager(std::string &filename) : G4VPersistencyManager(), writer_(filename) {}
 public:
   ~PersistencyManager(){}
 
-  static void Initialize(std::string& filename, G4int start_id);
+  static void Initialize(std::string& filename);
 
   G4bool Store(const G4Run*            ) override { return false; }
   G4bool Store(const G4Event*          ) override { return false; }

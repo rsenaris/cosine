@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
   auto simconf =      sim_config::s2();
   auto msg     = messenger(simconf, geoconf);
 
-  PersistencyManager::Initialize(simconf.outputfile, simconf.start_id);
+  PersistencyManager::Initialize(simconf.outputfile);
 
   n4::run_manager::create()
     .ui("cosine", argc, argv)

@@ -14,6 +14,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   // This one is better implemented as a method because there is no nice way of
   // inserting it in the flow
   msg_ -> DeclareMethod  ("seed", &messenger::set_seed, "Set the random seed");
+  msg_ -> DeclareMethod  ("start_id", &messenger::set_start_id, "Set the random seed");
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
   SET(outputfile);
@@ -63,4 +64,9 @@ messenger::messenger(sim_config& s, geometry_config& g)
 void messenger::set_seed(u64 s) {
   s_.seed = s;
   G4Random::setTheSeed(s_.seed);
+}
+
+void messenger::set_start_id(u64 id) {
+  s_.start_id = id;
+  START_ID = id;
 }

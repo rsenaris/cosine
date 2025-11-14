@@ -55,7 +55,7 @@ private:
 
 class HDF5Writer {
 public:
-  HDF5Writer(std::string& filename, G4int start_event);
+  HDF5Writer(std::string& filename);
   ~HDF5Writer();
 
   void write_steps      (std::vector<VolumeChange>&& steps);

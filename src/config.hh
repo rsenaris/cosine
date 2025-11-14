@@ -7,13 +7,14 @@
 
 #include <string>
 
+extern u64 START_ID;
 
 struct sim_config {
   std::string outputfile = "output_file.h5";
   std::string generator;
   u32 nparticles;
   u64 seed = 1234567890;
-  u64 start_id = 0;
+  u64 start_id = START_ID;
 
   bool store_steps        = false;
   bool store_sens         = true;

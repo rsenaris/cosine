@@ -5,6 +5,8 @@
 
 #include <algorithm>
 
+u64 START_ID = 0;
+
 const std::vector<f64>& geometry_config::wire_poss() const {
   static auto pos = std::vector<f64>{};
   if (pos.empty()) {
