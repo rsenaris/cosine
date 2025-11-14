@@ -1,4 +1,5 @@
 #include "actions/store_volume_crossing.hh"
+#include "config.hh"
 #include "types.hh"
 
 #include <n4-inspect.hh>
@@ -32,7 +33,7 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
     auto  pre_pos =  pre -> GetPosition();
     auto post_pos = post -> GetPosition();
 
-    auto event = n4::event_number();
+    auto event = START_ID + n4::event_number();
     auto volume_change = make_volume_change(event, part_name, pre_name, post_name, pre_pos, post_pos);
     VOLUME_CHANGES.push_back(std::move(volume_change));
 

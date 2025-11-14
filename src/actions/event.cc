@@ -37,7 +37,7 @@ std::function<void(const G4Event*)> store_primaries() {
     }
     e /= static_cast<f32>(n);
 
-    auto event_no = n4::event_number();
+    auto event_no = START_ID + n4::event_number();
     PRIMARIES = make_interaction(event_no, pos, e, n);
   };
 }

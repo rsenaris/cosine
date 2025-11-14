@@ -1,5 +1,6 @@
 
 #include "common.hh"
+#include "config.hh"
 #include "materials/silicon.hh"
 #include "types.hh"
 #include "sensitive/sipm.hh"
@@ -47,7 +48,7 @@ std::unique_ptr<n4::sensitive_detector> sensitive_sipm() {
     auto qe       = sipm_qe -> Value(photon_e);
     if (n4::random::uniform() > qe) return false;
 
-    auto event     = n4::event_number();
+    auto event     = START_ID + n4::event_number();
     auto sensor_id = get_sensor_id(step -> GetPostStepPoint() -> GetTouchable());
     auto time      = step -> GetPostStepPoint() -> GetGlobalTime();
     SENSOR_HITS.push_back(make_sensor_hit(event, sensor_id, time));
