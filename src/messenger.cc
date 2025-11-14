@@ -1,8 +1,8 @@
 #include "config.hh"
 #include "messenger.hh"
 
-#include "G4GenericMessenger.hh"
-#include "Randomize.hh"
+#include <G4GenericMessenger.hh>
+#include <Randomize.hh>
 
 #include <memory>
 
