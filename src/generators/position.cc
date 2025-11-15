@@ -3,6 +3,7 @@
 
 #include <G4ThreeVector.hh>
 
+#include <cstdlib>
 #include <n4-random.hh>
 
 #include <memory>
@@ -103,5 +104,6 @@ G4ThreeVector el_generator::generate() const {
   auto p = gen_->generate();
   p.rotateX( CLHEP::halfpi );
   p.rotateZ(-wire_rotation_);
+  p.setZ(std::abs(p.z()));
   return p;
 }
