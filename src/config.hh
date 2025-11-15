@@ -25,11 +25,11 @@ struct sim_config {
 };
 
 inline sim_config sim_config::s1() {
-  return {.generator="s1", .nparticles=intpow<u32>(10, 7)};
+  return {.generator="s1", .nparticles=330};
 }
 
 inline sim_config sim_config::s2() {
-  return {.generator="s2", .nparticles=intpow<u32>(10, 6)};
+  return {.generator="s2", .nparticles=intpow<u32>(10, 4)};
 }
 
 struct geometry_config {
