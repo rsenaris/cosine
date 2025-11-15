@@ -46,12 +46,20 @@ G4ThreeVector union_random_position::generate() const {
 }
 
 G4ThreeVector conical_volume_generator::generate() const {
-  static auto gen_z = n4::random::piecewise_linear_distribution({0, 2*hlength_}, {r1_*r1_, r2_*r2_});
   static auto slope = (r2_ - r1_) / 2 / hlength_;
 
-  auto z = gen_z.sample();
-  auto u = r1_ + slope * z;
-  auto r = std::sqrt(n4::random::uniform(0, u*u));
+  // C++ should be illegal.
+  // Here if `s` is declared within the loop (instead of beforehand) the code
+  // compiles, but it never exits the loop because the condition is not
+  // satisfied. `s` is both defined and undefined, therefore it should be
+  // considered a quantum variable.
+  f64 r,z,s;
+  do {
+    z = n4::random::uniform(0, 2*hlength_);
+    r = std::sqrt(n4::random::uniform(0., r2_ * r2_));
+    s = (r - r1_) / z;
+  } while (s > slope);
+
   auto p = n4::random::uniform(0, CLHEP::twopi);
   auto x = r * std::cos(p);
   auto y = r * std::sin(p);
