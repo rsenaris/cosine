@@ -106,7 +106,7 @@ inline geometry_config geometry_config::colina() {
   .fc_ring_width         =  5 * mm,
   .fc_ring_thick         =  2 * mm,
 
-  .sipms_on_fp   = false,
+  .sipms_on_fp   = true,
   . ptfe_on_fp   = true,
   .ptfe_on_walls = true,
   };
