@@ -29,7 +29,7 @@ inline sim_config sim_config::s1() {
 }
 
 inline sim_config sim_config::s2() {
-  return {.generator="s2", .nparticles=intpow<u32>(10, 4)};
+  return {.generator="s2", .nparticles=11000};
 }
 
 struct geometry_config {
