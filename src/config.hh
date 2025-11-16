@@ -96,7 +96,7 @@ inline geometry_config geometry_config::colina() {
   .sipm_thick            = 1    * mm,
   .sipm_gap              = 0.2  * mm,
   .n_sipm_side           = 10,        // array of NxN
-  .cath_thick            = 3 * mm,
+  .cath_thick            = 5 * mm,
   .frame_thick_mesh      = 2 * mm,
   .frame_thick_wires     = 4 * mm,
   .frame_width           = 1 * mm,
