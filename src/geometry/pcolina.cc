@@ -8,8 +8,9 @@
 
 #include <G4Color.hh>
 #include <G4LogicalSkinSurface.hh>
-#include <G4SystemOfUnits.hh>
 #include <G4Polyhedra.hh>
+#include <G4PVPlacement.hh>
+#include <G4SystemOfUnits.hh>
 
 #include <n4-geometry.hh>
 #include <n4-place.hh>
@@ -143,13 +144,14 @@ auto pcolina(const geometry_config& g) {
 
   new G4LogicalSkinSurface("cathode_surface", cathode -> GetLogicalVolume(), steel_surface());
 
+  G4PVPlacement* ptfe_cathode = nullptr;
   if (g.ptfe_on_fp) {
-    auto ptfe_cathode = n4::tubs("ptfe_cathode")
+    ptfe_cathode = n4::tubs("ptfe_cathode")
       .r(g.cath_r() + g.wall_thick)
       .z(g.wall_thick)
       .vis(white)
       .place(ptfe)
-      .at_z(z_cathode -g.cath_thick/2 -g.wall_thick/2)
+      .at_z(g.neck_length + g.drift_length + g.wall_thick/2)
       .in(liquid)
       .now();
 
@@ -169,10 +171,13 @@ auto pcolina(const geometry_config& g) {
     auto n = 1;
     for   (auto x : {-delta, delta}) {
       for (auto y : {-delta, delta}) {
+        auto z =  g.ptfe_on_fp                  ?
+                      -g.wall_thick/2 + g.sipm_thick :
+                      -g.cath_thick/2 + g.sipm_thick ;
         n4::place(sipm_array)
           .rot_y(180 * deg)
-          .at(x, y, -g.cath_thick/2 + g.sipm_thick)
-          .in(cathode)
+          .at(x, y, z)
+          .in(g.ptfe_on_fp ? ptfe_cathode : cathode)
           .copy_no(n++)
           .name("far_plane")
           .now();
