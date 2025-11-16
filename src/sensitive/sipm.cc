@@ -18,11 +18,12 @@
 G4int get_sensor_id(const G4VTouchable* touch) {
   /// The sensors are placed in a support volume. The support might be
   /// replicated multiple times. Thus, we need to combine this information to
-  /// avoid duplicate IDs
+  /// avoid duplicate IDs. Depth means steps in the volume hierarchy, 0 being
+  /// the current volume, 1 the one containing it, etc.
 
-  auto   mother_id = touch -> GetCopyNumber(0); // copy number of support
-  auto daughter_id = touch -> GetCopyNumber(1); // copy number of sensor
-  return mother_id * 1000 + daughter_id;
+  auto  sensor_id = touch -> GetCopyNumber(0);
+  auto support_id = touch -> GetCopyNumber(1);
+  return support_id * 1000 + sensor_id;
 }
 
 std::unique_ptr<n4::sensitive_detector> sensitive_sipm() {
