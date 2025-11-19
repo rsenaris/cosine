@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
   auto physics_list = std::make_unique<G4GenericPhysicsList>(0);
 
   auto geoconf = geometry_config::colina();
-  auto simconf =      sim_config::s2();
+  auto simconf =      sim_config::empty();
   auto msg     = messenger(simconf, geoconf);
 
   PersistencyManager::Initialize(simconf.outputfile);

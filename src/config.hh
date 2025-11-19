@@ -22,6 +22,7 @@ struct sim_config {
 
   static sim_config s1();
   static sim_config s2();
+  static sim_config empty();
 };
 
 inline sim_config sim_config::s1() {
@@ -30,6 +31,10 @@ inline sim_config sim_config::s1() {
 
 inline sim_config sim_config::s2() {
   return {.generator="s2", .nparticles=11000};
+}
+
+inline sim_config sim_config::empty() {
+  return {.generator="none", .nparticles=0};
 }
 
 struct geometry_config {
