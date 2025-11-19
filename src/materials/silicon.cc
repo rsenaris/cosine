@@ -91,6 +91,7 @@ G4MaterialPropertiesTable *silicon_mpt() {
                                    , 0.886733154124, 0.892355543947, 0.897997316201, 0.903659214620, 0.909341900080
                                    , 0.915046107745, 0.920772570710, 0.926522051788, 0.932295249895, 0.938092857566});
 
+  auto ref_index_fixed = 1.5;
   auto energies  = n4::map<f64>([](f64 wl) {return c4::hc/wl;} , wls); // energies expressed in internal unit
   std::reverse(energies .begin(), energies .end());
   std::reverse(ref_index.begin(), ref_index.end());
@@ -106,7 +107,7 @@ G4MaterialPropertiesTable *silicon_mpt() {
     // .add("REFLECTIVITY", energies, reflectivity) // ignored. relying on refractive indices
     .NEW("QUANTUM_EFFICIENCY", energies,     qe)    // we implement an effective QE for detection efficiency
     .add("ABSLENGTH"   , energies,         tiny)
-    .add("RINDEX"      , energies,    ref_index)
+    .add("RINDEX"      , energies,    ref_index_fixed)
     .done();
 }
 
