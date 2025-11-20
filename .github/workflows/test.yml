@@ -64,8 +64,8 @@ jobs:
 
       - name: Test run in dev environment
         run: |
-          nix develop .# -c just run --beam-on 12 | tee build-and-run-in-devenv-output
-          PATTERN="end of event 12"
+          nix develop .# -c just run --beam-on 10 -e macs/s2.mac | tee build-and-run-in-devenv-output
+          PATTERN="Event #         9"
           echo Looking for "'$PATTERN'" in output of 'just'
           grep "$PATTERN" build-and-run-in-devenv-output
 
@@ -75,8 +75,8 @@ jobs:
 
       - name: Test run nix build client package result
         run: |
-          nix develop .# -c result/bin/cosine --beam-on 12 | tee build-and-run-client-package-output
-          PATTERN="end of event 12"
+          nix develop .# -c result/bin/cosine --beam-on 10 | tee build-and-run-client-package-output
+          PATTERN="Event #         9"
           echo Looking for "'$PATTERN'" in output of 'just'
           grep "$PATTERN" build-and-run-client-package-output
         continue-on-error: true # see issue # https://github.com/jacg/nain4/issues/161
