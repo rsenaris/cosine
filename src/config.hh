@@ -6,6 +6,8 @@
 #include <G4SystemOfUnits.hh>
 
 #include <string>
+#include <tuple>
+#include <vector>
 
 extern u64 START_ID;
 
@@ -22,6 +24,9 @@ struct sim_config {
 
   static sim_config empty();
 
+  /// All independent class members must be added to the parameter_list
+  std::vector<ConfPar> parameter_list();
+};
 
 inline sim_config sim_config::empty() {
   return {.generator="none", .nparticles=0};
@@ -70,6 +75,9 @@ struct geometry_config {
 
   static geometry_config pcolina();
   static geometry_config colina();
+
+  /// All independent class members must be added to the parameter_list
+  std::vector<ConfPar> parameter_list();
 };
 
 inline geometry_config geometry_config::colina() {
