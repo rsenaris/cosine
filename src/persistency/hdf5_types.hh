@@ -1,5 +1,6 @@
 #pragma once
 
+#include "config.hh"
 #include "types.hh"
 
 #include <highfive/H5DataType.hpp>
@@ -13,6 +14,6 @@
 DECLARE_HF_TYPE_BUILDER(VolumeChange, create_volume_change)
 DECLARE_HF_TYPE_BUILDER(SensorHit   , create_sensor_hit)
 DECLARE_HF_TYPE_BUILDER(Interaction , create_interaction)
-
+DECLARE_HF_TYPE_BUILDER(ConfPar     , create_config)
 
 #undef DECLARE_HF_TYPE_BUILDER
