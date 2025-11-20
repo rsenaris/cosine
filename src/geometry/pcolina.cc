@@ -37,7 +37,7 @@ auto pcolina(const geometry_config& g) {
   auto invisible = n4::vis_attributes().visible(false);
   auto wireframe = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
   auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
-  auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
+  // auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
   auto gray      = n4::vis_attributes().visible(true).color(G4Color::Gray());
   auto red       = n4::vis_attributes().visible(true).color(tred);
   auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
