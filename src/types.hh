@@ -36,6 +36,13 @@ using  longstr = char[ LONGSTR];
 ////////////////////////////////////////////////////////////////////////////////
 
 
+struct ConfPar {
+  shortstr name;
+  shortstr value;
+  shortstr unit;
+};
+
+
 struct VolumeChange {
   u64      event;
   shortstr particle;
@@ -76,3 +83,8 @@ Interaction make_interaction( u64
                             , const G4ThreeVector &
                             , f32
                             , u32);
+
+ConfPar make_confpar( const std::string &
+                    , const std::string &
+                    , const std::string &
+                    );

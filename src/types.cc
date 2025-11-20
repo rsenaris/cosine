@@ -42,3 +42,14 @@ Interaction make_interaction(u64 event, const G4ThreeVector &v, f32 e, u32 n) {
          , n
          };
 }
+
+ConfPar make_confpar( const std::string& name
+                    , const std::string& value
+                    , const std::string& unit
+                    ) {
+  ConfPar pars;
+  copy_str(pars.name , name , SHORTSTR);
+  copy_str(pars.value, value, SHORTSTR);
+  copy_str(pars.unit, unit, SHORTSTR);
+  return pars;
+}
