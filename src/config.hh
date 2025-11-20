@@ -20,18 +20,8 @@ struct sim_config {
   bool store_sens         = true;
   bool store_interactions = true;
 
-  static sim_config s1();
-  static sim_config s2();
   static sim_config empty();
-};
 
-inline sim_config sim_config::s1() {
-  return {.generator="s1", .nparticles=330};
-}
-
-inline sim_config sim_config::s2() {
-  return {.generator="s2", .nparticles=11000};
-}
 
 inline sim_config sim_config::empty() {
   return {.generator="none", .nparticles=0};
