@@ -16,7 +16,7 @@ union_random_position::union_random_position(GenVec&& gens, std::vector<f32> wei
 {
   auto wsum = std::accumulate(weights_.cbegin(), weights_.cend(), 0.);
   weights_[0] /= wsum;
-  for (auto i=1; i<weights_.size(); i++)
+  for (auto i=1u; i<weights_.size(); i++)
     weights_[i] = weights_[i] / wsum + weights_[i-1];
 }
 
@@ -38,7 +38,7 @@ union_random_position::union_random_position(std::unique_ptr<random_position>&& 
 G4ThreeVector union_random_position::generate() const {
   auto choice = n4::random::uniform(0., 1.);
 
-  for (auto i=0; i<weights_.size(); i++)
+  for (auto i=0u; i<weights_.size(); i++)
     if (weights_[i] > choice)
       return gens_[i] -> get();
 
@@ -87,7 +87,7 @@ el_generator::el_generator(const geometry_config& g, f64 range)
     auto wire_r = g.thin_wire_diam / 2;
 
     auto norm = std::accumulate(length.cbegin(), length.cend(), 0.);
-    for (auto i = 0; i < pos.size(); i++) {
+    for (auto i = 0u; i < pos.size(); i++) {
       auto gen = std::make_unique<cylindrical_volume_generator>(length[i], wire_r, wire_r + range);
       gen -> offset_x(pos[i]);
 

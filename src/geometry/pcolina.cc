@@ -74,7 +74,7 @@ auto pcolina(const geometry_config& g) {
 
   // Field cage rings
   for (auto i=0; i<g.fc_rings; i++) {
-    char name[20];
+    char name[30];
     auto z  = g.fc_ring_zpitch*i + g.fc_ring_width/2;
     auto r1 = g.el_r() + g.form_factor * (z - g.fc_ring_width/2);
     auto r2 = g.el_r() + g.form_factor * (z + g.fc_ring_width/2);

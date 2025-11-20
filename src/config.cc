@@ -15,8 +15,8 @@ const std::vector<f64>& geometry_config::wire_poss() const {
   if (pos.empty()) {
     auto half_n_wires = std::floor(el_diam/ 2 / thin_wire_pitch);
 
-    for (auto i=0; i<half_n_wires; i++)
-      for (auto s : {-1, 1})
+    for (auto i=0u; i<half_n_wires; i++)
+      for (auto s : {-1., 1.})
         pos.push_back(s * thin_wire_pitch * (i + 0.5));
 
     std::sort(pos.begin(), pos.end());

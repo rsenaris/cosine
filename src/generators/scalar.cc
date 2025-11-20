@@ -27,7 +27,7 @@ lxe_scintillation::lxe_scintillation()
 
   cdf_.reserve(n);
   cdf_.push_back(pdf[0] / pdfsum);
-  for (auto i=1; i<pdf.size(); i++)
+  for (auto i=1u; i<pdf.size(); i++)
     cdf_.push_back(cdf_[i-1] + pdf[i] / pdfsum);
 
   half_bin_size = std::abs(energy_[1] - energy_[0]) / 2;

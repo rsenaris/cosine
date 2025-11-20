@@ -12,7 +12,7 @@ generic_generator::generic_generator(const G4String& particle_name, u32 nparticl
 G4PrimaryVertex* generic_generator::generate_vertex() const {
   auto vertex = new G4PrimaryVertex(generate_position(), 0.);
 
-  for (auto i=0; i<nparticles_; i++) {
+  for (auto i=0u; i<nparticles_; i++) {
     auto dir = generate_direction();
     auto pol = generate_polarization();
     auto ene = generate_energy();

@@ -9,7 +9,7 @@
 
 #include <cstdio>
 
-G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4double sipm_gap, G4int n_sipm_side) {
+G4LogicalVolume* build_sipm_array(f64 sipm_size, f64 sipm_thick, f64 sipm_gap, u16 n_sipm_side) {
   auto odd          = n_sipm_side % 2 == 1;
   auto pitch        = sipm_size + sipm_gap;
   auto support_size = pitch * n_sipm_side;
@@ -41,12 +41,12 @@ G4LogicalVolume* build_sipm_array(G4double sipm_size, G4double sipm_thick, G4dou
   new G4LogicalSkinSurface("sipm_surface", sipm, silicon_surface());
 
   auto z = sipm_thick / 2;
-  auto n = 0;
-  for   (auto i = 0; i < n_sipm_side; i++) {
-    for (auto j = 0; j < n_sipm_side; j++) {
+  auto n = 0u;
+  for   (auto i = 0u; i < n_sipm_side; i++) {
+    for (auto j = 0u; j < n_sipm_side; j++) {
       auto x = i * pitch + start;
       auto y = j * pitch + start;
-      char name[10];
+      char name[20];
       std::sprintf(name, "sipm_%d_%d", i, j);
       n4::place(sipm)
         .at(x, y, z)
