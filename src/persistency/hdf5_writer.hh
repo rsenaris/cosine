@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.hh"
+#include "config.hh"
 #include  "types.hh"
 
 #include <G4Types.hh>
@@ -61,11 +62,13 @@ public:
   void write_steps      (std::vector<VolumeChange>&& steps);
   void write_hits       (std::vector<SensorHit>&&     hits);
   void write_interaction(            Interaction&&   intrs);
+  void write_config     (std::vector<ConfPar>&&      confs);
 
 private:
   std::unique_ptr<BufferedWriter<VolumeChange>>  vol_change_writer_;
   std::unique_ptr<BufferedWriter<SensorHit>>           sens_writer_;
   std::unique_ptr<BufferedWriter<Interaction>>  interaction_writer_;
+  std::unique_ptr<BufferedWriter<ConfPar>>           config_writer_;
   std::unique_ptr<HighFive::File>               file_;
   std::string&                                  filename_;
 

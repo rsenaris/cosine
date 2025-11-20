@@ -1,5 +1,6 @@
 #include "common.hh"
 #include "persistency/hdf5_writer.hh"
+#include "config.hh"
 #include "persistency/hdf5_types.hh"
 
 #include <G4ThreeVector.hh>
@@ -53,6 +54,14 @@ void HDF5Writer::write_interaction(Interaction&& intrs) {
     interaction_writer_ = std::make_unique<BufferedWriter<Interaction>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   interaction_writer_->write(std::move(intrs));
+}
+
+void HDF5Writer::write_config(std::vector<ConfPar>&& confs) {
+  if (!config_writer_) {
+    auto dataset = create_dataset("MC", "config", create_config(), LARGE_CHUNK_SIZE);
+    config_writer_ = std::make_unique<BufferedWriter<ConfPar>>(std::move(dataset), LARGE_CHUNK_SIZE);
+  }
+  config_writer_ -> write(std::move(confs));
 }
 
 DataSet HDF5Writer::create_dataset( std::string  const& group_name
