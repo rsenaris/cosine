@@ -93,6 +93,11 @@ int main(int argc, char* argv[]) {
 
     .run();
 
+  auto writer = PERSISTENCY_MANAGER.get() -> writer();
+  writer -> write_config(simconf.parameter_list());
+  writer -> write_config(geoconf.parameter_list());
+
+
   auto t1 = clock::now();
   auto dt = std::chrono::duration<float>(t1 - t0).count();
   char message[1000];
