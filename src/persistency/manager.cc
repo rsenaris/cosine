@@ -1,7 +1,7 @@
 #include "persistency/manager.hh"
-#include "G4Exception.hh"
-#include "G4ExceptionSeverity.hh"
-#include "persistency/hdf5_writer.hh"
+
+#include <G4Exception.hh>
+#include <G4ExceptionSeverity.hh>
 
 std::unique_ptr<PersistencyManager> PERSISTENCY_MANAGER = nullptr;
 

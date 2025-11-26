@@ -1,10 +1,11 @@
 #pragma once
 
-#include "G4ParticleDefinition.hh"
-#include "G4PrimaryVertex.hh"
 #include "types.hh"
 
-#include "G4ThreeVector.hh"
+#include <G4ParticleDefinition.hh>
+#include <G4PrimaryVertex.hh>
+#include <G4ThreeVector.hh>
+
 #include <n4-random.hh>
 
 struct pointlike : public n4::random::direction {

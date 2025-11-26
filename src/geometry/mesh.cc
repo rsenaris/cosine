@@ -1,9 +1,8 @@
 #include "geometry/mesh.hh"
-#include "G4LogicalSkinSurface.hh"
-#include "G4LogicalSurface.hh"
 #include "materials/steel.hh"
 
 #include <CLHEP/Units/SystemOfUnits.h>
+#include <G4LogicalSkinSurface.hh>
 #include <G4LogicalVolume.hh>
 #include <G4MultiUnion.hh>
 #include <G4Polyhedra.hh>

@@ -1,6 +1,7 @@
-#include "G4OpticalSurface.hh"
 #include "common.hh"
 #include "materials/ptfe.hh"
+
+#include <G4OpticalSurface.hh>
 
 #include <n4-material.hh>
 #include <n4-sequences.hh>

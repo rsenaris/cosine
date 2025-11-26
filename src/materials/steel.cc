@@ -1,7 +1,8 @@
-#include "G4MaterialPropertiesTable.hh"
-#include "G4OpticalSurface.hh"
 #include "common.hh"
 #include "materials/steel.hh"
+
+#include <G4MaterialPropertiesTable.hh>
+#include <G4OpticalSurface.hh>
 
 #include <n4-material.hh>
 

@@ -1,7 +1,9 @@
 #include "generators/pointlike.hh"
-#include "G4DynamicParticle.hh"
-#include "G4PrimaryVertex.hh"
-#include "G4ThreeVector.hh"
+
+#include <G4DynamicParticle.hh>
+#include <G4PrimaryVertex.hh>
+#include <G4ThreeVector.hh>
+
 #include <n4-inspect.hh>
 
 pointlike::pointlike(const G4String& particle_name, G4ThreeVector pos, u16 nparticles, G4double energy)

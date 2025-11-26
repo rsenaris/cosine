@@ -1,8 +1,9 @@
 #include "geometry/sipm_array.hh"
-#include "G4LogicalSkinSurface.hh"
 #include "materials/ptfe.hh"
 #include "materials/silicon.hh"
 #include "sensitive/sipm.hh"
+
+#include <G4LogicalSkinSurface.hh>
 
 #include <n4-geometry.hh>
 #include <n4-vis-attributes.hh>

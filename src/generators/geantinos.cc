@@ -1,8 +1,7 @@
 #include "generators/geantinos.hh"
-#include "G4RandomDirection.hh"
-#include "G4ThreeVector.hh"
 #include "generators/pointlike.hh"
 
+#include <G4ThreeVector.hh>
 #include <G4PrimaryParticle.hh>
 #include <G4PrimaryVertex.hh>
 #include <Randomize.hh>
