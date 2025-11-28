@@ -42,7 +42,7 @@ void HDF5Writer::write_steps(std::vector<VolumeChange>&& steps) {
 
 void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
   if (!sens_writer_) {
-    auto dataset = create_dataset("MC", "sensor_hits", create_sensor_hit(), LARGE_CHUNK_SIZE, false);
+    auto dataset = create_dataset("MC", "sensor_hits", create_sensor_hit(), LARGE_CHUNK_SIZE, true);
     sens_writer_ = std::make_unique<BufferedWriter<SensorHit>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   sens_writer_ -> write(std::move(hits));
@@ -50,7 +50,7 @@ void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
 
 void HDF5Writer::write_interaction(Interaction&& intrs) {
   if (!interaction_writer_) {
-    auto dataset = create_dataset("MC", "interactions", create_interaction(), LARGE_CHUNK_SIZE, false);
+    auto dataset = create_dataset("MC", "interactions", create_interaction(), LARGE_CHUNK_SIZE, true);
     interaction_writer_ = std::make_unique<BufferedWriter<Interaction>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   interaction_writer_->write(std::move(intrs));
@@ -58,7 +58,7 @@ void HDF5Writer::write_interaction(Interaction&& intrs) {
 
 void HDF5Writer::write_config(std::vector<ConfPar>&& confs) {
   if (!config_writer_) {
-    auto dataset = create_dataset("MC", "config", create_config(), LARGE_CHUNK_SIZE, false);
+    auto dataset = create_dataset("MC", "config", create_config(), LARGE_CHUNK_SIZE, true);
     config_writer_ = std::make_unique<BufferedWriter<ConfPar>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   config_writer_ -> write(std::move(confs));
