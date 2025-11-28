@@ -69,9 +69,9 @@ parallelize n_jobs n_evt first pattern seed *ARGS: install
   for i in `seq 0 $njobs`; do
       i=$((i + {{first}}))
       seed=$(({{seed}} + $i))
-      filename="{{pattern}}_$i.h5"
-      logfile="log/$i.log"
-      start="$((startid + i * {{n_evt}}))"
+      filename="out/{{pattern}}_$i.h5"
+      logfile="log/{{pattern}}_$i.log"
+      start="$((i * {{n_evt}}))"
       stdbuf -oL                      \
       ./install/cosine/bin/cosine -e  \
           "/sim/seed       $seed"     \
@@ -87,3 +87,22 @@ parallelize n_jobs n_evt first pattern seed *ARGS: install
   done
   echo "Waiting for last few jobs to finish"
   wait
+
+s1 folder *ARGS:
+  mkdir -p out/{{folder}}
+  mkdir -p log/{{folder}}
+  just parallelize 48 100000 0 {{folder}}/s1 1234567890 -e macs/s1.mac "${@:2}"
+
+s2 folder *ARGS:
+  mkdir -p out/{{folder}}
+  mkdir -p log/{{folder}}
+  just parallelize 48 10000 0 {{folder}}/s2 1234567890 -e macs/s2.mac "${@:2}"
+
+perform-all-scans:
+  #!/usr/bin/env sh
+  for ptfe in true false; do
+      for fp in true false; do
+          just s1 s1_ptfe_${ptfe}_fp_${fp} -e "/sim/ptfe_on_walls ${ptfe}" "/sim/ptfe_on_fp ${ptfe}" "/sim/sipms_on_fp ${fp}"
+          just s2 s2_ptfe_${ptfe}_fp_${fp} -e "/sim/ptfe_on_walls ${ptfe}" "/sim/ptfe_on_fp ${ptfe}" "/sim/sipms_on_fp ${fp}"
+      done
+  done
