@@ -75,7 +75,9 @@ private:
   HighFive::DataSet create_dataset( std::string            const& group_name
                                   , std::string            const&  node_name
                                   , HighFive::CompoundType const& type
-                                  , hsize_t                       chunk_size);
+                                  , hsize_t                       chunk_size
+                                  , bool                          deflate
+                                  );
 
   void open_file();
 };

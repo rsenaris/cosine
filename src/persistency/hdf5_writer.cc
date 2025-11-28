@@ -34,7 +34,7 @@ HDF5Writer::~HDF5Writer() {
 
 void HDF5Writer::write_steps(std::vector<VolumeChange>&& steps) {
   if (!vol_change_writer_) {
-    auto dataset = create_dataset("MC", "volume_changes", create_volume_change(), LARGE_CHUNK_SIZE);
+    auto dataset = create_dataset("MC", "volume_changes", create_volume_change(), LARGE_CHUNK_SIZE, false);
     vol_change_writer_ = std::make_unique<BufferedWriter<VolumeChange>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   vol_change_writer_ -> write(std::move(steps));
@@ -42,7 +42,7 @@ void HDF5Writer::write_steps(std::vector<VolumeChange>&& steps) {
 
 void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
   if (!sens_writer_) {
-    auto dataset = create_dataset("MC", "sensor_hits", create_sensor_hit(), LARGE_CHUNK_SIZE);
+    auto dataset = create_dataset("MC", "sensor_hits", create_sensor_hit(), LARGE_CHUNK_SIZE, false);
     sens_writer_ = std::make_unique<BufferedWriter<SensorHit>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   sens_writer_ -> write(std::move(hits));
@@ -50,7 +50,7 @@ void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
 
 void HDF5Writer::write_interaction(Interaction&& intrs) {
   if (!interaction_writer_) {
-    auto dataset = create_dataset("MC", "interactions", create_interaction(), LARGE_CHUNK_SIZE);
+    auto dataset = create_dataset("MC", "interactions", create_interaction(), LARGE_CHUNK_SIZE, false);
     interaction_writer_ = std::make_unique<BufferedWriter<Interaction>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   interaction_writer_->write(std::move(intrs));
@@ -58,7 +58,7 @@ void HDF5Writer::write_interaction(Interaction&& intrs) {
 
 void HDF5Writer::write_config(std::vector<ConfPar>&& confs) {
   if (!config_writer_) {
-    auto dataset = create_dataset("MC", "config", create_config(), LARGE_CHUNK_SIZE);
+    auto dataset = create_dataset("MC", "config", create_config(), LARGE_CHUNK_SIZE, false);
     config_writer_ = std::make_unique<BufferedWriter<ConfPar>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
   config_writer_ -> write(std::move(confs));
@@ -67,7 +67,9 @@ void HDF5Writer::write_config(std::vector<ConfPar>&& confs) {
 DataSet HDF5Writer::create_dataset( std::string  const& group_name
                                   , std::string  const&  node_name
                                   , CompoundType const& type
-                                  , hsize_t             chunk_size) {
+                                  , hsize_t             chunk_size
+                                  , bool                deflate
+                                  ) {
   if (!file_) open_file();
 
   auto group =
@@ -84,7 +86,7 @@ DataSet HDF5Writer::create_dataset( std::string  const& group_name
 
   DataSetCreateProps ds_props;
   ds_props.add(HighFive::Chunking(std::vector<hsize_t>{chunk_size}));
-//  ds_props.add(HighFive::Deflate(4));
+  if (deflate) ds_props.add(HighFive::Deflate(4));
   auto dataset = group.createDataSet(node_name, extensible_ds, type, ds_props);
   return dataset;
 }
