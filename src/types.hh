@@ -38,7 +38,7 @@ using  longstr = char[ LONGSTR];
 
 struct ConfPar {
   shortstr name;
-  shortstr value;
+   longstr value;
   shortstr unit;
 };
 

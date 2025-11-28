@@ -55,7 +55,7 @@ REGISTER_HF_TYPE(Interaction, create_interaction)
 HighFive::CompoundType create_config() {
   return {
     { "name" , H(shortstr)},
-    { "value", H(shortstr)},
+    { "value", H( longstr)},
     { "unit" , H(shortstr)},
   };
 }

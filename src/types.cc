@@ -49,7 +49,10 @@ ConfPar make_confpar( const std::string& name
                     ) {
   ConfPar pars;
   copy_str(pars.name , name , SHORTSTR);
-  copy_str(pars.value, value, SHORTSTR);
+  if (value.size() > LONGSTR)
+    copy_str(pars.value, value.substr(value.size()-LONGSTR),  LONGSTR);
+  else
+    copy_str(pars.value, value,  LONGSTR);
   copy_str(pars.unit, unit, SHORTSTR);
   return pars;
 }
