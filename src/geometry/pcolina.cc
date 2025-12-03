@@ -33,28 +33,32 @@ auto pcolina(const geometry_config& g) {
   auto ptfe  =  ptfe_with_properties();
   auto steel = steel_with_properties();
 
-  auto tred      = G4Colour {1, 0 ,0, 0.1 };
-  auto invisible = n4::vis_attributes().visible(false);
-  auto wireframe = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
-  auto white     = n4::vis_attributes().visible(true).color(G4Color::White());
-  // auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
-  auto gray      = n4::vis_attributes().visible(true).color(G4Color::Gray());
-  auto red       = n4::vis_attributes().visible(true).color(tred);
-  auto frame     = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
+  auto seethrough = [](G4Color c, double t=0.1) {
+    return G4Color{c.GetRed(), c.GetGreen(), c.GetBlue(), t};
+  };
 
+  auto transparent = n4::vis_attributes().visible(true).colour({1, 1, 1, 0});
+  auto invisible   = n4::vis_attributes().visible(false);
+  // auto wireframe   = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
+  auto  white      = n4::vis_attributes().visible(true).color(G4Color::White());
+  auto twhite      = n4::vis_attributes().visible(true).color(seethrough(G4Color::White()));
+  // auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
+  auto gray        = n4::vis_attributes().visible(true).color(G4Color::Gray());
+  auto tred        = n4::vis_attributes().visible(true).color(seethrough(G4Color::Red(), 0.05));
+  // auto frame       = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
   //n4::place::check_overlaps_switch_on();
 
   auto world = n4::box("world")
     .cube(1.2 * g.cath_diam())
     .z(2.5 * g.drift_length)
-    .vis(frame)
+    .vis(transparent)
     .volume(air);
 
   auto liquid_length = (g.drift_length + full_neck_length) * 2.1;
   auto liquid = n4::box("liquid")
     .cube(1.1 * g.cath_diam())
     .z(liquid_length)
-    .vis(red)
+    .vis(tred)
     .place(lxe)
     .in(world)
     .now();
@@ -101,7 +105,7 @@ auto pcolina(const geometry_config& g) {
       .r2_inner(g.cath_r())
       .r_delta(g.wall_thick)
       .z(g.drift_length)
-      .vis(wireframe)
+      .vis(twhite)
       .place(ptfe)
       .in(liquid)
       .at_z(g.neck_length + g.drift_length/2)

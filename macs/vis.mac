@@ -63,7 +63,7 @@
 #/vis/geometry/set/colour bubble  0    1    0.6  0.6   .6
 
 # Two different rendering options
-/vis/viewer/set/style wireframe # Ugly, but might be useful if you need to look inside a volume
+#/vis/viewer/set/style wireframe # Ugly, but might be useful if you need to look inside a volume
 /vis/viewer/set/style surface
 
 # Two different ways of setting the viewing angle
