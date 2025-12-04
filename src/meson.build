@@ -83,7 +83,7 @@ cosine_exe = executable( 'cosine'
                                , install            : true
                                )
 
-install_headers(cosine_lib_includes)
+install_headers(cosine_lib_includes, preserve_path: true)
 
 pkg = import('pkgconfig')
 pkg.generate( cosine_lib
