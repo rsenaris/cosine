@@ -1,4 +1,4 @@
-#include "LXe.hh"
+#include "materials/LXe.hh"
 
 #include <n4-all.hh>
 #include <n4-will-become-external-lib.hh>
