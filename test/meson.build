@@ -32,7 +32,7 @@ catch2 = dependency( 'catch2'
                    , required : true)
 
 test_deps       = [cosine_lib, nain4, geant4, catch2]
-test_sources    = ['catch2-main-test.cc', 'test-LXe.cc']
+test_sources    = ['catch2-main-test.cc', 'test-LXe.cc', 'test-reflectivity.cc']
 c2_demo_sources = ['catch2-main-test.cc', 'test-catch2-demo.cc']
 
 geant4_include = geant4.get_variable(cmake    : 'Geant4_INCLUDE_DIRS')
