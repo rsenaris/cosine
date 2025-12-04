@@ -1,19 +1,13 @@
 #include "actions/store_volume_crossing.hh"
 #include "config.hh"
 #include "types.hh"
+#include "utils.hh"
 
 #include <n4-inspect.hh>
 
 #include <cstdio>
 
 std::vector<VolumeChange> VOLUME_CHANGES{};
-
-G4String get_name(const G4StepPoint *p) {
-  if  (! p                                 ) return "No pointer";
-  if  (! p -> GetTouchable()               ) return "No touchable";
-  if  (! p -> GetTouchable() -> GetVolume()) return "No volume";
-  return p -> GetTouchable() -> GetVolume() -> GetName();
-}
 
 std::function<void(const G4Step *)>
 store_volume_crossing(G4String particle, G4String from, G4String to) {
@@ -23,8 +17,8 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
     auto post = step -> GetPostStepPoint();
 
     auto part_name = step -> GetTrack() -> GetDefinition() -> GetParticleName();
-    auto  pre_name = get_name(pre);
-    auto post_name = get_name(post);
+    auto  pre_name = get_steppoint_volume(pre);
+    auto post_name = get_steppoint_volume(post);
 
     if ((particle != "") && (particle != part_name)) return;
     if ((    from != "") && (    from !=  pre_name)) return;

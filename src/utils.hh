@@ -2,8 +2,11 @@
 
 #include "types.hh"
 
+#include <G4StepPoint.hh>
+
 #include <functional>
 #include <utility>
+
 
 #define BREAKPOINT(LABEL) {                               \
   std::cout << "========================================" \
@@ -49,4 +52,11 @@ std::function<void(T)> join(std::function<void(T)> f1, std::function<void(T)> f2
     f1(std::forward<T>(x));
     f2(std::forward<T>(x));
   };
+}
+
+inline G4String get_steppoint_volume(const G4StepPoint *p) {
+  if  (! p                                 ) return "No pointer";
+  if  (! p -> GetTouchable()               ) return "No touchable";
+  if  (! p -> GetTouchable() -> GetVolume()) return "No volume";
+  return p -> GetTouchable() -> GetVolume() -> GetName();
 }
