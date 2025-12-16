@@ -12,6 +12,8 @@
 #include <G4PVPlacement.hh>
 #include <G4SystemOfUnits.hh>
 
+#include <cmath>
+
 #include <n4-geometry.hh>
 #include <n4-place.hh>
 #include <n4-shape.hh>
@@ -187,6 +189,24 @@ auto pcolina(const geometry_config& g) {
           .now();
       }
     }
+  }
+
+  if (g.calib_belt == CalibrationBelt::STRAIGHT) {
+    auto r = g.el_r()
+           + g.form_factor * (g.drift_length / 2 + g.fc_ring_width / 2)
+           + g.fc_ring_thick
+           + g.calib_belt_separation
+           + g.calib_belt_r;
+
+    auto tilt = std::atan(g.form_factor);
+    auto tube = n4::tubs("source_belt")
+      .r_inner(3 * mm)
+      .r_delta(1 * mm)
+      .place(steel)
+      .in(liquid)
+      .rotate_z(tilt)
+      .at({r, 0, g.neck_length + g.drift_length / 2})
+      .now();
   }
 
   return n4::place(world).now();
