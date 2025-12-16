@@ -24,3 +24,9 @@
 /sim/fc_ring_zpitch    30 mm
 /sim/fc_ring_width      5 mm
 /sim/fc_ring_thick      2 mm
+
+/sim/calib_belt            STRAIGHT
+/sim/calib_belt_router     3 mm
+/sim/calib_belt_rinner     2 mm
+/sim/calib_belt_separation 3 mm
+/sim/calib_belt_separation 2

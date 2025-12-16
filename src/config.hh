@@ -60,6 +60,12 @@ struct geometry_config {
   f64 fc_ring_width;
   f64 fc_ring_thick;
 
+  CalibrationBelt calib_belt;
+  f64 calib_belt_router;
+  f64 calib_belt_rinner;
+  f64 calib_belt_separation;
+
+
   bool sipms_on_fp;
   bool  ptfe_on_fp;
   bool ptfe_on_walls;
@@ -108,6 +114,11 @@ inline geometry_config geometry_config::colina() {
   .fc_ring_zpitch        = 30 * mm,
   .fc_ring_width         =  5 * mm,
   .fc_ring_thick         =  2 * mm,
+
+  .calib_belt            = CalibrationBelt::NONE,
+  .calib_belt_router     = 3 * mm,
+  .calib_belt_rinner     = 2 * mm,
+  .calib_belt_separation = 3 * mm,
 
   .sipms_on_fp   = true,
   . ptfe_on_fp   = true,
