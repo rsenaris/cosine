@@ -1,10 +1,13 @@
 #include "config.hh"
 #include "messenger.hh"
+#include "types.hh"
 
+#include <G4Exception.hh>
 #include <G4GenericMessenger.hh>
 #include <Randomize.hh>
 
 #include <memory>
+#include <string>
 
 messenger::messenger(sim_config& s, geometry_config& g)
     : s_(s), g_(g), msg_(nullptr)
@@ -13,8 +16,9 @@ messenger::messenger(sim_config& s, geometry_config& g)
 
   // This one is better implemented as a method because there is no nice way of
   // inserting it in the flow
-  msg_ -> DeclareMethod  ("seed", &messenger::set_seed, "Set the random seed");
-  msg_ -> DeclareMethod  ("start_id", &messenger::set_start_id, "Set the random seed");
+  msg_ -> DeclareMethod  ("seed"      , &messenger::set_seed      , "Set the random seed");
+  msg_ -> DeclareMethod  ("start_id"  , &messenger::set_start_id  , "Set the random seed");
+  msg_ -> DeclareMethod  ("calib_belt", &messenger::set_calib_belt, "Set the calibration belt shape");
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
   SET(outputfile);
@@ -56,6 +60,10 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET (sipms_on_fp           );
   SET ( ptfe_on_fp           );
   SET(ptfe_on_walls          );
+
+  SETU(calib_belt_router    ,  mm);
+  SETU(calib_belt_rinner    ,  mm);
+  SETU(calib_belt_separation,  mm);
 #undef SETU
 #undef SET
 
@@ -70,4 +78,14 @@ void messenger::set_seed(u64 s) {
 void messenger::set_start_id(u64 id) {
   s_.start_id = id;
   START_ID = id;
+}
+
+void messenger::set_calib_belt(std::string str) {
+  std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+
+  if (str==    "NONE") { g_.calib_belt =  CalibrationBelt::NONE    ; return; }
+  if (str=="STRAIGHT") { g_.calib_belt =  CalibrationBelt::STRAIGHT; return; }
+  if (str==  "SPIRAL") { g_.calib_belt =  CalibrationBelt::SPIRAL  ; return; }
+
+  G4Exception("[messenger::set_calib_belt]", "", FatalErrorInArgument, "Unknown value");
 }
