@@ -24,6 +24,11 @@ static const unsigned  LONGSTR = 300;
 using shortstr = char[SHORTSTR];
 using  longstr = char[ LONGSTR];
 
+enum class CalibrationBelt {
+  STRAIGHT,
+  SPIRAL,
+  NONE,
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Custom types
