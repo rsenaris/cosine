@@ -53,9 +53,9 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SETU(fc_ring_zpitch   ,  mm);
   SETU(fc_ring_width    ,  mm);
   SETU(fc_ring_thick    ,  mm);
-  SET (sipms_on_fp            );
-  SET ( ptfe_on_fp            );
-  SET (ptfe_on_walls          );
+  SET (sipms_on_fp           );
+  SET ( ptfe_on_fp           );
+  SET(ptfe_on_walls          );
 #undef SETU
 #undef SET
 
