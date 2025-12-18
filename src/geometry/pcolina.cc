@@ -1,3 +1,4 @@
+#include "geometry/calibration_belt.hh"
 #include "geometry/mesh.hh"
 #include "geometry/sipm_array.hh"
 #include "geometry/wire_array.hh"
@@ -44,7 +45,7 @@ auto pcolina(const geometry_config& g) {
   // auto wireframe   = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
   auto  white      = n4::vis_attributes().visible(true).color(G4Color::White());
   auto twhite      = n4::vis_attributes().visible(true).color(seethrough(G4Color::White()));
-  // auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
+  auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
   auto gray        = n4::vis_attributes().visible(true).color(G4Color::Gray());
   auto tred        = n4::vis_attributes().visible(true).color(seethrough(G4Color::Red(), 0.05));
   // auto frame       = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
@@ -191,22 +192,10 @@ auto pcolina(const geometry_config& g) {
     }
   }
 
-  if (g.calib_belt == CalibrationBelt::STRAIGHT) {
-    auto r = g.el_r()
-           + g.form_factor * (g.drift_length / 2 + g.fc_ring_width / 2)
-           + g.fc_ring_thick
-           + g.calib_belt_separation
-           + g.calib_belt_r;
-
-    auto tilt = std::atan(g.form_factor);
-    auto tube = n4::tubs("source_belt")
-      .r_inner(3 * mm)
-      .r_delta(1 * mm)
-      .place(steel)
-      .in(liquid)
-      .rotate_z(tilt)
-      .at({r, 0, g.neck_length + g.drift_length / 2})
-      .now();
+  switch (g.calib_belt) {
+    case CalibrationBelt::STRAIGHT: straight_calibration_belt(g, liquid, green); break;
+    case CalibrationBelt::SPIRAL  : break;
+    case CalibrationBelt::NONE    : break;
   }
 
   return n4::place(world).now();

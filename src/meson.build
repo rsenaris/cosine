@@ -46,6 +46,7 @@ cosine_lib_files    = [
  'materials/ptfe',
  'materials/silicon',
  'materials/steel',
+ 'geometry/calibration_belt',
  'geometry/pcolina',
  'geometry/mesh',
  'geometry/sipm_array',
