@@ -26,7 +26,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET(nparticles);
   SET(store_steps);
   SET(store_sens);
-  SET(store_interactions);
+  SET(store_sources);
 #undef SET
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, g_.VAR)

@@ -40,7 +40,7 @@ HighFive::CompoundType create_sensor_hit() {
 }
 REGISTER_HF_TYPE(SensorHit, create_sensor_hit)
 
-HighFive::CompoundType create_interaction() {
+HighFive::CompoundType create_source() {
   return {
     { "event", H(u64)},
     {     "x", H(f32)},
@@ -50,7 +50,7 @@ HighFive::CompoundType create_interaction() {
     {     "n", H(u32)},
   };
 }
-REGISTER_HF_TYPE(Interaction, create_interaction)
+REGISTER_HF_TYPE(Source, create_source)
 
 HighFive::CompoundType create_config() {
   return {

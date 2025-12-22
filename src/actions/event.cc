@@ -15,7 +15,7 @@ static EventCounter EVENT_COUNTER{};
 
 std::vector<SensorHit> SENSOR_HITS;
 
-static Interaction PRIMARIES;
+static Source PRIMARIES;
 
 std::function<void(const G4Event*)> count_event() {
   return [](const G4Event *) {
@@ -38,7 +38,7 @@ std::function<void(const G4Event*)> store_primaries() {
     e /= static_cast<f32>(n);
 
     auto event_no = START_ID + n4::event_number();
-    PRIMARIES = make_interaction(event_no, pos, e, n);
+    PRIMARIES = make_source(event_no, pos, e, n);
   };
 }
 
@@ -47,8 +47,8 @@ std::function<void(const G4Event*)> store_primaries() {
 std::function<void(const G4Event*)> store_event(const sim_config& s) {
   return [&s](const G4Event *) {
     auto writer = PERSISTENCY_MANAGER.get() -> writer();
-    if (s.store_steps       ) writer -> write_steps      (std::move(VOLUME_CHANGES));
-    if (s.store_sens        ) writer -> write_hits       (std::move(SENSOR_HITS));
-    if (s.store_interactions) writer -> write_interaction(std::move(PRIMARIES));
+    if (s.store_steps  ) writer -> write_steps (std::move(VOLUME_CHANGES));
+    if (s.store_sens   ) writer -> write_hits  (std::move(SENSOR_HITS));
+    if (s.store_sources) writer -> write_source(std::move(PRIMARIES));
   };
 }

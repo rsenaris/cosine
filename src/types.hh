@@ -67,7 +67,7 @@ struct SensorHit {
   f32 time;
 };
 
-struct Interaction {
+struct Source {
   u64 event;
   f32 x, y, z, e;
   u32 n;
@@ -84,12 +84,12 @@ SensorHit make_sensor_hit( u64
                          , u16
                          , f32);
 
-Interaction make_interaction( u64
-                            , const G4ThreeVector &
-                            , f32
-                            , u32);
+Source make_source( u64
+                  , const G4ThreeVector&
+                  , f32
+                  , u32);
 
-ConfPar make_confpar( const std::string &
-                    , const std::string &
-                    , const std::string &
+ConfPar make_confpar( const std::string&
+                    , const std::string&
+                    , const std::string&
                     );

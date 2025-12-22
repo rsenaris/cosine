@@ -54,7 +54,7 @@ n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_confi
     ;
 
   auto begin_event = count_event();
-  if (s.store_interactions) begin_event = join(begin_event, store_primaries());
+  if (s.store_sources) begin_event = join(begin_event, store_primaries());
 
   auto actions = (new n4::actions{gen})
     ->set((new n4::event_action{})

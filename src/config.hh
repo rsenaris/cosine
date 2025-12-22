@@ -18,9 +18,9 @@ struct sim_config {
   u64 seed = 1234567890;
   u64 start_id = START_ID;
 
-  bool store_steps        = false;
-  bool store_sens         = true;
-  bool store_interactions = true;
+  bool store_steps   = false;
+  bool store_sens    = true;
+  bool store_sources = true;
 
   static sim_config empty();
 

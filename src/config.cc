@@ -61,7 +61,7 @@ std::vector<ConfPar> sim_config::parameter_list() {
     UNITLESS(start_id),
     UNITLESS(store_steps),
     UNITLESS(store_sens),
-    UNITLESS(store_interactions),
+    UNITLESS(store_sources),
   };
 }
 
