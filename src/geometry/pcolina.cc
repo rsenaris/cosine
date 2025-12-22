@@ -194,7 +194,7 @@ auto pcolina(const geometry_config& g) {
 
   switch (g.calib_belt) {
     case CalibrationBelt::STRAIGHT: straight_calibration_belt(g, liquid, green); break;
-    case CalibrationBelt::SPIRAL  : break;
+    case CalibrationBelt::SPIRAL  :   spiral_calibration_belt(g, liquid, green); break;
     case CalibrationBelt::NONE    : break;
   }
 

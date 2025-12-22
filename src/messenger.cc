@@ -64,6 +64,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SETU(calib_belt_router    ,  mm);
   SETU(calib_belt_rinner    ,  mm);
   SETU(calib_belt_separation,  mm);
+  SET (calib_belt_loops          );
 #undef SETU
 #undef SET
 

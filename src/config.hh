@@ -64,6 +64,7 @@ struct geometry_config {
   f64 calib_belt_router;
   f64 calib_belt_rinner;
   f64 calib_belt_separation;
+  f64 calib_belt_loops;
 
 
   bool sipms_on_fp;
@@ -119,6 +120,7 @@ inline geometry_config geometry_config::colina() {
   .calib_belt_router     = 3 * mm,
   .calib_belt_rinner     = 2 * mm,
   .calib_belt_separation = 3 * mm,
+  .calib_belt_loops      = 2,
 
   .sipms_on_fp   = true,
   . ptfe_on_fp   = true,
