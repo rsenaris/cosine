@@ -56,7 +56,7 @@
 # Set colours, transparency and visibility
 
 #                              volume name  depth  visibility
-/vis/geometry/set/visibility      world       0       true
+#/vis/geometry/set/visibility      world       0       true
 
 #                        name  depth red green blue opacity
 #/vis/geometry/set/colour world   0    0    0    1     .3
