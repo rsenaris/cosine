@@ -15,15 +15,18 @@
 /sim/sipm_thick        1    mm
 /sim/sipm_gap          0.2  mm
 /sim/n_sipm_side       10       # array of NxN
-/sim/cath_thick        3 mm
-/sim/frame_thick_mesh  2 mm
-/sim/frame_thick_wires 4 mm
-/sim/frame_width       1 mm
-/sim/neck_length       10 mm
-/sim/fc_rings          8
-/sim/fc_ring_zpitch    30 mm
-/sim/fc_ring_width      5 mm
-/sim/fc_ring_thick      2 mm
+/sim/cath_thick          3 mm
+/sim/frame_thick_mesh    2 mm
+/sim/frame_thick_wires   4 mm
+/sim/frame_width         1 mm
+/sim/neck_length        10 mm
+/sim/fc_rings            8
+/sim/fc_ring_zpitch     30 mm
+/sim/fc_ring_width       5 mm
+/sim/fc_ring_thick       2 mm
+/sim/pillow_plate_thick  1 mm
+/sim/cryostat_wall_thick 3 mm
+/sim/d_ptfe_cryostat     4 mm
 
 /sim/calib_belt            STRAIGHT
 /sim/calib_belt_router     3 mm

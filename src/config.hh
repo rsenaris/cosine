@@ -59,6 +59,9 @@ struct geometry_config {
   f64 fc_ring_zpitch;
   f64 fc_ring_width;
   f64 fc_ring_thick;
+  f64 pillow_plate_thick;
+  f64 cryostat_wall_thick;
+  f64 d_ptfe_cryostat;
 
   CalibrationBelt calib_belt;
   f64 calib_belt_router;
@@ -115,6 +118,9 @@ inline geometry_config geometry_config::colina() {
   .fc_ring_zpitch        = 30 * mm,
   .fc_ring_width         =  5 * mm,
   .fc_ring_thick         =  2 * mm,
+  .pillow_plate_thick    =  1 * mm,
+  .cryostat_wall_thick   =  3 * mm,
+  .d_ptfe_cryostat       =  4 * mm,
 
   .calib_belt            = CalibrationBelt::NONE,
   .calib_belt_router     = 3 * mm,

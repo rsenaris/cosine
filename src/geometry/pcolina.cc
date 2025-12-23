@@ -45,8 +45,9 @@ auto pcolina(const geometry_config& g) {
   // auto wireframe   = n4::vis_attributes().visible(true).color(G4Color::White()).force_wireframe(true).line_width(5);
   auto  white      = n4::vis_attributes().visible(true).color(G4Color::White());
   auto twhite      = n4::vis_attributes().visible(true).color(seethrough(G4Color::White()));
-  auto green     = n4::vis_attributes().visible(true).color(G4Color::Green());
+  auto green       = n4::vis_attributes().visible(true).color(G4Color::Green());
   auto gray        = n4::vis_attributes().visible(true).color(G4Color::Gray());
+  auto tgray       = n4::vis_attributes().visible(true).color(seethrough(G4Color::Gray(), 0.3));
   auto tred        = n4::vis_attributes().visible(true).color(seethrough(G4Color::Red(), 0.05));
   // auto frame       = n4::vis_attributes().visible(true).color(G4Color::Grey ()).force_wireframe(true);
   //n4::place::check_overlaps_switch_on();
@@ -116,6 +117,32 @@ auto pcolina(const geometry_config& g) {
 
     new G4LogicalSkinSurface("cath_surface", ptfe_walls -> GetLogicalVolume(), ptfe_surface());
   }
+
+  auto cryo_wall = n4::cons("cryo_wall")
+      .r1_inner(g.  el_r() + g.d_ptfe_cryostat)
+      .r2_inner(g.cath_r() + g.d_ptfe_cryostat)
+      .r_delta(g.cryostat_wall_thick)
+      .z(g.drift_length)
+      .vis(tgray)
+      .place(steel)
+      .in(liquid)
+      .at_z(g.neck_length + g.drift_length/2)
+      .now();
+
+  new G4LogicalSkinSurface("cryowall surface", cryo_wall -> GetLogicalVolume(), steel_surface());
+
+  n4::cons("pillow_plate")
+      .r1_inner(g.  el_r() + g.d_ptfe_cryostat + g.cryostat_wall_thick)
+      .r2_inner(g.cath_r() + g.d_ptfe_cryostat + g.cryostat_wall_thick)
+      .r_delta(g.pillow_plate_thick)
+      .z(g.drift_length)
+      .vis(tgray)
+      .place(steel)
+      .in(liquid)
+      .at_z(g.neck_length + g.drift_length/2)
+      .now();
+
+
 
   auto wire_array = create_wire_array(g);
 
