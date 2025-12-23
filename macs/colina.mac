@@ -29,7 +29,6 @@
 /sim/d_ptfe_cryostat     4 mm
 
 /sim/calib_belt            STRAIGHT
-/sim/calib_belt_router     3 mm
-/sim/calib_belt_rinner     2 mm
+/sim/calib_belt_router     5 mm
+/sim/calib_belt_rinner     4 mm
 /sim/calib_belt_separation 3 mm
-/sim/calib_belt_separation 2

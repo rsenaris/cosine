@@ -7,37 +7,45 @@
 
 #include <G4ExtrudedSolid.hh>
 #include <G4SubtractionSolid.hh>
+#include <G4SystemOfUnits.hh>
 #include <G4PVPlacement.hh>
 
 #include <cmath>
 
 G4PVPlacement* straight_calibration_belt(const geometry_config& g, G4PVPlacement* liquid, n4::vis_attributes& attrs) {
+    auto tilt   = std::atan(g.form_factor);
+    auto steel  = steel_with_properties();
+    auto length = std::sqrt(1 + g.form_factor*g.form_factor) * g.drift_length;
+
+    // distance between wall and belt's axis
+    auto d = g.calib_belt_separation + g.calib_belt_router;
     auto r = g.el_r()
-           + g.form_factor * (g.drift_length / 2 + g.fc_ring_width / 2)
-           + g.fc_ring_thick
-           + g.calib_belt_separation
-           + g.calib_belt_router;
+           + g.wall_thick
+           + g.d_ptfe_cryostat
+           + g.cryostat_wall_thick
+           + d * std::cos(tilt)
+           + length/2 * std::sin(tilt);
+    auto z = g.neck_length
+           - d*std::sin(tilt)
+           + length/2 * std::cos(tilt);
 
-    auto tilt = std::atan(g.form_factor);
-
-    auto steel = steel_with_properties();
-
-    auto length = std::sqrt(1 + g.form_factor * g.form_factor) * g.drift_length;
     return n4::tubs("calibration_belt")
       .r_inner(g.calib_belt_rinner)
-      .r_delta(g.calib_belt_router)
+      .r      (g.calib_belt_router)
       .z(length)
       .vis(attrs)
       .place(steel)
       .in(liquid)
       .rotate_y(tilt)
-      .at({r, 0, g.neck_length + g.drift_length / 2})
+      .at({r, 0, z})
       .now();
 }
 
 G4ExtrudedSolid* spiral(f64 r_tube, const geometry_config& g, const std::string& name) {
   auto r0_spiral = g.el_r()
-                 + g.fc_ring_thick
+                 + g.wall_thick
+                 + g.d_ptfe_cryostat
+                 + g.cryostat_wall_thick
                  + g.calib_belt_separation
                  + g.calib_belt_router;
 
@@ -72,5 +80,4 @@ G4PVPlacement* spiral_calibration_belt(const geometry_config& g, G4PVPlacement* 
   return n4::place(logic)
     .in(liquid)
     .now();
-
 }

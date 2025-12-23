@@ -122,9 +122,8 @@ inline geometry_config geometry_config::colina() {
   .cryostat_wall_thick   =  3 * mm,
   .d_ptfe_cryostat       =  4 * mm,
 
-  .calib_belt            = CalibrationBelt::NONE,
-  .calib_belt_router     = 3 * mm,
-  .calib_belt_rinner     = 2 * mm,
+  .calib_belt_router     = 5 * mm,
+  .calib_belt_rinner     = 4 * mm,
   .calib_belt_separation = 3 * mm,
   .calib_belt_loops      = 2,
 
