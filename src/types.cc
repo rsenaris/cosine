@@ -33,6 +33,14 @@ SensorHit make_sensor_hit(u64 event, u16 sensor_id, f32 time) {
   return {event, sensor_id, time};
 }
 
+Track make_track(u64 event, u16 track_id, f32 time) {
+  return {event, track_id, time};
+}
+
+IonizationHit make_ionization_hit(u64 event, u16 track_id, f32 x, f32 y, f32 z, f32 e) {
+  return {event, track_id, x, y, z, e};
+}
+
 Source make_source(u64 event, const G4ThreeVector &v, f32 e, u32 n) {
   return { event
          , static_cast<f32>(v.x())

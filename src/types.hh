@@ -67,6 +67,18 @@ struct SensorHit {
   f32 time;
 };
 
+struct Track {
+  u64 event;
+  u16 track_id;
+  f32 time;
+};
+
+struct IonizationHit {
+  u64 event;
+  u16 track_id;
+  f32 x, y, z, e;
+};
+
 struct Source {
   u64 event;
   f32 x, y, z, e;
@@ -83,6 +95,17 @@ VolumeChange make_volume_change(       u64
 SensorHit make_sensor_hit( u64
                          , u16
                          , f32);
+
+Track make_track( u64
+                , u16
+                , f32);
+
+IonizationHit make_ionization_hit( u64
+                                 , u16
+                                 , f32
+                                 , f32
+                                 , f32
+                                 , f32);
 
 Source make_source( u64
                   , const G4ThreeVector&
