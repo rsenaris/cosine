@@ -40,6 +40,28 @@ HighFive::CompoundType create_sensor_hit() {
 }
 REGISTER_HF_TYPE(SensorHit, create_sensor_hit)
 
+HighFive::CompoundType create_track() {
+  return {
+    {    "event", H(u64)},
+    { "track_id", H(u16)},
+    {     "time", H(f32)},
+  };
+}
+REGISTER_HF_TYPE(Track, create_track)
+
+
+HighFive::CompoundType create_ionization_hit() {
+  return {
+    {    "event", H(u64)},
+    { "track_id", H(u16)},
+    {        "x", H(f32)},
+    {        "y", H(f32)},
+    {        "z", H(f32)},
+    {        "e", H(f32)},
+  };
+}
+REGISTER_HF_TYPE(IonizationHit, create_ionization_hit)
+
 HighFive::CompoundType create_source() {
   return {
     { "event", H(u64)},
