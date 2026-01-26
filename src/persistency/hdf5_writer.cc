@@ -48,6 +48,22 @@ void HDF5Writer::write_sens(std::vector<SensorHit>&& sens) {
   sens_writer_ -> write(std::move(sens));
 }
 
+void HDF5Writer::write_tracks(std::vector<Track>&& tracks) {
+  if (!track_writer_) {
+    auto dataset = create_dataset("MC", "tracks", create_track(), LARGE_CHUNK_SIZE, true);
+    track_writer_ = std::make_unique<BufferedWriter<Track>>(std::move(dataset), LARGE_CHUNK_SIZE);
+  }
+  track_writer_ -> write(std::move(tracks));
+}
+
+void HDF5Writer::write_ihits(std::vector<IonizationHit>&& ihits) {
+  if (!ihit_writer_) {
+    auto dataset = create_dataset("MC", "ionization_hits", create_ionization_hit(), LARGE_CHUNK_SIZE, true);
+    ihit_writer_ = std::make_unique<BufferedWriter<IonizationHit>>(std::move(dataset), LARGE_CHUNK_SIZE);
+  }
+  ihit_writer_ -> write(std::move(ihits));
+}
+
 void HDF5Writer::write_source(Source&& sources) {
   if (!source_writer_) {
     auto dataset = create_dataset("MC", "sources", create_source(), LARGE_CHUNK_SIZE, true);
