@@ -21,6 +21,7 @@ struct sim_config {
   bool store_steps   = false;
   bool store_sens    = true;
   bool store_sources = true;
+  bool store_ihits   = true;
 
   static sim_config empty();
 

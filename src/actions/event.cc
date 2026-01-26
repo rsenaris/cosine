@@ -2,9 +2,11 @@
 #include "actions/store_volume_crossing.hh"
 #include "config.hh"
 #include "persistency/manager.hh"
+#include "sensitive/active.hh"
 #include "sensitive/sipm.hh"
 #include "types.hh"
 
+#include <G4Event.hh>
 #include <G4PrimaryVertex.hh>
 
 #include <n4-inspect.hh>
@@ -42,13 +44,12 @@ std::function<void(const G4Event*)> store_primaries() {
   };
 }
 
-
-
 std::function<void(const G4Event*)> store_event(const sim_config& s) {
-  return [&s](const G4Event *) {
+  return [&s](const G4Event* evt) {
     auto writer = PERSISTENCY_MANAGER.get() -> writer();
     if (s.store_steps  ) writer -> write_steps (std::move(VOLUME_CHANGES));
     if (s.store_sens   ) writer -> write_sens  (std::move(SENSOR_HITS));
     if (s.store_sources) writer -> write_source(std::move(PRIMARIES));
+    if (s.store_ihits  ) writer -> write_ihits (std::move(IONIZATION_HITS));
   };
 }
