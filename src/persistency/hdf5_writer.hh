@@ -73,8 +73,9 @@ private:
   std::unique_ptr<BufferedWriter<IonizationHit>>       ihit_writer_;
   std::unique_ptr<BufferedWriter<Source>>            source_writer_;
   std::unique_ptr<BufferedWriter<ConfPar>>           config_writer_;
-  std::unique_ptr<HighFive::File>               file_;
-  std::string&                                  filename_;
+
+  std::unique_ptr<HighFive::File> file_;
+  std::string&                    filename_;
 
   HighFive::DataSet create_dataset( std::string            const& group_name
                                   , std::string            const&  node_name
