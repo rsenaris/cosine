@@ -48,7 +48,7 @@ std::function<void(const G4Event*)> store_event(const sim_config& s) {
   return [&s](const G4Event *) {
     auto writer = PERSISTENCY_MANAGER.get() -> writer();
     if (s.store_steps  ) writer -> write_steps (std::move(VOLUME_CHANGES));
-    if (s.store_sens   ) writer -> write_hits  (std::move(SENSOR_HITS));
+    if (s.store_sens   ) writer -> write_sens  (std::move(SENSOR_HITS));
     if (s.store_sources) writer -> write_source(std::move(PRIMARIES));
   };
 }

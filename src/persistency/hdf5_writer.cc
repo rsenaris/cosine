@@ -40,12 +40,12 @@ void HDF5Writer::write_steps(std::vector<VolumeChange>&& steps) {
   vol_change_writer_ -> write(std::move(steps));
 }
 
-void HDF5Writer::write_hits(std::vector<SensorHit>&& hits) {
+void HDF5Writer::write_sens(std::vector<SensorHit>&& sens) {
   if (!sens_writer_) {
     auto dataset = create_dataset("MC", "sensor_hits", create_sensor_hit(), LARGE_CHUNK_SIZE, true);
     sens_writer_ = std::make_unique<BufferedWriter<SensorHit>>(std::move(dataset), LARGE_CHUNK_SIZE);
   }
-  sens_writer_ -> write(std::move(hits));
+  sens_writer_ -> write(std::move(sens));
 }
 
 void HDF5Writer::write_source(Source&& sources) {

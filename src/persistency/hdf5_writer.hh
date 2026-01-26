@@ -60,7 +60,7 @@ public:
   ~HDF5Writer();
 
   void write_steps (std::vector<VolumeChange>&& steps);
-  void write_hits  (std::vector<SensorHit   >&& hits);
+  void write_sens  (std::vector<SensorHit   >&& sens);
   void write_source(                   Source&& sources);
   void write_config(std::vector<ConfPar     >&& confs);
 
