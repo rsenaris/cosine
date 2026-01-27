@@ -1,5 +1,6 @@
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
+#include "actions/tracking.hh"
 #include "config.hh"
 #include "persistency/manager.hh"
 #include "sensitive/active.hh"
@@ -10,8 +11,6 @@
 #include <G4PrimaryVertex.hh>
 
 #include <n4-inspect.hh>
-
-#include <vector>
 
 static EventCounter EVENT_COUNTER{};
 
@@ -49,5 +48,6 @@ std::function<void(const G4Event*)> store_event(const sim_config& s) {
     if (s.store_sens   ) writer -> write_sens  (std::move(SENSOR_HITS));
     if (s.store_sources) writer -> write_source(std::move(PRIMARIES));
     if (s.store_ihits  ) writer -> write_ihits (std::move(IONIZATION_HITS));
+    if (s.store_tracks ) writer -> write_tracks(std::move(TRACKS));
   };
 }
