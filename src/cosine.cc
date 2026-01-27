@@ -12,9 +12,7 @@
 #include "actions/store_volume_crossing.hh"
 #include "actions/tracking.hh"
 #include "config.hh"
-#include "generators/generic.hh"
-#include "generators/position.hh"
-#include "generators/scalar.hh"
+#include "generators/selector.hh"
 #include "geometry/pcolina.hh"
 #include "messenger.hh"
 #include "persistency/manager.hh"
@@ -32,54 +30,11 @@
 
 n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_config& g) {
 
-  auto isotropic = std::make_unique<n4::random::direction>();
-  auto randompol = std::make_unique<n4::random::direction>();
-
-  generic_generator* gen{nullptr};
-
-  if (s.generator == "s1") {
-    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
-    pos -> offset_z(g.neck_length + g.drift_length / 2);
-
-    gen = (new generic_generator("opticalphoton", nphot))
-      -> pos(std::move(pos))
-      -> dir(std::make_unique<n4::random::direction>())
-      -> pol(std::make_unique<n4::random::direction>())
-      //    -> ene(std::make_unique<lxe_scintillation>())
-      -> fix_ene(7.21 * eV)
-    ;
-  }
-  else if (s.generator == "s2") {
-    auto pos = std::make_unique<el_generator>(g, 40 * um);
-    pos -> offset_z(-g.mesh_thick -g.d_gate_wire);
-
-    gen = (new generic_generator("opticalphoton", nphot))
-      -> pos(std::move(pos))
-      -> dir(std::make_unique<n4::random::direction>())
-      -> pol(std::make_unique<n4::random::direction>())
-      //    -> ene(std::make_unique<lxe_scintillation>())
-      -> fix_ene(7.21 * eV)
-    ;
-  }
-  else if (s.generator == "kr") {
-    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
-    pos -> offset_z(g.neck_length + g.drift_length / 2);
-
-    gen = (new generic_generator("e-", 1))
-      -> pos(std::move(pos))
-      -> dir(std::make_unique<n4::random::direction>())
-      -> pol(std::make_unique<n4::random::direction>())
-      -> fix_ene(41.5585 * keV)
-    ;
-  }
-  else {
-    G4Exception("[create_actions]", "", FatalErrorInArgument, "Unknown generator");
-  }
-
   auto begin_event = count_event();
   if (s.store_sources) begin_event = join(begin_event, store_primaries());
 
-  auto actions = (new n4::actions{gen})
+  auto gen     = select_generator(s, g);
+  auto actions = (new n4::actions{gen.release()})
     ->set((new n4::event_action{})
           ->begin(begin_event)
           ->end(store_event(s)));
