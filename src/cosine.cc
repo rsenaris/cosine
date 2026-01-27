@@ -31,27 +31,49 @@
 
 n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_config& g) {
 
-  std::unique_ptr<random_position> pos;
+  auto isotropic = std::make_unique<n4::random::direction>();
+  auto randompol = std::make_unique<n4::random::direction>();
+
+  generic_generator* gen{nullptr};
 
   if (s.generator == "s1") {
-    pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
-    pos -> offset_z(g.neck_length + g.drift_length/2);
+    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
+    pos -> offset_z(g.neck_length + g.drift_length / 2);
+
+    gen = (new generic_generator("opticalphoton", nphot))
+      -> pos(std::move(pos))
+      -> dir(std::make_unique<n4::random::direction>())
+      -> pol(std::make_unique<n4::random::direction>())
+      //    -> ene(std::make_unique<lxe_scintillation>())
+      -> fix_ene(7.21 * eV)
+    ;
   }
   else if (s.generator == "s2") {
-    pos = std::make_unique<el_generator>(g, 40 * um);
+    auto pos = std::make_unique<el_generator>(g, 40 * um);
     pos -> offset_z(-g.mesh_thick -g.d_gate_wire);
+
+    gen = (new generic_generator("opticalphoton", nphot))
+      -> pos(std::move(pos))
+      -> dir(std::make_unique<n4::random::direction>())
+      -> pol(std::make_unique<n4::random::direction>())
+      //    -> ene(std::make_unique<lxe_scintillation>())
+      -> fix_ene(7.21 * eV)
+    ;
+  }
+  else if (s.generator == "kr") {
+    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
+    pos -> offset_z(g.neck_length + g.drift_length / 2);
+
+    gen = (new generic_generator("e-", 1))
+      -> pos(std::move(pos))
+      -> dir(std::make_unique<n4::random::direction>())
+      -> pol(std::make_unique<n4::random::direction>())
+      -> fix_ene(41.5585 * keV)
+    ;
   }
   else {
     G4Exception("[create_actions]", "", FatalErrorInArgument, "Unknown generator");
   }
-
-  auto gen = (new generic_generator("opticalphoton", nphot))
-    -> pos(std::move(pos))
-    -> dir(std::make_unique<n4::random::direction>())
-    -> pol(std::make_unique<n4::random::direction>())
-//    -> ene(std::make_unique<lxe_scintillation>())
-    -> fix_ene(7.21 * eV)
-    ;
 
   auto begin_event = count_event();
   if (s.store_sources) begin_event = join(begin_event, store_primaries());
