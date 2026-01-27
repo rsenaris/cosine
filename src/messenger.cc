@@ -27,6 +27,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET(store_steps);
   SET(store_sens);
   SET(store_ihits);
+  SET(store_tracks);
   SET(store_sources);
 #undef SET
 

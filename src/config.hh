@@ -22,6 +22,7 @@ struct sim_config {
   bool store_sens    = true;
   bool store_sources = true;
   bool store_ihits   = true;
+  bool store_tracks  = true;
 
   static sim_config empty();
 
