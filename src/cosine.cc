@@ -10,6 +10,7 @@
 
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
+#include "actions/tracking.hh"
 #include "config.hh"
 #include "generators/generic.hh"
 #include "generators/position.hh"
@@ -83,8 +84,12 @@ n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_confi
           ->begin(begin_event)
           ->end(store_event(s)));
 
+  if (s.store_tracks)
+    actions = actions -> set((new n4::tracking_action{}) -> pre(store_tracks()));
+
   if (s.store_steps)
-    actions = actions->set(new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
+    actions = actions -> set(new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
+
   return actions;
 }
 
