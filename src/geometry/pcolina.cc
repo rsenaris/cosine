@@ -5,6 +5,7 @@
 #include "materials/LXe.hh"
 #include "materials/ptfe.hh"
 #include "materials/steel.hh"
+#include "sensitive/active.hh"
 
 
 #include <G4Color.hh>
@@ -63,6 +64,7 @@ auto pcolina(const geometry_config& g) {
     .cube(1.1 * g.cath_diam())
     .z(liquid_length)
     .vis(tred)
+    .sensitive(sensitive_noble().release())
     .place(lxe)
     .in(world)
     .now();
