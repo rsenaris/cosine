@@ -15,8 +15,6 @@
 
 static EventCounter EVENT_COUNTER{};
 
-std::vector<SensorHit> SENSOR_HITS;
-
 static Source PRIMARIES;
 
 std::function<void(const G4Event*)> count_event() {

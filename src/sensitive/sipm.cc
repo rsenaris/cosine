@@ -15,6 +15,8 @@
 #include <n4-random.hh>
 #include <n4-sensitive.hh>
 
+std::vector<SensorHit> SENSOR_HITS;
+
 G4int get_sensor_id(const G4VTouchable* touch) {
   /// The sensors are placed in a support volume. The support might be
   /// replicated multiple times. Thus, we need to combine this information to
