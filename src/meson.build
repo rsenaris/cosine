@@ -37,7 +37,9 @@ cosine_lib_files    = [
  'actions/store_volume_crossing',
  'actions/event',
  'actions/tracking',
- 'config',
+ 'core/config',
+ 'core/messenger',
+ 'core/types',
  'generators/geantinos',
  'generators/generic',
  'generators/pointlike',
@@ -53,15 +55,13 @@ cosine_lib_files    = [
  'geometry/mesh',
  'geometry/sipm_array',
  'geometry/wire_array',
- 'messenger',
  'persistency/hdf5_types',
  'persistency/hdf5_writer',
  'persistency/manager',
  'sensitive/active',
  'sensitive/sipm',
- 'types',
 ]
-cosine_lib_includes = ['common.hh', 'utils.hh']
+cosine_lib_includes = ['core/common.hh', 'core/utils.hh']
 cosine_lib_sources  = []
 foreach f : cosine_lib_files
   cosine_lib_includes += [f + '.hh']
