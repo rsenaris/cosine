@@ -1,4 +1,5 @@
 #include "core/config.hh"
+#include "core/symbols.hh"
 #include "geometry/calibration_belt.hh"
 #include "geometry/mesh.hh"
 #include "geometry/sipm_array.hh"

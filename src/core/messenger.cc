@@ -87,12 +87,6 @@ void messenger::set_start_id(u64 id) {
   START_ID = id;
 }
 
-void messenger::set_calib_belt(std::string str) {
-  std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-
-  if (str==    "NONE") { g_.calib_belt =  CalibrationBelt::NONE    ; return; }
-  if (str=="STRAIGHT") { g_.calib_belt =  CalibrationBelt::STRAIGHT; return; }
-  if (str==  "SPIRAL") { g_.calib_belt =  CalibrationBelt::SPIRAL  ; return; }
-
-  G4Exception("[messenger::set_calib_belt]", "", FatalErrorInArgument, "Unknown value");
+void messenger::set_calib_belt(std::string s) {
+  g_.calib_belt = from_string(s);
 }
