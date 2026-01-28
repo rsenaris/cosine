@@ -1,5 +1,5 @@
+#include "core/types.hh"
 #include "persistency/hdf5_types.hh"
-#include "types.hh"
 
 #define H(TYPE) HighFive::AtomicType<TYPE>{}
 

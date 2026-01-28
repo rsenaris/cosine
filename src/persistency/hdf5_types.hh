@@ -1,7 +1,7 @@
 #pragma once
 
-#include "config.hh"
-#include "types.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 
 #include <highfive/H5DataType.hpp>
 

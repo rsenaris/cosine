@@ -1,7 +1,7 @@
-#include "config.hh"
+#include "core/config.hh"
 #include "geometry/wire_array.hh"
 #include "materials/steel.hh"
-#include "utils.hh"
+#include "core/utils.hh"
 
 #include <G4LogicalSkinSurface.hh>
 #include <G4LogicalVolume.hh>

@@ -1,6 +1,6 @@
+#include "core/types.hh"
 #include "generators/scalar.hh"
 #include "materials/LXe.hh"
-#include "types.hh"
 
 #include <G4Exception.hh>
 #include <G4ExceptionSeverity.hh>

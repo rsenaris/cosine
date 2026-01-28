@@ -1,12 +1,12 @@
-#include "common.hh"
-#include "persistency/hdf5_writer.hh"
-#include "config.hh"
+#include "core/common.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 #include "persistency/hdf5_types.hh"
+#include "persistency/hdf5_writer.hh"
 
 #include <G4ThreeVector.hh>
 
 #include "highfive/H5PropertyList.hpp"
-#include "types.hh"
 #include <highfive/H5DataSpace.hpp>
 #include <highfive/H5DataType.hpp>
 #include <highfive/H5File.hpp>

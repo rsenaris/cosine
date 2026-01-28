@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config.hh"
+#include "core/config.hh"
 
 #include <n4-shape.hh>
 #include <n4-vis-attributes.hh>

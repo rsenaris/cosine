@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config.hh"
+#include "core/config.hh"
 
 #include <G4PVPlacement.hh>
 

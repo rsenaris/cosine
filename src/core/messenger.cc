@@ -1,6 +1,7 @@
-#include "config.hh"
-#include "messenger.hh"
-#include "types.hh"
+#include "core/config.hh"
+#include "core/messenger.hh"
+#include "core/symbols.hh"
+#include "core/types.hh"
 
 #include <G4Exception.hh>
 #include <G4GenericMessenger.hh>

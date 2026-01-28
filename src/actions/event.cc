@@ -1,11 +1,11 @@
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
 #include "actions/tracking.hh"
-#include "config.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 #include "persistency/manager.hh"
 #include "sensitive/active.hh"
 #include "sensitive/sipm.hh"
-#include "types.hh"
 
 #include <G4Event.hh>
 #include <G4PrimaryVertex.hh>

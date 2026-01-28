@@ -1,3 +1,4 @@
+#include "core/config.hh"
 #include "geometry/calibration_belt.hh"
 #include "geometry/mesh.hh"
 #include "geometry/sipm_array.hh"
@@ -22,7 +23,6 @@
 #include <n4-volume.hh>
 #include <n4-vis-attributes.hh>
 
-#include "config.hh"
 
 auto pcolina(const geometry_config& g) {
   auto full_neck_length = g.neck_length

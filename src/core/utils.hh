@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.hh"
+#include "core/types.hh"
 
 #include <G4StepPoint.hh>
 

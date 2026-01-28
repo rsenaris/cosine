@@ -1,4 +1,4 @@
-#include "common.hh"
+#include "core/common.hh"
 #include "materials/ptfe.hh"
 
 #include <G4OpticalSurface.hh>

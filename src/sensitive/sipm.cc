@@ -1,8 +1,8 @@
 
-#include "common.hh"
-#include "config.hh"
+#include "core/common.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 #include "materials/silicon.hh"
-#include "types.hh"
 #include "sensitive/sipm.hh"
 
 #include <G4HCofThisEvent.hh>

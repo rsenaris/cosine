@@ -1,5 +1,5 @@
 #include "geometry/calibration_belt.hh"
-#include "config.hh"
+#include "core/config.hh"
 #include "materials/steel.hh"
 
 #include <n4-vis-attributes.hh>

@@ -11,10 +11,11 @@
 #include "actions/event.hh"
 #include "actions/store_volume_crossing.hh"
 #include "actions/tracking.hh"
-#include "config.hh"
+#include "core/config.hh"
+#include "core/messenger.hh"
+#include "core/utils.hh"
 #include "generators/selector.hh"
 #include "geometry/pcolina.hh"
-#include "messenger.hh"
 #include "persistency/manager.hh"
 
 #include <chrono>
@@ -26,7 +27,6 @@
 #include <cstdlib>
 #include <memory>
 
-#include "utils.hh"
 
 n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_config& g) {
 

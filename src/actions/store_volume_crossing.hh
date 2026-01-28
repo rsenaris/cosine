@@ -1,6 +1,7 @@
 #pragma once
 
-#include "types.hh"
+#include "core/types.hh"
+
 #include <G4Step.hh>
 
 #include <functional>

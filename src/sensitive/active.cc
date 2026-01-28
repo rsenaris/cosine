@@ -1,8 +1,8 @@
 
-#include "common.hh"
-#include "config.hh"
+#include "core/common.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 #include "sensitive/active.hh"
-#include "types.hh"
 
 #include <G4OpticalPhoton.hh>
 #include <G4ParticleDefinition.hh>

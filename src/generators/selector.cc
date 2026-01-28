@@ -1,4 +1,4 @@
-#include "config.hh"
+#include "core/config.hh"
 #include "generators/generic.hh"
 #include "generators/selector.hh"
 

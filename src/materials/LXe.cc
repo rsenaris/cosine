@@ -1,4 +1,4 @@
-#include "common.hh"
+#include "core/common.hh"
 #include "materials/LXe.hh"
 
 #include <G4SystemOfUnits.hh> // physical units such as `m` for metre

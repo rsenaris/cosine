@@ -9,11 +9,11 @@
 #include <G4LogicalBorderSurface.hh>
 #include <G4SurfaceProperty.hh>
 
-#include "common.hh"
+#include "core/common.hh"
+#include "core/utils.hh"
 #include "generators/generic.hh"
 #include "materials/LXe.hh"
 #include "materials/silicon.hh"
-#include "utils.hh"
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>

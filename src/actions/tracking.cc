@@ -1,5 +1,5 @@
 #include "actions/tracking.hh"
-#include "types.hh"
+#include "core/types.hh"
 
 #include <G4Track.hh>
 

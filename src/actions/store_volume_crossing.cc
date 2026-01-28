@@ -1,7 +1,7 @@
 #include "actions/store_volume_crossing.hh"
-#include "config.hh"
-#include "types.hh"
-#include "utils.hh"
+#include "core/config.hh"
+#include "core/types.hh"
+#include "core/utils.hh"
 
 #include <n4-inspect.hh>
 

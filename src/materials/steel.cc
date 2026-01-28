@@ -1,4 +1,4 @@
-#include "common.hh"
+#include "core/common.hh"
 #include "materials/steel.hh"
 
 #include <G4MaterialPropertiesTable.hh>

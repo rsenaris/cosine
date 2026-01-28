@@ -1,5 +1,5 @@
-#include "config.hh"
-#include "types.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 
 #include <G4Exception.hh>
 #include <G4ExceptionSeverity.hh>

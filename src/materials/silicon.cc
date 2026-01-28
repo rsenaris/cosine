@@ -1,4 +1,4 @@
-#include "types.hh"
+#include "core/types.hh"
 #include "materials/silicon.hh"
 
 #include <G4SystemOfUnits.hh>

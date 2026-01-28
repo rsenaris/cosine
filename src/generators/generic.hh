@@ -1,8 +1,8 @@
 #pragma once
 
+#include "core/types.hh"
 #include "generators/position.hh"
 #include "generators/scalar.hh"
-#include "types.hh"
 
 #include <G4Event.hh>
 #include <G4PrimaryVertex.hh>

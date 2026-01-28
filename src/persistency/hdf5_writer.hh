@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common.hh"
-#include "config.hh"
-#include  "types.hh"
+#include "core/common.hh"
+#include "core/config.hh"
+#include "core/types.hh"
 
 #include <G4Types.hh>
 #include <G4VPersistencyManager.hh>

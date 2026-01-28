@@ -1,4 +1,4 @@
-#include "config.hh"
+#include "core/config.hh"
 #include "generators/position.hh"
 
 #include <G4ThreeVector.hh>
