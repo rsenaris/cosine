@@ -39,6 +39,7 @@ cosine_lib_files    = [
  'actions/tracking',
  'core/config',
  'core/messenger',
+ 'core/symbols',
  'core/types',
  'generators/geantinos',
  'generators/generic',
