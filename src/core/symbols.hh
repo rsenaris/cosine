@@ -2,9 +2,13 @@
 
 #include <string>
 
-#define DECLARE_STR(TYPE)                 \
-    std::string   to_string(TYPE);        \
-    TYPE        from_string(std::string);
+template <typename T>
+T from_string(std::string);
+
+#define DECLARE_STR(TYPE)                       \
+    std::string   to_string(TYPE);              \
+    template <>                                 \
+    TYPE        from_string<TYPE>(std::string);
 
 
 enum class CalibrationBelt {

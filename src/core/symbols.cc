@@ -21,7 +21,8 @@ std::string to_string(CalibrationBelt x) {
   return "";
 }
 
-CalibrationBelt from_string(std::string s) {
+template <>
+CalibrationBelt from_string<CalibrationBelt>(std::string s) {
   // always uppercase
   std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 

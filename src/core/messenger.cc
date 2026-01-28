@@ -88,5 +88,5 @@ void messenger::set_start_id(u64 id) {
 }
 
 void messenger::set_calib_belt(std::string s) {
-  g_.calib_belt = from_string(s);
+  g_.calib_belt = from_string<CalibrationBelt>(s);
 }
