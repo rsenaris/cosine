@@ -19,4 +19,11 @@ enum class CalibrationBelt {
 DECLARE_STR(CalibrationBelt)
 
 
+enum class EventGenerator {
+  S1,
+  S2,
+  KR,
+};
+DECLARE_STR(EventGenerator)
+
 #undef TO_FROM_STR
