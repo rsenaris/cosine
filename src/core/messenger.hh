@@ -15,6 +15,7 @@ struct messenger {
   void set_seed      (u64);
   void set_start_id  (u64);
   void set_calib_belt(std::string);
+  void set_generator (std::string);
 
 private:
   sim_config& s_;

@@ -12,7 +12,8 @@ extern u64 START_ID;
 
 struct sim_config {
   std::string outputfile = "output_file.h5";
-  std::string generator;
+  EventGenerator generator;
+
   u32 nparticles;
   u64 seed = 1234567890;
   u64 start_id = START_ID;
@@ -30,7 +31,7 @@ struct sim_config {
 };
 
 inline sim_config sim_config::empty() {
-  return {.generator="none", .nparticles=0};
+  return {.generator=EventGenerator::S1, .nparticles=0};
 }
 
 struct geometry_config {

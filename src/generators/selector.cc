@@ -1,4 +1,5 @@
 #include "core/config.hh"
+#include "core/symbols.hh"
 #include "generators/generic.hh"
 #include "generators/selector.hh"
 
@@ -15,7 +16,9 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
 
   G4VUserPrimaryGeneratorAction* gen{nullptr};
 
-  if (s.generator == "s1") {
+  switch (s.generator) {
+
+  case EventGenerator::S1: {
     auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
     pos -> offset_z(g.neck_length + g.drift_length / 2);
 
@@ -26,8 +29,9 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       //    -> ene(std::make_unique<lxe_scintillation>())
       -> fix_ene(7.21 * eV)
     ;
+    break;
   }
-  else if (s.generator == "s2") {
+  case EventGenerator::S2: {
     auto pos = std::make_unique<el_generator>(g, 40 * um);
     pos -> offset_z(-g.mesh_thick -g.d_gate_wire);
 
@@ -38,8 +42,10 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       //    -> ene(std::make_unique<lxe_scintillation>())
       -> fix_ene(7.21 * eV)
     ;
+    break;
   }
-  else if (s.generator == "kr") {
+
+  case EventGenerator::KR: {
     auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
     pos -> offset_z(g.neck_length + g.drift_length / 2);
 
@@ -49,9 +55,8 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       -> pol(std::make_unique<n4::random::direction>())
       -> fix_ene(41.5585 * keV)
     ;
+    break;
   }
-  else {
-    G4Exception("[create_actions]", "", FatalErrorInArgument, "Unknown generator");
   }
 
   // Repeating the return type for the compiler, who was otherwise unsure

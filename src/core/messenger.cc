@@ -20,10 +20,10 @@ messenger::messenger(sim_config& s, geometry_config& g)
   msg_ -> DeclareMethod  ("seed"      , &messenger::set_seed      , "Set the random seed");
   msg_ -> DeclareMethod  ("start_id"  , &messenger::set_start_id  , "Set the random seed");
   msg_ -> DeclareMethod  ("calib_belt", &messenger::set_calib_belt, "Set the calibration belt shape");
+  msg_ -> DeclareMethod  ("generator" , &messenger::set_generator , "Set the generator");
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
   SET(outputfile);
-  SET(generator);
   SET(nparticles);
   SET(store_steps);
   SET(store_sens);
@@ -89,4 +89,8 @@ void messenger::set_start_id(u64 id) {
 
 void messenger::set_calib_belt(std::string s) {
   g_.calib_belt = from_string<CalibrationBelt>(s);
+}
+
+void messenger::set_generator(std::string s) {
+  s_.generator = from_string<EventGenerator>(s);
 }
