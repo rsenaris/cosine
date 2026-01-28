@@ -6,7 +6,6 @@
 
 #include <G4VUserPrimaryGeneratorAction.hh>
 
-#include <cstring>
 #include <memory>
 
 

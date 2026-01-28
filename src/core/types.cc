@@ -1,6 +1,6 @@
 #include "core/types.hh"
 
-#include <cstring>
+#include <string>
 
 void copy_str(char *to, const G4String &from, size_t n) {
   memset(to,   0, n);

@@ -12,9 +12,9 @@
 #include <highfive/H5File.hpp>
 #include <highfive/H5Group.hpp>
 
-#include <cstring>
 #include <memory>
 #include <stdexcept>
+#include <string>
 
 using namespace HighFive;
 
