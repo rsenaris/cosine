@@ -95,6 +95,15 @@ std::vector<ConfPar> geometry_config::parameter_list() {
     WITHUNIT(fc_ring_zpitch, mm),
     WITHUNIT(fc_ring_width, mm),
     WITHUNIT(fc_ring_thick, mm),
+    WITHUNIT(pillow_plate_thick, mm),
+    WITHUNIT(cryostat_wall_thick, mm),
+    WITHUNIT(d_ptfe_cryostat, mm),
+
+    UNITLESS(calib_belt),
+    WITHUNIT(calib_belt_router, mm),
+    WITHUNIT(calib_belt_rinner, mm),
+    WITHUNIT(calib_belt_separation, mm),
+    UNITLESS(calib_belt_loops),
 
     UNITLESS(  sipms_on_fp),
     UNITLESS(   ptfe_on_fp),
