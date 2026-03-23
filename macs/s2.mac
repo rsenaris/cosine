@@ -1,2 +1,8 @@
 /sim/generator s2
 /sim/nparticles 6500 # ~5900/15.6 * 17
+
+/sim/store_steps   false
+/sim/store_sens     true
+/sim/store_ihits   false
+/sim/store_tracks  false
+/sim/store_sources  true
