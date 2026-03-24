@@ -23,6 +23,7 @@ enum class EventGenerator {
   S1,
   S2,
   KR,
+  FE,
 };
 DECLARE_STR(EventGenerator)
 
