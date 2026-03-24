@@ -1,0 +1,7 @@
+/sim/generator fe
+
+/sim/store_steps   false
+/sim/store_sens     true
+/sim/store_ihits    true
+/sim/store_tracks   true
+/sim/store_sources  true
