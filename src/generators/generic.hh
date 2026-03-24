@@ -20,6 +20,8 @@
 
 struct generic_generator : G4VUserPrimaryGeneratorAction {
    generic_generator(const G4String &particle_name, u32 nparticles);
+   generic_generator(u32 atomic_number, u32 mass_number, f32 energy_level, u32 nparticles);
+   generic_generator(G4ParticleDefinition* particle, u32 nparticles) : particle_(particle), nparticles_(nparticles) {}
   ~generic_generator() = default;
 
   G4PrimaryVertex* generate_vertex() const;

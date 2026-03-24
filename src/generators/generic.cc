@@ -1,5 +1,7 @@
 #include "generators/generic.hh"
 
+#include <G4IonTable.hh>
+
 #include <n4-inspect.hh>
 
 generic_generator::generic_generator(const G4String& particle_name, u32 nparticles)
@@ -7,6 +9,12 @@ generic_generator::generic_generator(const G4String& particle_name, u32 nparticl
   , nparticles_(nparticles)
 {
 }
+
+generic_generator::generic_generator(u32 atomic_number, u32 mass_number,
+                                     f32 energy_level, u32 nparticles)
+  : particle_( G4IonTable::GetIonTable() -> GetIon(atomic_number, mass_number, energy_level))
+  , nparticles_(nparticles)
+{}
 
 
 G4PrimaryVertex* generic_generator::generate_vertex() const {
