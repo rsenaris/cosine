@@ -75,17 +75,21 @@ G4MaterialPropertiesTable* LXe_mpt() {
   auto [ri_energies, ri_values] = n4::interpolate(LXe_refractive_index, 200, OPTPHOT_MIN_E, OPTPHOT_MAX_E);
 
   return n4::material_properties()
-    .add("RINDEX", ri_energies, ri_values)
-    .add("RESOLUTIONSCALE"   ,     1        )
-    .NEW("YIELDRATIO"        ,     0.03     )
-    .add("SCINTILLATIONYIELD", 58708   / MeV)
-    .NEW("RAYLEIGH"          ,    36   * cm )
-    .NEW("FASTTIMECONSTANT"  ,     2   * ns )
-    .NEW("SLOWTIMECONSTANT"  ,    43.5 * ns )
-    .NEW("ATTACHMENT"        ,  1000   * ms )
-    .NEW("FASTCOMPONENT", sc_energies, sc_values)
-    .NEW("SLOWCOMPONENT", sc_energies, sc_values)
-    .add("ABSLENGTH", {OPTPHOT_MIN_E, OPTPHOT_MAX_E}, {NO_ABSORPTION, NO_ABSORPTION})
+    .add("RINDEX"                     , ri_energies, ri_values)
+    .add("ABSLENGTH"                  , OPTPHOT_E_RANGE, {NO_ABSORPTION, NO_ABSORPTION})
+    .add("RESOLUTIONSCALE"            ,     1        )
+    .NEW("YIELDRATIO"                 ,     0.03     )
+    .NEW("RAYLEIGH"                   ,    36   * cm )
+    .NEW("ATTACHMENT"                 ,  1000   * ms )
+
+    .add("SCINTILLATIONYIELD"         , 58708   / MeV)
+    .add("SCINTILLATIONCOMPONENT1"    , sc_energies, sc_values ) // spectrum
+    .add("SCINTILLATIONCOMPONENT2"    , sc_energies, sc_values ) // spectrum
+    .add("SCINTILLATIONTIMECONSTANT1" ,  2.0 * ns    )
+    .add("SCINTILLATIONTIMECONSTANT2" , 43.5 * ns    )
+    .add("SCINTILLATIONYIELD1"        , 0.03         )
+    .add("SCINTILLATIONYIELD2"        , 0.97         )
+
     .done();
 }
 
