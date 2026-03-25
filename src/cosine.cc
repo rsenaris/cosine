@@ -9,6 +9,7 @@
 #include <Randomize.hh>
 
 #include "actions/event.hh"
+#include "actions/stacking.hh"
 #include "actions/store_volume_crossing.hh"
 #include "actions/tracking.hh"
 #include "core/config.hh"
@@ -21,7 +22,8 @@
 #include <chrono>
 #include <cmath>
 #include <cstdio>
-#include <n4-all.hh>
+#include <n4-run-manager.hh>
+#include <n4-mandatory.hh>
 #include <n4-random.hh>
 
 #include <cstdlib>
@@ -38,6 +40,9 @@ n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_confi
     ->set((new n4::event_action{})
           ->begin(begin_event)
           ->end(store_event(s)));
+
+  if (!s.optical)
+    actions = actions -> set( (new n4::stacking_action{}) -> classify(kill_photons())  );
 
   if (s.store_tracks)
     actions = actions -> set((new n4::tracking_action{}) -> pre(store_tracks()));

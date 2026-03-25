@@ -59,6 +59,7 @@ std::vector<ConfPar> sim_config::parameter_list() {
     UNITLESS(nparticles),
     UNITLESS(seed),
     UNITLESS(start_id),
+    UNITLESS(optical),
     UNITLESS(store_steps),
     UNITLESS(store_sens),
     UNITLESS(store_sources),
