@@ -6,6 +6,7 @@
 #include <G4GenericPhysicsList.hh>         // our choice of physics list
 #include <G4Exception.hh>
 #include <G4ExceptionSeverity.hh>
+#include <G4HadronicParameters.hh>
 #include <Randomize.hh>
 
 #include "actions/event.hh"
@@ -65,6 +66,8 @@ int main(int argc, char* argv[]) {
 
   using clock = std::chrono::high_resolution_clock;
   auto  t0    = clock::now();
+
+  G4HadronicParameters::Instance()->SetTimeThresholdForRadioactiveDecay(1.0e+60 * CLHEP::year);
 
   n4::run_manager::create()
     .ui("cosine", argc, argv)
