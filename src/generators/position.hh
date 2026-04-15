@@ -9,7 +9,6 @@
 
 #include <cmath>
 #include <memory>
-#include <numeric>
 
 
 struct random_position {
@@ -25,6 +24,14 @@ struct random_position {
 
 private:
   G4ThreeVector offset_{};
+};
+
+struct fixed_position_generator : public random_position {
+  fixed_position_generator(const G4ThreeVector &pos) : pos_(pos) {}
+  G4ThreeVector generate() const override { return pos_; };
+
+private:
+  G4ThreeVector pos_;
 };
 
 struct union_random_position : public random_position {
