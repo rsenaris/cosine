@@ -23,6 +23,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   msg_ -> DeclareMethod  ("generator" , &messenger::set_generator , "Set the generator");
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
+#define SETU(VAR, UNIT) msg_-> DeclarePropertyWithUnit(#VAR, #UNIT, s_.VAR)
   SET(outputfile);
   SET(nparticles);
   SET(optical);
@@ -31,6 +32,8 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET(store_ihits);
   SET(store_tracks);
   SET(store_sources);
+  SETU(vertex, mm);
+#undef SETU
 #undef SET
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, g_.VAR)

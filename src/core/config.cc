@@ -65,6 +65,9 @@ std::vector<ConfPar> sim_config::parameter_list() {
     UNITLESS(store_sources),
     UNITLESS(store_ihits),
     UNITLESS(store_tracks),
+    make_confpar("vertex_x", "nullopt", "mm"),
+    make_confpar("vertex_y", "nullopt", "mm"),
+    make_confpar("vertex_z", "nullopt", "mm"),
   };
 }
 

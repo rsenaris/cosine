@@ -3,8 +3,10 @@
 #include "core/types.hh"
 #include "core/symbols.hh"
 
+#include <G4ThreeVector.hh>
 #include <G4SystemOfUnits.hh>
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -27,6 +29,8 @@ struct sim_config {
   bool store_tracks  = true;
 
   static sim_config empty();
+
+  std::optional<G4ThreeVector> vertex = std::nullopt;
 
   /// All independent class members must be added to the parameter_list
   std::vector<ConfPar> parameter_list();
