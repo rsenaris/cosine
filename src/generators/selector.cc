@@ -61,19 +61,25 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
   }
 
   case EventGenerator::FE: {
-    auto offset = 0.1 * mm;
-    auto pos = std::make_unique<cylindrical_volume_generator>(offset, 0.0, g.cath_r());
-    pos -> offset_z(g.neck_length + g.drift_length - offset);
+    auto gen_ = (new generic_generator(26, 55, 0.0, 1))
+        -> dir(std::make_unique<n4::random::direction>())
+        -> pol(std::make_unique<n4::random::direction>())
+        -> fix_ene(0 * eV)
+        ;
+    if (s.vertex.has_value()) {
+      auto pos = std::make_unique<fixed_position_generator>(s.vertex.value());
+      pos -> offset_z(g.neck_length);
+      gen = gen_ -> pos(std::move(pos));
+    }
+    else {
+      auto offset = 0.1 * mm;
+      auto pos = std::make_unique<cylindrical_volume_generator>(offset, 0.0, g.cath_r());
+      pos -> offset_z(g.neck_length + g.drift_length - offset);
 
-    gen = (new generic_generator(26, 55, 0.0, 1))
-      -> pos(std::move(pos))
-      -> dir(std::make_unique<n4::random::direction>())
-      -> pol(std::make_unique<n4::random::direction>())
-      -> fix_ene(0 * eV)
-    ;
+      gen = gen_ -> pos(std::move(pos));
+    }
     break;
   }
-
   }
 
   // Repeating the return type for the compiler, who was otherwise unsure
