@@ -5,3 +5,7 @@
 /sim/store_ihits    true
 /sim/store_tracks   true
 /sim/store_sources  true
+
+/sim/vertex_x 0 mm
+/sim/vertex_y 0 mm
+/sim/vertex_z 119 mm
