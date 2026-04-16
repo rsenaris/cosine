@@ -5,6 +5,7 @@
 
 #include <G4Exception.hh>
 #include <G4GenericMessenger.hh>
+#include <G4ThreeVector.hh>
 #include <Randomize.hh>
 
 #include <memory>
@@ -21,9 +22,11 @@ messenger::messenger(sim_config& s, geometry_config& g)
   msg_ -> DeclareMethod  ("start_id"  , &messenger::set_start_id  , "Set the random seed");
   msg_ -> DeclareMethod  ("calib_belt", &messenger::set_calib_belt, "Set the calibration belt shape");
   msg_ -> DeclareMethod  ("generator" , &messenger::set_generator , "Set the generator");
+  msg_->DeclareMethodWithUnit("vertex_x", "mm", &messenger::set_vertex_x, "Set the x position of generation vertex");
+  msg_->DeclareMethodWithUnit("vertex_y", "mm", &messenger::set_vertex_y, "Set the y position of generation vertex");
+  msg_->DeclareMethodWithUnit("vertex_z", "mm", &messenger::set_vertex_z, "Set the z position of generation vertex");
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, s_.VAR)
-#define SETU(VAR, UNIT) msg_-> DeclarePropertyWithUnit(#VAR, #UNIT, s_.VAR)
   SET(outputfile);
   SET(nparticles);
   SET(optical);
@@ -32,8 +35,6 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET(store_ihits);
   SET(store_tracks);
   SET(store_sources);
-  SETU(vertex, mm);
-#undef SETU
 #undef SET
 
 #define  SET(VAR      ) msg_-> DeclareProperty(#VAR, g_.VAR)
@@ -97,4 +98,22 @@ void messenger::set_calib_belt(std::string s) {
 
 void messenger::set_generator(std::string s) {
   s_.generator = from_string<EventGenerator>(s);
+}
+
+void messenger::set_vertex_x(f64 x) {
+  auto vertex = s_.vertex.value_or(G4ThreeVector{});
+  vertex.setX(x);
+  s_.vertex = vertex;
+}
+
+void messenger::set_vertex_y(f64 x) {
+  auto vertex = s_.vertex.value_or(G4ThreeVector{});
+  vertex.setY(x);
+  s_.vertex = vertex;
+}
+
+void messenger::set_vertex_z(f64 x) {
+  auto vertex = s_.vertex.value_or(G4ThreeVector{});
+  vertex.setZ(x);
+  s_.vertex = vertex;
 }
