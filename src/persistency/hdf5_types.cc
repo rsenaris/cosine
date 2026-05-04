@@ -36,6 +36,7 @@ HighFive::CompoundType create_sensor_hit() {
     {      "event", H(u64)},
     {  "sensor_id", H(u16)},
     {       "time", H(f32)},
+//    {          "n", H(u32)},
   };
 }
 REGISTER_HF_TYPE(SensorHit, create_sensor_hit)
