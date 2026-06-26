@@ -10,10 +10,13 @@
 
 u64 START_ID = 0;
 
+//Definition for wire_array.cc
 const std::vector<f64>& geometry_config::wire_poss() const {
   static auto pos = std::vector<f64>{};
   if (pos.empty()) {
-    auto half_n_wires = std::floor(el_diam/ 2 / thin_wire_pitch);
+    //auto half_n_wires = std::floor(el_diam/ 2 / thin_wire_pitch);
+    auto half_n_wires = std::floor(drift_diam/ 2 / thin_wire_pitch);
+
 
     for (auto i=0u; i<half_n_wires; i++)
       for (auto s : {-1., 1.})
@@ -24,11 +27,13 @@ const std::vector<f64>& geometry_config::wire_poss() const {
   return pos;
 }
 
+//Definition for wire_array.cc
 const std::vector<f64>& geometry_config::wire_lengths() const {
   static auto lens = std::vector<f64>{};
   if (lens.empty()) {
     for (auto& p: wire_poss())
-      lens.push_back(2 * std::sqrt(el_r()*el_r() - p*p));
+      //lens.push_back(2 * std::sqrt(el_r()*el_r() - p*p));
+      lens.push_back(2 * std::sqrt(drift_r()*drift_r() - p*p));
   }
   return lens;
 }
@@ -102,6 +107,7 @@ std::vector<ConfPar> geometry_config::parameter_list() {
     WITHUNIT(pillow_plate_thick, mm),
     WITHUNIT(cryostat_wall_thick, mm),
     WITHUNIT(d_ptfe_cryostat, mm),
+    WITHUNIT(vessel_inner, mm),
 
     UNITLESS(calib_belt),
     WITHUNIT(calib_belt_router, mm),
@@ -120,3 +126,6 @@ std::vector<ConfPar> geometry_config::parameter_list() {
 
 #undef UNITLESS
 #undef WITHUNIT
+
+
+//faltame por poñer aqui as miñas variables para que se garden no h5

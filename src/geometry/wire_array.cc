@@ -14,7 +14,8 @@
 
 G4LogicalVolume *create_wire_array(const geometry_config &g) {
   auto frame = n4::tubs("frame")
-    .r_inner(g.el_r())
+    //.r_inner(g.el_r())
+    .r_inner(g.drift_r())//Defined in config.hh
     .r_delta(g.frame_width)
     .z(g.frame_thick_wires);
 

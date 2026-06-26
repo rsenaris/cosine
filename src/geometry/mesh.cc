@@ -104,7 +104,16 @@ posvec generate_hexagon_positions(G4double pitch, G4double rmax) {
   return out;
 }
 
-G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4double frame_width, G4double pitch, G4double mesh_thick, G4double hex_inradius) {
+G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4double frame_width, G4double pitch, G4double mesh_thick, G4double hex_inradius, std::optional<G4bool> wire_top) {
+  
+  //Only for cylinder. If the boolean is passed as an argument we shift the position of the mesh grid.
+  //If it's True we put it on top of the frame, if it's False we put it on the bottom (specular image of the other one)
+  //If we don'tput the argument the default position is the center of the frame
+  G4double mesh_pos = 0;
+  if (wire_top.has_value()) {
+      mesh_pos = *wire_top ? frame_thick / 2 : -frame_thick / 2;
+  }
+
   auto protomesh = n4::tubs("frame")
     .r(frame_diam / 2)
     .z(mesh_thick)
@@ -126,8 +135,10 @@ G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4do
       new G4SubtractionSolid("mesh", protomesh, hex, nullptr, pos);
   }
 
-  auto fitted_mesh  = new G4UnionSolid("fitted_mesh", frame, mesh);
+  //we introduce the last two arguments to move the position of the mesh in the cylinder situation. No effect for pcolina
+  auto fitted_mesh  = new G4UnionSolid("fitted_mesh", frame, mesh, nullptr, G4ThreeVector(0,0,mesh_pos));
   auto logical_mesh = n4::volume(fitted_mesh, steel_with_properties());
+  
 
   new G4LogicalSkinSurface("mesh_surface", logical_mesh, steel_surface());
   return logical_mesh;

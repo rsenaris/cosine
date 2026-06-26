@@ -41,6 +41,7 @@ std::string to_string(EventGenerator x) {
     CASE(EventGenerator, S2)
     CASE(EventGenerator, KR)
     CASE(EventGenerator, FE)
+    CASE(EventGenerator, G0)
   }
   return "";
 }
@@ -55,6 +56,7 @@ EventGenerator from_string<EventGenerator>(std::string s) {
   IF(EventGenerator, S2)
   IF(EventGenerator, KR)
   IF(EventGenerator, FE)
+  IF(EventGenerator, G0)
   EXCEPT(EventGenerator, S1)
 }
 

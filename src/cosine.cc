@@ -17,7 +17,8 @@
 #include "core/messenger.hh"
 #include "core/utils.hh"
 #include "generators/selector.hh"
-#include "geometry/pcolina.hh"
+//#include "geometry/pcolina.hh"
+#include "geometry/cylinder.hh"
 #include "persistency/manager.hh"
 
 #include <n4-run-manager.hh>
@@ -36,7 +37,7 @@ n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_confi
   auto begin_event = count_event();
   if (s.store_sources) begin_event = join(begin_event, store_primaries());
 
-  auto gen     = select_generator(s, g);
+  auto gen     = select_generator(s, g); //Defined in selector.cc
   auto actions = (new n4::actions{gen.release()})
     ->set((new n4::event_action{})
           ->begin(begin_event)
@@ -58,9 +59,10 @@ int main(int argc, char* argv[]) {
 
   auto physics_list = std::make_unique<G4GenericPhysicsList>(0);
 
-  auto geoconf = geometry_config::colina();
-  auto simconf =      sim_config::empty();
-  auto msg     = messenger(simconf, geoconf);
+  auto geoconf = geometry_config::cylinder(); //choose config
+  //auto simconf =      sim_config::empty();
+  auto simconf = sim_config::cylinder_geometry_probe();
+  auto msg     = messenger(simconf, geoconf); 
 
   PersistencyManager::Initialize(simconf.outputfile);
 
@@ -71,12 +73,12 @@ int main(int argc, char* argv[]) {
 
   n4::run_manager::create()
     .ui("cosine", argc, argv)
-    .macro_path("macs")
+    .macro_path("macs")//being able to read the macs if we want to use them to change config after compile if needed
     .apply_early_macro("physics_em_optical.mac")
     .apply_cli_early() // CLI --early executed at this point
     // Important! physics list has to be set before the generator!
     .physics(physics_list.release())
-    .geometry([&geoconf]() { return pcolina(geoconf); })
+    .geometry([&geoconf]() { return cylinder(geoconf); }) //choose config
     .actions(create_actions(simconf.nparticles, simconf, geoconf))
 
     .apply_cli_late() // CLI --late executed at this point

@@ -100,6 +100,11 @@ s2 folder *ARGS:
   mkdir -p log/{{folder}}
   just parallelize 48 10000 0 {{folder}}/s2 1234567890 -e macs/s2.mac "${@:2}"
 
+geometry_probe folder *ARGS:
+  mkdir -p out/{{folder}}
+  mkdir -p log/{{folder}}
+  just parallelize 12 10000 0 {{folder}}/geometry_probe 1234567890 -e macs/geometry_probe.mac "${@:2}"
+
 perform-all-scans:
   #!/usr/bin/env sh
   for ptfe in true false; do

@@ -25,6 +25,7 @@ enum class EventGenerator {
   S2,
   KR,
   FE,
+  G0,
 };
 DECLARE_STR(EventGenerator)
 

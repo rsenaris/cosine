@@ -42,7 +42,7 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
   auto ene_generator = scint_gen(g.medium, g.xenon_fraction);
   G4VUserPrimaryGeneratorAction* gen{nullptr};
 
-  switch (s.generator) {
+  switch (s.generator) {//We are calling the class attributte generator declared on config.hh
 
   case EventGenerator::DEBUG: {
     auto pos = std::make_unique<fixed_position_generator>(G4ThreeVector{0., 0., 1.});
@@ -118,6 +118,20 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
     }
     break;
   }
+
+  case EventGenerator::G0:{//Geantino generator
+      auto pos = std::make_unique<cylindrical_volume_generator>(g.drift_length, 0, g.drift_r());//Declared in position.hh
+      
+      gen = (new generic_generator("geantino", s.nparticles))
+      -> pos(std::move(pos))
+      -> dir(std::make_unique<n4::random::direction>())
+      -> pol(std::make_unique<n4::random::direction>())
+      -> fix_ene(41.5585 * keV)
+      ;
+      break;
+  }
+
+
   }
 
   // Repeating the return type for the compiler, who was otherwise unsure

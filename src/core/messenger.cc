@@ -12,7 +12,7 @@
 #include <string>
 
 messenger::messenger(sim_config& s, geometry_config& g)
-    : s_(s), g_(g), msg_(nullptr)
+    : s_(s), g_(g), msg_(nullptr) //change configuration and geometry when I run the simulation with a .mac file without compiling
 {
   msg_ = std::make_unique<G4GenericMessenger>(this, "/sim/", "Simulation parameters");
 
@@ -74,6 +74,14 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET(ptfe_on_walls            );
 
   SET(xenon_fraction),
+
+  SETU(vessel_inner        ,  mm);
+  SETU(vessel_length       ,  mm);
+  SETU(vessel_outer        ,  mm);
+  SETU(drift_diam          ,  mm);
+  SETU(vessel_inner        ,  mm);
+  SETU(ptfe_thick          ,  mm);
+  
 
   SETU(calib_belt_router    ,  mm);
   SETU(calib_belt_rinner    ,  mm);
