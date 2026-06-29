@@ -28,4 +28,11 @@ enum class EventGenerator {
 };
 DECLARE_STR(EventGenerator)
 
+enum class Medium {
+  XENON,
+  KRYPTON,
+  ARGON,
+};
+DECLARE_STR(Medium)
+
 #undef TO_FROM_STR

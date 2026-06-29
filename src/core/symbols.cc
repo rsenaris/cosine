@@ -58,5 +58,27 @@ EventGenerator from_string<EventGenerator>(std::string s) {
   EXCEPT(EventGenerator, S1)
 }
 
+std::string to_string(Medium x) {
+  switch (x) {
+    CASE(Medium, XENON)
+    CASE(Medium, KRYPTON)
+    CASE(Medium, ARGON)
+  }
+  return "";
+}
+
+template <>
+Medium from_string<Medium>(std::string s) {
+  // always uppercase
+  std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+
+  IF(Medium, XENON)
+  IF(Medium, KRYPTON)
+  IF(Medium, ARGON)
+  EXCEPT(Medium, XENON)
+}
+
+
+
 #undef CASE
 #undef IF
