@@ -103,7 +103,7 @@ s2 folder *ARGS:
 geometry_probe folder *ARGS:
   mkdir -p out/{{folder}}
   mkdir -p log/{{folder}}
-  just parallelize 12 10000 0 {{folder}}/geometry_probe 1234567890 -e macs/geometry_probe.mac "${@:2}"
+  just parallelize 12 1 0 {{folder}}/geometry_probe 1234567890 -e macs/geometry_probe.mac "${@:2}"
 
 perform-all-scans:
   #!/usr/bin/env sh

@@ -50,7 +50,7 @@ n4::actions* create_actions(u32 nphot, const sim_config& s, const geometry_confi
     actions = actions -> set((new n4::tracking_action{}) -> pre(store_tracks()));
 
   if (s.store_steps)
-    actions = actions -> set(new n4::stepping_action{store_volume_crossing("geantino", "", "gate")});
+    actions = actions -> set(new n4::stepping_action{store_volume_crossing("geantino", "liquids", "")});
 
   return actions;
 }

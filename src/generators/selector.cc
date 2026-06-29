@@ -124,8 +124,9 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       
       gen = (new generic_generator("geantino", s.nparticles))
       -> pos(std::move(pos))
-      -> dir(std::make_unique<n4::random::direction>())
-      -> pol(std::make_unique<n4::random::direction>())
+      //-> dir(std::make_unique<n4::random::direction>())
+      -> fix_dir({0, 0, -1})
+      //-> pol(std::make_unique<n4::random::direction>())
       -> fix_ene(41.5585 * keV)
       ;
       break;

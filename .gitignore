@@ -15,5 +15,6 @@ compile_commands.json
 G4History.macro
 **/.gdb_history
 **/Testing
-out/*
-log/*
+out/
+log/
+.venv/
