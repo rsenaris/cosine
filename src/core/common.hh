@@ -6,7 +6,7 @@
 #include <G4SystemOfUnits.hh>
 
 const G4double OPTPHOT_MIN_E_EV = 0.10;
-const G4double OPTPHOT_MAX_E_EV = 8.21;
+const G4double OPTPHOT_MAX_E_EV = 12.0;
 const G4double OPTPHOT_MIN_E    = OPTPHOT_MIN_E_EV * eV;
 const G4double OPTPHOT_MAX_E    = OPTPHOT_MAX_E_EV * eV;
 const G4double NO_ABSORPTION    = 1e8              *  m; // approx. infinity
