@@ -4,6 +4,7 @@
 #include "geometry/mesh.hh"
 #include "geometry/sipm_array.hh"
 #include "geometry/wire_array.hh"
+#include "materials/LAr.hh"
 #include "materials/LXe.hh"
 #include "materials/ptfe.hh"
 #include "materials/steel.hh"
@@ -25,6 +26,17 @@
 #include <n4-vis-attributes.hh>
 
 
+G4Material* get_medium(Medium m) {
+  switch (m) {
+  case Medium::XENON  : return LXe_with_properties();
+  case Medium::ARGON  : return LAr_with_properties();
+  case Medium::KRYPTON:
+    G4Exception("[get_medium]", "", FatalException, "Krypton not implemented yet");
+  };
+  // unreachable, but C++ wants a receipt.
+  return nullptr;
+}
+
 auto pcolina(const geometry_config& g) {
   auto full_neck_length = g.neck_length
                         + g.mesh_thick // gate thickness
@@ -33,10 +45,10 @@ auto pcolina(const geometry_config& g) {
                         + g.mesh_thick // shield thickness
                         + g.d_shield_sipms;
 
-  auto air   = n4::material("G4_AIR");
-  auto lxe   =   LXe_with_properties();
-  auto ptfe  =  ptfe_with_properties();
-  auto steel = steel_with_properties();
+  auto air    = n4::material("G4_AIR");
+  auto medium = get_medium(g.medium);
+  auto ptfe   =  ptfe_with_properties();
+  auto steel  = steel_with_properties();
 
   auto seethrough = [](G4Color c, double t=0.1) {
     return G4Color{c.GetRed(), c.GetGreen(), c.GetBlue(), t};
@@ -66,7 +78,7 @@ auto pcolina(const geometry_config& g) {
     .z(liquid_length)
     .vis(tred)
     .sensitive(sensitive_noble().release())
-    .place(lxe)
+    .place(medium)
     .in(world)
     .now();
 
