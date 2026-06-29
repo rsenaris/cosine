@@ -21,6 +21,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   msg_ -> DeclareMethod  ("seed"      , &messenger::set_seed      , "Set the random seed");
   msg_ -> DeclareMethod  ("start_id"  , &messenger::set_start_id  , "Set the random seed");
   msg_ -> DeclareMethod  ("calib_belt", &messenger::set_calib_belt, "Set the calibration belt shape");
+  msg_ -> DeclareMethod  ("medium"    , &messenger::set_medium    , "Set the active medium");
   msg_ -> DeclareMethod  ("generator" , &messenger::set_generator , "Set the generator");
   msg_->DeclareMethodWithUnit("vertex_x", "mm", &messenger::set_vertex_x, "Set the x position of generation vertex");
   msg_->DeclareMethodWithUnit("vertex_y", "mm", &messenger::set_vertex_y, "Set the y position of generation vertex");
@@ -94,6 +95,10 @@ void messenger::set_start_id(u64 id) {
 
 void messenger::set_calib_belt(std::string s) {
   g_.calib_belt = from_string<CalibrationBelt>(s);
+}
+
+void messenger::set_medium(std::string s) {
+  g_.medium = from_string<Medium>(s);
 }
 
 void messenger::set_generator(std::string s) {

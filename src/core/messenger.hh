@@ -15,6 +15,7 @@ struct messenger {
   void set_seed      (u64);
   void set_start_id  (u64);
   void set_calib_belt(std::string);
+  void set_medium    (std::string);
   void set_generator (std::string);
   void set_vertex_x  (f64);
   void set_vertex_y  (f64);
