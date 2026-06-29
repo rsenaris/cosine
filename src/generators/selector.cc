@@ -20,6 +20,20 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
 
   switch (s.generator) {
 
+  case EventGenerator::DEBUG: {
+    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
+    pos -> offset_z(g.neck_length + g.drift_length / 2);
+
+    gen = (new generic_generator("geantino", s.nparticles))
+      -> pos(std::move(pos))
+      -> dir(std::make_unique<n4::random::direction>())
+      -> pol(std::make_unique<n4::random::direction>())
+      //    -> ene(std::make_unique<lxe_scintillation>())
+      -> fix_ene(1 * eV)
+    ;
+    break;
+  }
+
   case EventGenerator::S1: {
     auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
     pos -> offset_z(g.neck_length + g.drift_length / 2);
@@ -33,6 +47,7 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
     ;
     break;
   }
+
   case EventGenerator::S2: {
     auto pos = std::make_unique<el_generator>(g, 40 * um);
     pos -> offset_z(-g.mesh_thick -g.d_gate_wire);

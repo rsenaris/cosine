@@ -20,6 +20,7 @@ DECLARE_STR(CalibrationBelt)
 
 
 enum class EventGenerator {
+  DEBUG,
   S1,
   S2,
   KR,

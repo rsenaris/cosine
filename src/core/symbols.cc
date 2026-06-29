@@ -36,6 +36,7 @@ CalibrationBelt from_string<CalibrationBelt>(std::string s) {
 
 std::string to_string(EventGenerator x) {
   switch (x) {
+    CASE(EventGenerator, DEBUG)
     CASE(EventGenerator, S1)
     CASE(EventGenerator, S2)
     CASE(EventGenerator, KR)
@@ -49,6 +50,7 @@ EventGenerator from_string<EventGenerator>(std::string s) {
   // always uppercase
   std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 
+  IF(EventGenerator, DEBUG)
   IF(EventGenerator, S1)
   IF(EventGenerator, S2)
   IF(EventGenerator, KR)
