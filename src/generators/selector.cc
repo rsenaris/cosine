@@ -12,9 +12,18 @@
 #include <memory>
 
 
+auto scint_energy(Medium m) {
+  switch (m) {
+    case Medium::XENON  : return 7.21 * eV;
+    case Medium::KRYPTON: return 8.27 * eV;
+    case Medium::ARGON  : return 9.69 * eV;
+  }
+}
+
 std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config& s, const geometry_config& g) {
   auto isotropic = std::make_unique<n4::random::direction>();
   auto randompol = std::make_unique<n4::random::direction>();
+  auto sc_energy = scint_energy(g.medium);
 
   G4VUserPrimaryGeneratorAction* gen{nullptr};
 
@@ -43,7 +52,7 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       -> dir(std::make_unique<n4::random::direction>())
       -> pol(std::make_unique<n4::random::direction>())
       //    -> ene(std::make_unique<lxe_scintillation>())
-      -> fix_ene(7.21 * eV)
+      -> fix_ene(sc_energy)
     ;
     break;
   }
@@ -56,8 +65,8 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       -> pos(std::move(pos))
       -> dir(std::make_unique<n4::random::direction>())
       -> pol(std::make_unique<n4::random::direction>())
-      //    -> ene(std::make_unique<lxe_scintillation>())
-      -> fix_ene(7.21 * eV)
+      // -> ene(std::make_unique<lxe_scintillation>())
+      -> fix_ene( sc_energy)
     ;
     break;
   }
