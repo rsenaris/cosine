@@ -109,6 +109,8 @@ std::vector<ConfPar> geometry_config::parameter_list() {
     WITHUNIT(calib_belt_separation, mm),
     UNITLESS(calib_belt_loops),
 
+    UNITLESS(medium),
+
     UNITLESS(  sipms_on_fp),
     UNITLESS(   ptfe_on_fp),
     UNITLESS(ptfe_on_walls),
