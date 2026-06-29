@@ -1,5 +1,6 @@
 #include "core/types.hh"
 #include "generators/scalar.hh"
+#include "materials/LAr.hh"
 #include "materials/LXe.hh"
 
 #include <G4Exception.hh>
@@ -42,5 +43,36 @@ f64 lxe_scintillation::generate() const {
 
   /// unreachable!
   G4Exception("[lxe_scintillation::generate]", "", FatalException, "UNREACHABLE");
+  return -1;
+}
+
+
+lar_scintillation::lar_scintillation()
+{
+  auto n   = 101;
+  auto wls = n4::linspace(110 * nm, 140 * nm, n);
+  energy_  = n4::map<f64>([](f64 wl) {return c4::hc/wl;}, wls);
+
+  auto pdf    = n4::map<f64>(LAr_Scintillation, energy_);
+  auto pdfsum = std::accumulate(pdf.cbegin(), pdf.cend(), 0.);
+  assert((pdfsum > 0) && "PDF does not have a strictly positive sum");
+
+  cdf_.reserve(n);
+  cdf_.push_back(pdf[0] / pdfsum);
+  for (auto i=1u; i<pdf.size(); i++)
+    cdf_.push_back(cdf_[i-1] + pdf[i] / pdfsum);
+
+  half_bin_size = std::abs(energy_[1] - energy_[0]) / 2;
+}
+
+f64 lar_scintillation::generate() const {
+  auto x = n4::random::uniform(0, 1);
+
+  for (auto [i, cdf]: n4::enumerate(cdf_))
+    if (x < cdf)
+      return energy_[i] + n4::random::uniform(-half_bin_size, half_bin_size);
+
+  /// unreachable!
+  G4Exception("[lar_scintillation::generate]", "", FatalException, "UNREACHABLE");
   return -1;
 }

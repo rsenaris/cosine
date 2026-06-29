@@ -30,3 +30,16 @@ private:
   std::vector<f64> cdf_;
   f64 half_bin_size;
 };
+
+struct lar_scintillation : public random_scalar {
+   lar_scintillation();
+  ~lar_scintillation() override {}
+
+  f64 generate() const override;
+
+
+private:
+  std::vector<f64> energy_;
+  std::vector<f64> cdf_;
+  f64 half_bin_size;
+};
