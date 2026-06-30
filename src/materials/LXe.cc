@@ -5,6 +5,7 @@
 
 #include <n4-material.hh>
 #include <n4-sequences.hh>
+#include <n4-constants.hh>
 
 
 G4double LXe_Scintillation(G4double energy) {
@@ -27,43 +28,15 @@ G4double LXe_Scintillation(G4double energy) {
 }
 
 G4double LXe_refractive_index(G4double energy) {
-  // Formula for the refractive index taken from
-  // A. Baldini et al., "Liquid Xe scintillation calorimetry
-  // and Xe optical properties", arXiv:physics/0401072v1 [physics.ins-det]
+  // Expression from https://refractiveindex.info/?shelf=main&book=Xe&page=Grace-liquid-178K
+  auto wl_in_um = c4::hc / energy / um;
+  auto n = std::sqrt( 1.4
+                    + 0.400 / (1.0 - std::pow(0.1469 / wl_in_um, 2))
+                    + 0.002 / (1.0 - std::pow(0.8270 / wl_in_um, 2)));
+  if (n < 1)
+    std::cerr << "LXe refractive index < 1." << std::endl;
 
-  // The Lorentz-Lorenz equation (also known as Clausius-Mossotti equation)
-  // relates the refractive index of a fluid with its density:
-  // (n^2 - 1) / (n^2 + 2) = - A · d_M,     (1)
-  // where n is the refractive index, d_M is the molar density and
-  // A is the first refractivity viral coefficient:
-  // A(E) = \sum_i^3 P_i / (E^2 - E_i^2),   (2)
-  // with:
-  G4double P[3] = {71.23, 77.75, 1384.89}; // [eV^2 cm3 / mole]
-  G4double E[3] = { 8.4 ,  8.81,   13.2 }; // [eV]
-
-  // Note.- Equation (1) has, actually, a sign difference with respect
-  // to the one appearing in the reference. Otherwise, it yields values
-  // for the refractive index below 1.
-
-  // Leave G4's system of units, to avoid loss of numerical precision
-  energy /= eV;
-
-  // Calculate the virial coefficient.
-  G4double virial = 0;
-  for (G4int i=0; i<3; i++)
-    virial += P[i] / (energy*energy - E[i]*E[i]); // eV²*cm3/mol/eV² = cm3/mol
-
-  G4double mol_density =  2.953 / 131.29; // (g/cm3)/g*mol = mol/cm3
-  G4double alpha = virial * mol_density; // (cm3/mol)*mol/cm3 = 1
-
-  // Isolating now the n2 from equation (1) and taking the square root
-  G4double n2 = (1 - 2*alpha) / (1 + alpha);
-
-  if (n2 < 1) {
-    n2 = 1;
-    //throw "up (Non-physical refractive index)";
-  }
-  return sqrt(n2);
+  return n;
 }
 
 
@@ -71,7 +44,7 @@ G4MaterialPropertiesTable* LXe_mpt() {
   /// The time constants are taken from E. Hogenbirk et al 2018 JINST 13 P10031
 
   // Sampling from ~151 nm to 200 nm <----> from 6.20625 eV to 8.21 eV // TODO convert here
-  auto [sc_energies, sc_values] = n4::interpolate(LXe_Scintillation   , 500, 6.20625*eV   , OPTPHOT_MAX_E);
+  auto [sc_energies, sc_values] = n4::interpolate(LXe_Scintillation   , 500, 6.2*eV, 8.26*eV);
   auto [ri_energies, ri_values] = n4::interpolate(LXe_refractive_index, 200, OPTPHOT_MIN_E, OPTPHOT_MAX_E);
 
   return n4::material_properties()
