@@ -96,16 +96,31 @@ G4MaterialPropertiesTable *silicon_mpt() {
   std::reverse(energies .begin(), energies .end());
   std::reverse(ref_index.begin(), ref_index.end());
 
-  /// TODO: adjust efficiency to sipm specs
-  // auto efficiency = 0.25;
+  auto qe_energies = n4::const_over(c4::hc/nm, {
+              122.73399, 125.29396, 127.73758, 130.18119, 132.62480, 135.06841,
+              137.62839, 140.18836, 142.74834, 145.30831, 147.86829, 150.42826,
+              152.98823, 155.54821, 157.99182, 159.06289, 160.43543, 161.72626,
+              162.41360, 163.69358, 164.38964, 165.55538, 168.11536, 170.67533,
+              173.23531, 175.79528, 178.35526, 180.91523, 183.47521, 186.03518,
+              188.59515, 191.15513, 193.71510, 196.27508, 198.83505,
+    });
 
-  auto qe = 0.24;
+  auto qe_values = n4::scale_by( 0.01, {
+                11.30009, 12.59709, 14.27306, 15.99540, 17.73223, 19.45167,
+                20.87910, 22.12539, 23.38617, 23.95134, 23.82092, 23.50935,
+                23.00938, 21.87178, 19.97192, 19.05405, 18.62564, 18.71622,
+                19.70890, 21.74136, 22.70270, 23.29197, 23.55282, 23.55282,
+                23.71223, 23.81367, 23.81367, 23.74846, 23.73397, 23.73397,
+                23.73397, 23.73397, 23.73397, 23.73397, 23.73397,
+    });
+  std::reverse(qe_energies.begin(), qe_energies.end());
+  std::reverse(qe_values  .begin(), qe_values  .end());
 
   return n4::material_properties()
     // .add("EFFICIENCY" , energies, efficiency)    // this is doing nothing, as it
                                                     // applies only to the skin which has no reflectivity set
     // .add("REFLECTIVITY", energies, reflectivity) // ignored. relying on refractive indices
-    .NEW("QUANTUM_EFFICIENCY", energies,     qe)    // we implement an effective QE for detection efficiency
+    .NEW("QUANTUM_EFFICIENCY", qe_energies, qe_values)    // we implement an effective QE for detection efficiency
     .add("ABSLENGTH"   , energies,         tiny)
     .add("RINDEX"      , energies,    ref_index_fixed)
     .done();
