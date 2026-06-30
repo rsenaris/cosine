@@ -6,6 +6,8 @@
 /sim/store_tracks   true
 /sim/store_sources  true
 
+/sim/optical false
+
 /sim/vertex_x 0 mm
 /sim/vertex_y 0 mm
 /sim/vertex_z 119 mm

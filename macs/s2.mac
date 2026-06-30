@@ -1,6 +1,8 @@
 /sim/generator s2
 /sim/nparticles 6500 # ~5900/15.6 * 17
 
+/sim/optical true
+
 /sim/store_steps   false
 /sim/store_sens     true
 /sim/store_ihits   false
