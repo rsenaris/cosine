@@ -57,11 +57,11 @@ G4LogicalVolume* create_wire_mesh(G4double diam, G4double pitch, G4double wire_d
   return wire_mesh;
 }
 
-G4Polyhedra* hexagon(G4double circumradius, G4double thick) {
+G4Polyhedra* hexagon(G4double inradius, G4double thick) {
   auto eps = 1e6 * thick;
   G4double z_planes[2] = {-thick/2 - eps, thick/2 + eps};
   G4double  r_inner[2] = {0., 0.};
-  G4double  r_outer[2] = {circumradius, circumradius};
+  G4double  r_outer[2] = {inradius, inradius};
   return new G4Polyhedra("hexahole", 0, CLHEP::twopi, 6, 2, z_planes, r_inner, r_outer);
 }
 
@@ -116,8 +116,7 @@ G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4do
     .z(frame_thick)
     .solid();
 
-  auto hex_r = 2 / std::sqrt(3) * hex_inradius; // circumradius
-  auto hex   = hexagon(hex_r, mesh_thick);
+  auto hex   = hexagon(hex_inradius, mesh_thick);
 
   G4SubtractionSolid* mesh = nullptr;
   for (auto p: generate_hexagon_positions(pitch, frame_diam/2)) {
