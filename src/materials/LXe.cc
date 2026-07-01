@@ -43,8 +43,8 @@ G4double LXe_refractive_index(G4double energy) {
 G4MaterialPropertiesTable* LXe_mpt() {
   /// The time constants are taken from E. Hogenbirk et al 2018 JINST 13 P10031
 
-  // Sampling from ~151 nm to 200 nm <----> from 6.20625 eV to 8.21 eV // TODO convert here
-  auto [sc_energies, sc_values] = n4::interpolate(LXe_Scintillation   , 500, 6.2*eV, 8.26*eV);
+  // Scintillation sampled only +- FWHM to speed it up
+  auto [sc_energies, sc_values] = n4::interpolate(LXe_Scintillation   , 500, c4::hc/(185*nm), c4::hc/(150*nm));
   auto [ri_energies, ri_values] = n4::interpolate(LXe_refractive_index, 200, OPTPHOT_MIN_E, OPTPHOT_MAX_E);
 
   return n4::material_properties()
