@@ -7,6 +7,8 @@
 #include <n4-sequences.hh>
 #include <n4-constants.hh>
 
+#include <cstdio>
+
 
 G4double LXe_Scintillation(G4double energy) {
   using CLHEP::c_light;   using CLHEP::h_Planck;   using CLHEP::pi;
@@ -31,10 +33,12 @@ G4double LXe_refractive_index(G4double energy) {
   // Expression from https://refractiveindex.info/?shelf=main&book=Xe&page=Grace-liquid-178K
   auto wl_in_um = c4::hc / energy / um;
   auto n = std::sqrt( 1.4
-                    + 0.400 / (1.0 - std::pow(0.1469 / wl_in_um, 2))
-                    + 0.002 / (1.0 - std::pow(0.8270 / wl_in_um, 2)));
-  if (n < 1)
-    std::cerr << "LXe refractive index < 1." << std::endl;
+                            + 0.400 / (1.0 - std::pow(0.1469 / wl_in_um, 2))
+                            + 0.002 / (1.0 - std::pow(0.8270 / wl_in_um, 2)));
+  if (n < 1) {
+    std::printf("LXe refractive index < 1 for %f eV = %f nm\n", energy / eV, wl_in_um * 1e3);
+    return 2.15;
+  }
 
   return n;
 }
