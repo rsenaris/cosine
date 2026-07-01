@@ -75,7 +75,7 @@ auto cylinder(const geometry_config& g){
       .z(g.vessel_length)
       .vis(tblue)
       .place(lxe)
-      .in(vessel)
+      .in(world)
       .now();
 
   auto reflector = n4::tubs("reflector")

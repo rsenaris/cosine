@@ -1,8 +1,8 @@
 /sim/generator G0
 /sim/nparticles 1
 
-/sim/store_steps   true
-/sim/store_sens    false
-/sim/store_ihits   false
-/sim/store_tracks  true
+/sim/store_steps    true
+/sim/store_sens     false
+/sim/store_ihits    false
+/sim/store_tracks   false
 /sim/store_sources  false
