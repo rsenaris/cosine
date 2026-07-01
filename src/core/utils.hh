@@ -2,6 +2,7 @@
 
 #include "core/types.hh"
 
+#include <CLHEP/Units/SystemOfUnits.h>
 #include <G4StepPoint.hh>
 
 #include <functional>
@@ -59,4 +60,9 @@ inline G4String get_steppoint_volume(const G4StepPoint *p) {
   if  (! p -> GetTouchable()               ) return "No touchable";
   if  (! p -> GetTouchable() -> GetVolume()) return "No volume";
   return p -> GetTouchable() -> GetVolume() -> GetName();
+}
+
+inline double gaussian(double x, double area, double mu, double sigma) {
+  x = (x - mu)/sigma;
+  return 1.0/std::sqrt(CLHEP::twopi)/sigma * std::exp(-x*x/2.0);
 }
