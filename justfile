@@ -69,8 +69,9 @@ parallelize n_jobs n_evt first pattern seed *ARGS: install
   for i in `seq 0 $njobs`; do
       i=$((i + {{first}}))
       seed=$(({{seed}} + $i))
-      filename="out/{{pattern}}_$i.h5"
-      logfile="log/{{pattern}}_$i.log"
+      index=$(printf "%04d" "$i")
+      filename="out/{{pattern}}_$index.h5"
+      logfile="log/{{pattern}}_$index.log"
       start="$((i * {{n_evt}}))"
       stdbuf -oL                      \
       ./install/cosine/bin/cosine -e  \
