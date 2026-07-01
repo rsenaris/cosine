@@ -1,4 +1,5 @@
 #include "core/common.hh"
+#include "core/utils.hh"
 #include "materials/LXe.hh"
 
 #include <G4SystemOfUnits.hh> // physical units such as `m` for metre
@@ -11,7 +12,6 @@
 
 
 G4double LXe_Scintillation(G4double energy) {
-  using CLHEP::c_light;   using CLHEP::h_Planck;   using CLHEP::pi;
   // K. Fuji et al., "High accuracy measurement of the emission spectrum of liquid xenon
   // in the vacuum ultraviolet region",
   // Nuclear Instruments and Methods in Physics Research A 795 (2015) 293–297
@@ -20,13 +20,9 @@ G4double LXe_Scintillation(G4double energy) {
   G4double lambda_FWHM  =  10.2 * nm;
   G4double lambda_sigma = lambda_FWHM / 2.35;
 
-  G4double E_peak  = (h_Planck * c_light / lambda_peak);
-  G4double E_sigma = (h_Planck * c_light * lambda_sigma / pow(lambda_peak, 2));
-
-  G4double intensity = exp(-pow(E_peak / eV - energy / eV, 2) / (2 * pow(E_sigma / eV, 2)))
-    / (E_sigma / eV * sqrt(pi * 2.));
-
-  return intensity;
+  G4double E_peak  = c4::hc / lambda_peak;
+  G4double E_sigma = E_peak * lambda_sigma / lambda_peak;
+  return gaussian(energy, 1.0, E_peak, E_sigma);
 }
 
 G4double LXe_refractive_index(G4double energy) {

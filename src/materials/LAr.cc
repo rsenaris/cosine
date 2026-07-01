@@ -1,7 +1,7 @@
 #include "core/common.hh"
+#include "core/utils.hh"
 #include "materials/LAr.hh"
 
-#include <CLHEP/Units/PhysicalConstants.h>
 #include <G4SystemOfUnits.hh> // physical units such as `m` for metre
 
 #include <n4-constants.hh>
@@ -10,20 +10,15 @@
 
 
 G4double LAr_Scintillation(G4double energy) {
-  using CLHEP::c_light;   using CLHEP::h_Planck;   using CLHEP::pi;
   // From Ion-Beam Excitation of Liquid Argon (M.Hofmann et al)
   // https://arxiv.org/pdf/1511.07721
   G4double lambda_peak  = 126.8 * nm;
   G4double lambda_FWHM  =   7.8 * nm;
   G4double lambda_sigma = lambda_FWHM / 2.35;
 
-  G4double E_peak  = (h_Planck * c_light / lambda_peak);
-  G4double E_sigma = (h_Planck * c_light * lambda_sigma / pow(lambda_peak, 2));
-
-  G4double intensity = exp(-pow(E_peak / eV - energy / eV, 2) / (2 * pow(E_sigma / eV, 2)))
-    / (E_sigma / eV * sqrt(pi * 2.));
-
-  return intensity;
+  G4double E_peak  = c4::hc / lambda_peak;
+  G4double E_sigma = E_peak * lambda_sigma / lambda_peak;
+  return gaussian(energy, 1.0, E_peak, E_sigma);
 }
 
 G4double LAr_refractive_index(G4double energy) {
