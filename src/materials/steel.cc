@@ -7,7 +7,7 @@
 #include <n4-material.hh>
 
 G4MaterialPropertiesTable* steel_mpt(){
-  auto reflectivity = 0.0; //0.20;
+  auto reflectivity = 0.20;
   return n4::material_properties()
     .add("REFLECTIVITY", OPTPHOT_E_RANGE, reflectivity)
     .done();

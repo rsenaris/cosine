@@ -12,7 +12,7 @@ G4MaterialPropertiesTable* ptfe_mpt() {
   // also stated in the same paper as above
   auto refl_energies = n4::scale_by(  eV, {OPTPHOT_MIN_E_EV,  2.8,  3.5,  4.0,  6.0,  7.2, OPTPHOT_MAX_E_EV});
   auto refl_values   = n4::scale_by(0.01, {              98, 98.0, 98.0, 98.0, 72.0, 72.0,               72});
-  auto refl_fixed    = 0.00; // 0.97;
+  auto refl_fixed    = 0.97;
   auto   ri_fixed    = 1.58; // 1.35 in other projects, 1.41 in nexus
 
   return n4::material_properties()
