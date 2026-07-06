@@ -1,3 +1,4 @@
+#include "G4ThreeVector.hh"
 #include "core/config.hh"
 #include "core/symbols.hh"
 #include "generators/generic.hh"
@@ -30,8 +31,7 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
   switch (s.generator) {
 
   case EventGenerator::DEBUG: {
-    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
-    pos -> offset_z(g.neck_length + g.drift_length / 2);
+    auto pos = std::make_unique<fixed_position_generator>(G4ThreeVector{0., 0., 1.});
 
     gen = (new generic_generator("geantino", s.nparticles))
       -> pos(std::move(pos))
