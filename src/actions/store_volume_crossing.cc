@@ -9,6 +9,10 @@
 
 std::vector<VolumeChange> VOLUME_CHANGES{};
 
+bool contains(G4String input, G4String pattern) {
+    return input.find(pattern) != std::string::npos;
+}
+
 std::function<void(const G4Step *)>
 store_volume_crossing(G4String particle, G4String from, G4String to) {
 
@@ -20,9 +24,9 @@ store_volume_crossing(G4String particle, G4String from, G4String to) {
     auto  pre_name = get_steppoint_volume(pre);
     auto post_name = get_steppoint_volume(post);
 
-    if ((particle != "") && (particle != part_name)) return;
-    if ((    from != "") && (    from !=  pre_name)) return;
-    if ((      to != "") && (      to != post_name)) return;
+    if ((particle != "") && !contains(part_name, particle)) return;
+    if ((    from != "") && !contains( pre_name,     from)) return;
+    if ((      to != "") && !contains(post_name,       to)) return;
 
     auto  pre_pos =  pre -> GetPosition();
     auto post_pos = post -> GetPosition();
