@@ -38,12 +38,10 @@ G4Material* get_medium(Medium m) {
 }
 
 auto pcolina(const geometry_config& g) {
-  auto full_neck_length = g.neck_length
-                        + g.mesh_thick // gate thickness
-                        + g.d_gate_wire   - g.frame_thick_wires/2
-                        + g.d_wire_shield - g.frame_thick_wires/2
-                        + g.mesh_thick // shield thickness
-                        + g.d_shield_sipms;
+  auto full_neck_length = g.neck_length     // from cone edge     to gate middle
+                        + g.d_gate_wire     // from mesh middle   to wires middle
+                        + g.d_wire_shield   // from wires middle  to shield middle
+                        + g.d_shield_sipms; // from shield middle to sipms front
 
   auto air    = n4::material("G4_AIR");
   auto medium = get_medium(g.medium);
@@ -72,10 +70,11 @@ auto pcolina(const geometry_config& g) {
     .vis(transparent)
     .volume(air);
 
-  auto liquid_length = (g.drift_length + full_neck_length) * 2.1;
+  auto extra = 2*cm;
+  auto liquid_length = g.drift_length + full_neck_length + extra;
   auto liquid = n4::box("liquid")
     .cube(1.1 * g.cath_diam())
-    .z(liquid_length)
+    .half_z(liquid_length) // because we want gate to be at 0 and everything is inside liquid,this needs to be symmetric
     .vis(tred)
     .sensitive(sensitive_noble().release())
     .place(medium)
@@ -85,11 +84,11 @@ auto pcolina(const geometry_config& g) {
   auto neck = n4::tubs("neck")
     .r_inner(g.el_r())
     .r_delta(g.wall_thick)
-    .z(g.neck_length)
+    .z(g.neck_length - g.frame_thick_mesh/2)
     .vis(white)
     .place(ptfe)
     .in(liquid)
-    .at_z(g.neck_length/2)
+    .at_z(g.neck_length/2 + g.frame_thick_mesh/4)
     .now();
 
   new G4LogicalSkinSurface("neck_surface", neck -> GetLogicalVolume(), ptfe_surface());
@@ -163,8 +162,9 @@ auto pcolina(const geometry_config& g) {
 
   wire_array -> SetVisAttributes(gray);
   n4::place(wire_array)
+    .name("thin_wires")
     .rot_z(g.thin_wire_rot)
-    .at_z(-g.mesh_thick - g.d_gate_wire)
+    .at_z(-g.d_gate_wire)
     .in(liquid)
     .now();
 
@@ -177,8 +177,8 @@ auto pcolina(const geometry_config& g) {
   mesh_el -> SetVisAttributes(invisible);
   // mesh_el -> SetVisAttributes(green);
 
-  n4::place(mesh_el).name("gate"  ).at_z(-g.mesh_thick/2                                              ).in(liquid).now();
-  n4::place(mesh_el).name("shield").at_z(-g.mesh_thick -g.d_gate_wire -g.d_wire_shield -g.mesh_thick/2).in(liquid).now();
+  n4::place(mesh_el).name("gate"  )                                      .in(liquid).now();
+  n4::place(mesh_el).name("shield").at_z(-g.d_gate_wire -g.d_wire_shield).in(liquid).now();
 
   auto z_cathode = g.neck_length + g.drift_length + g.cath_thick/2;
   z_cathode += g.ptfe_on_fp ? g.wall_thick : 0;
@@ -209,7 +209,7 @@ auto pcolina(const geometry_config& g) {
 
   auto sipm_array = build_sipm_array(g.sipm_size, g.sipm_thick, g.sipm_gap, g.n_sipm_side);
   n4::place(sipm_array)
-    .at_z(-full_neck_length -g.sipm_thick)
+    .at_z(-full_neck_length + g.neck_length -g.sipm_thick) // support is 2*thickness, so this is ok
     .in(liquid)
     .copy_no(0)
     .name("near_plane")
@@ -221,8 +221,8 @@ auto pcolina(const geometry_config& g) {
     for   (auto x : {-delta, delta}) {
       for (auto y : {-delta, delta}) {
         auto z =  g.ptfe_on_fp                  ?
-                      -g.wall_thick/2 + g.sipm_thick :
-                      -g.cath_thick/2 + g.sipm_thick ;
+                 -g.wall_thick/2 + g.sipm_thick :
+                 -g.cath_thick/2 + g.sipm_thick ;
         n4::place(sipm_array)
           .rot_y(180 * deg)
           .at(x, y, z)
