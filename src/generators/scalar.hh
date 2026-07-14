@@ -43,3 +43,16 @@ private:
   std::vector<f64> cdf_;
   f64 bin_size;
 };
+
+struct larxe_scintillation : public random_scalar {
+   larxe_scintillation(f64 xe_fraction);
+  ~larxe_scintillation() override {}
+
+  f64 generate() const override;
+
+
+private:
+  std::vector<f64> energy_;
+  std::vector<f64> cdf_;
+  f64 bin_size;
+};
