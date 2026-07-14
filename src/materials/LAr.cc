@@ -41,7 +41,7 @@ G4MaterialPropertiesTable* LAr_mpt() {
   /// Scintillation components from https://arxiv.org/pdf/1511.07721
 
   // Sampling from ~110 nm to ~140 nm
-  auto [sc_energies, sc_values] = n4::interpolate(LAr_Scintillation   , 500, 8.8571 * eV, 11.2727*eV);
+  auto [sc_energies, sc_values] = n4::interpolate(LAr_Scintillation   , 500, c4::hc/(140*nm), c4::hc/(110*nm));
   auto [ri_energies, ri_values] = n4::interpolate(LAr_refractive_index, 200, OPTPHOT_MIN_E, OPTPHOT_MAX_E);
 
   return n4::material_properties()
