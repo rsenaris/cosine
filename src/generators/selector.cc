@@ -3,6 +3,7 @@
 #include "core/symbols.hh"
 #include "generators/generic.hh"
 #include "generators/position.hh"
+#include "generators/scalar.hh"
 #include "generators/selector.hh"
 
 #include <n4-random.hh>
@@ -22,11 +23,23 @@ auto scint_energy(Medium m) {
   }
 }
 
+std::unique_ptr<random_scalar> scint_gen(Medium m) {
+  switch (m) {
+    case Medium::XENON     : return std::make_unique<lxe_scintillation>();
+//    case Medium::KRYPTON   : return ;
+    case Medium::ARGON     : return std::make_unique<lar_scintillation>();
+    case Medium::ARGONXENON: return std::make_unique<lxe_scintillation>();
+    default: break;
+    }
+  return nullptr;
+}
+
+
 std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config& s, const geometry_config& g) {
   auto isotropic = std::make_unique<n4::random::direction>();
   auto randompol = std::make_unique<n4::random::direction>();
-  auto sc_energy = scint_energy(g.medium);
-
+  //auto sc_energy = scint_energy(g.medium);
+  auto ene_generator = scint_gen(g.medium);
   G4VUserPrimaryGeneratorAction* gen{nullptr};
 
   switch (s.generator) {
@@ -52,8 +65,8 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       -> pos(std::move(pos))
       -> dir(std::make_unique<n4::random::direction>())
       -> pol(std::make_unique<n4::random::direction>())
-      //    -> ene(std::make_unique<lxe_scintillation>())
-      -> fix_ene(sc_energy)
+      -> ene(std::move(ene_generator))
+  //    -> fix_ene(sc_energy)
     ;
     break;
   }
@@ -66,8 +79,8 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       -> pos(std::move(pos))
       -> dir(std::make_unique<n4::random::direction>())
       -> pol(std::make_unique<n4::random::direction>())
-      // -> ene(std::make_unique<lxe_scintillation>())
-      -> fix_ene( sc_energy)
+      -> ene(std::move(ene_generator))
+      //-> fix_ene( sc_energy)
     ;
     break;
   }
