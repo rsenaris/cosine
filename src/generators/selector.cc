@@ -23,12 +23,12 @@ auto scint_energy(Medium m) {
   }
 }
 
-std::unique_ptr<random_scalar> scint_gen(Medium m) {
+std::unique_ptr<random_scalar> scint_gen(Medium m, f64 xe_fraction) {
   switch (m) {
     case Medium::XENON     : return std::make_unique<lxe_scintillation>();
 //    case Medium::KRYPTON   : return ;
     case Medium::ARGON     : return std::make_unique<lar_scintillation>();
-    case Medium::ARGONXENON: return std::make_unique<lxe_scintillation>();
+    case Medium::ARGONXENON: return std::make_unique<larxe_scintillation>(xe_fraction);
     default: break;
     }
   return nullptr;
@@ -39,7 +39,7 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
   auto isotropic = std::make_unique<n4::random::direction>();
   auto randompol = std::make_unique<n4::random::direction>();
   //auto sc_energy = scint_energy(g.medium);
-  auto ene_generator = scint_gen(g.medium);
+  auto ene_generator = scint_gen(g.medium, g.xenon_fraction);
   G4VUserPrimaryGeneratorAction* gen{nullptr};
 
   switch (s.generator) {
