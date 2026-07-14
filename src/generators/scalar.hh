@@ -14,8 +14,8 @@ struct random_scalar {
   template<class DERIVED> DERIVED& scale (f64 s){ scale_  = s; return (*this); }
 
 private:
-  f64 scale_;
-  f64 offset_;
+  f64 scale_  = 1.0;
+  f64 offset_ = 0.0;
 };
 
 struct lxe_scintillation : public random_scalar {
