@@ -66,6 +66,7 @@ clean:
 parallelize n_jobs n_evt first pattern seed *ARGS: install
   #!/usr/bin/env sh
   njobs=$(({{n_jobs}} - 1))
+  mkdir -p out log
   for i in `seq 0 $njobs`; do
       i=$((i + {{first}}))
       seed=$(({{seed}} + $i))
