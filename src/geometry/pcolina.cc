@@ -31,7 +31,7 @@ G4Material* get_medium(Medium m, f64 xenon_fraction) {
   switch (m) {
   case Medium::XENON     : return LXe_with_properties();
   case Medium::ARGON     : return LAr_with_properties();
-  case Medium::ARGONXENON: return LArXe_with_properties();
+  case Medium::ARGONXENON: return LArXe_with_properties(xenon_fraction);
   case Medium::KRYPTON   :
     G4Exception("[get_medium]", "", FatalException, "Krypton not implemented yet");
   };
