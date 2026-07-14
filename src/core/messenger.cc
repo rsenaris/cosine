@@ -73,6 +73,8 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET ( ptfe_on_fp             );
   SET(ptfe_on_walls            );
 
+  SET(xenon_fraction),
+
   SETU(calib_belt_router    ,  mm);
   SETU(calib_belt_rinner    ,  mm);
   SETU(calib_belt_separation,  mm);

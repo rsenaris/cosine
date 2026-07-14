@@ -110,6 +110,7 @@ std::vector<ConfPar> geometry_config::parameter_list() {
     UNITLESS(calib_belt_loops),
 
     UNITLESS(medium),
+    UNITLESS(xenon_fraction),
 
     UNITLESS(  sipms_on_fp),
     UNITLESS(   ptfe_on_fp),

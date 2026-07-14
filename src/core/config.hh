@@ -78,6 +78,7 @@ struct geometry_config {
   f64 calib_belt_loops;
 
   Medium medium;
+  f64 xenon_fraction = 0.1;
 
   bool sipms_on_fp;
   bool  ptfe_on_fp;
@@ -137,6 +138,7 @@ inline geometry_config geometry_config::colina() {
   .calib_belt_loops      = 2,
 
   .medium = Medium::XENON,
+  .xenon_fraction = 0.0,
 
   .sipms_on_fp   = true,
   . ptfe_on_fp   = true,
