@@ -15,9 +15,10 @@
 
 auto scint_energy(Medium m) {
   switch (m) {
-    case Medium::XENON  : return 7.21 * eV;
-    case Medium::KRYPTON: return 8.27 * eV;
-    case Medium::ARGON  : return 9.69 * eV;
+    case Medium::XENON     : return 7.21 * eV;
+    case Medium::KRYPTON   : return 8.27 * eV;
+    case Medium::ARGON     : return 9.69 * eV;
+    case Medium::ARGONXENON: return 7.21 * eV;
   }
 }
 
