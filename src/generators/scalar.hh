@@ -28,7 +28,7 @@ struct lxe_scintillation : public random_scalar {
 private:
   std::vector<f64> energy_;
   std::vector<f64> cdf_;
-  f64 half_bin_size;
+  f64 bin_size;
 };
 
 struct lar_scintillation : public random_scalar {
@@ -41,5 +41,5 @@ struct lar_scintillation : public random_scalar {
 private:
   std::vector<f64> energy_;
   std::vector<f64> cdf_;
-  f64 half_bin_size;
+  f64 bin_size;
 };
