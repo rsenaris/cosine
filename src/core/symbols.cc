@@ -63,6 +63,7 @@ std::string to_string(Medium x) {
     CASE(Medium, XENON)
     CASE(Medium, KRYPTON)
     CASE(Medium, ARGON)
+    CASE(Medium, ARGONXENON)
   }
   return "";
 }
@@ -75,6 +76,7 @@ Medium from_string<Medium>(std::string s) {
   IF(Medium, XENON)
   IF(Medium, KRYPTON)
   IF(Medium, ARGON)
+  IF(Medium, ARGONXENON)
   EXCEPT(Medium, XENON)
 }
 

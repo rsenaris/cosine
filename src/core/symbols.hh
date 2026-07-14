@@ -32,6 +32,7 @@ enum class Medium {
   XENON,
   KRYPTON,
   ARGON,
+  ARGONXENON,
 };
 DECLARE_STR(Medium)
 
