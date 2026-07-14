@@ -49,6 +49,7 @@ cosine_lib_files    = [
  'generators/selector',
  'generators/scalar',
  'materials/LAr',
+ 'materials/LArXe',
  'materials/LXe',
  'materials/ptfe',
  'materials/silicon',
