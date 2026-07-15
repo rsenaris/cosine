@@ -73,7 +73,8 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
 
   case EventGenerator::S2: {
     auto pos = std::make_unique<el_generator>(g, 40 * um);
-    pos -> offset_z(-g.mesh_thick -g.d_gate_wire);
+    //pos -> offset_z(-g.mesh_thick -g.d_gate_wire); // this is the position for the wires in pcolina
+    pos -> offset_z(g.drift_length/2 + g.frame_thick_mesh + g.d_gate_wire) //This is the position for the wires (where EL is generated for the cylinder)
 
     gen = (new generic_generator("opticalphoton", s.nparticles))
       -> pos(std::move(pos))
