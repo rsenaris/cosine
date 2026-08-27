@@ -19,6 +19,9 @@
 
 lxe_scintillation::lxe_scintillation()
 {
+  //We compute the gaussian pdf (LXe_Sincitillation, defined in LXe.cc) for 200 equally spaced
+  //points between the energies of 165 and 185 nm. It returns this points in energy values and 
+  //the corresponding pdf. The pdf is normalised to 1.
   auto [energy, pdf] = n4::interpolate(LXe_Scintillation, 200, c4::hc/(185*nm), c4::hc/(165*nm));
   energy_ = energy;
 
@@ -28,7 +31,9 @@ lxe_scintillation::lxe_scintillation()
   cdf_.reserve(pdf.size());
   cdf_.push_back(pdf[0] / pdfsum);
   for (auto i=1u; i<pdf.size(); i++)
-    cdf_.push_back(cdf_[i-1] + pdf[i] / pdfsum);
+    cdf_.push_back(cdf_[i-1] + pdf[i] / pdfsum);//cumulative distribution function (normalised to 1)
+                                                 //We start on the second element because the first 
+                                                  //one is added on the row above
 
   bin_size = std::abs(energy_[1] - energy_[0]);
 }
@@ -37,6 +42,8 @@ f64 lxe_scintillation::generate() const {
   auto x = n4::random::uniform(0, 1);
 
   for (auto [i, cdf] : n4::enumerate(cdf_))
+   //we select the value of energy for which the cumulative probability is higher than a uniformly 
+   //random number (basically is random sampling). This should reconstruct the gaussian
     if (x < cdf)
       return energy_[i] + n4::random::uniform(0., bin_size);
 

@@ -89,7 +89,7 @@ el_generator::el_generator(const geometry_config& g, f64 range)
     auto norm = std::accumulate(length.cbegin(), length.cend(), 0.);
     for (auto i = 0u; i < pos.size(); i++) {
       auto gen = std::make_unique<cylindrical_volume_generator>(length[i], wire_r, wire_r + range);
-      gen -> offset_x(pos[i]);
+      gen -> offset_x(pos[i]); //We place the photon on the position of the wire
 
       gens .push_back(std::move(gen));
       probs.push_back(length[i] / norm);

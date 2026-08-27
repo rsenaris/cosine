@@ -3,6 +3,7 @@
 
 /sim/optical true
 
+
 /sim/store_steps   false
 /sim/store_sens     true
 /sim/store_ihits   false

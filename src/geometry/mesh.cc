@@ -58,8 +58,8 @@ G4LogicalVolume* create_wire_mesh(G4double diam, G4double pitch, G4double wire_d
 }
 
 G4Polyhedra* hexagon(G4double inradius, G4double thick) {
-  auto eps = 1e6 * thick;
-  G4double z_planes[2] = {-thick/2 - eps, thick/2 + eps};
+  auto eps = 1e-6 * thick;
+  G4double z_planes[2] = {-thick/2 - eps, thick/2 + eps};//making the substraction hexagon a bit thicker than the protomesh
   G4double  r_inner[2] = {0., 0.};
   G4double  r_outer[2] = {inradius, inradius};
   return new G4Polyhedra("hexahole", 0, CLHEP::twopi, 6, 2, z_planes, r_inner, r_outer);
@@ -114,6 +114,7 @@ G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4do
       mesh_pos = *wire_top ? frame_thick / 2 : -frame_thick / 2;
   }
 
+  
   auto protomesh = n4::tubs("frame")
     .r(frame_diam / 2)
     .z(mesh_thick)

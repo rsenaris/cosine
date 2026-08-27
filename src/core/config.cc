@@ -10,7 +10,7 @@
 
 u64 START_ID = 0;
 
-//Definition for wire_array.cc
+//Definition for wire_array.cc and position.cc
 const std::vector<f64>& geometry_config::wire_poss() const {
   static auto pos = std::vector<f64>{};
   if (pos.empty()) {
@@ -27,7 +27,7 @@ const std::vector<f64>& geometry_config::wire_poss() const {
   return pos;
 }
 
-//Definition for wire_array.cc
+//Definition for wire_array.cc and position.cc
 const std::vector<f64>& geometry_config::wire_lengths() const {
   static auto lens = std::vector<f64>{};
   if (lens.empty()) {

@@ -176,9 +176,9 @@ inline geometry_config geometry_config::cylinder() {
   .d_gate_wire           = 5    * mm,
   .d_wire_shield         = 5    * mm,
   .d_shield_sipms        = 2    * mm,
-  .mesh_hex_pitch        = 10.2 * mm,
+  .mesh_hex_pitch        = 10.15 * mm,
   .mesh_thick            = 0.2  * mm,//antes eran mm
-  .mesh_hex_inradius     = 2.5 * mm, //It seems like the limit for visualization is 1/4 of the pitch (2.5 mm)
+  .mesh_hex_inradius     = 2 * mm, //It seems like the limit for visualization is 1/4 of the pitch (2.5 mm)
   .thin_wire_pitch       = 5    * mm,
   .thin_wire_diam        = 10   * um, // Use 0.1 * mm for visualization
   .thin_wire_rot         = 45   * deg,
@@ -199,6 +199,9 @@ inline geometry_config geometry_config::cylinder() {
   .vessel_outer          = 154 * mm,
   .drift_diam            = 64 * mm,
   .ptfe_thick            = 1.0 * mm,
+
+  .medium = Medium::XENON,
+  .xenon_fraction = 0.0, //in ppm
 
 
   .sipms_on_fp   = false,

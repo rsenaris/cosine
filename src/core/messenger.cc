@@ -73,7 +73,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET ( ptfe_on_fp             );
   SET(ptfe_on_walls            );
 
-  SET(xenon_fraction),
+  SET(xenon_fraction), // in ppm
 
   SETU(vessel_inner        ,  mm);
   SETU(vessel_length       ,  mm);

@@ -5,6 +5,8 @@
 #include "geometry/sipm_array.hh"
 #include "geometry/wire_array.hh"
 #include "materials/LXe.hh"
+#include "materials/LAr.hh"
+#include "materials/LArXe.hh"
 #include "materials/ptfe.hh"
 #include "materials/steel.hh"
 #include "sensitive/active.hh"
@@ -26,12 +28,24 @@
 #include <n4-vis-attributes.hh>
 
 
+G4Material* get_medium(Medium m, f64 xenon_fraction) {
+  switch (m) {
+  case Medium::XENON     : return LXe_with_properties(); //imported from LXe.hh
+  case Medium::ARGON     : return LAr_with_properties(); //imported from LAr.hh
+  case Medium::ARGONXENON: return LArXe_with_properties(xenon_fraction); //imported from LArXe.hh
+  case Medium::KRYPTON   :
+    G4Exception("[get_medium]", "", FatalException, "Krypton not implemented yet");
+  };
+  // unreachable, but C++ wants a receipt.
+  return nullptr;
+}
+
 
 auto cylinder(const geometry_config& g){
 
   //Defining materials to be used in the geometry
   auto air   = n4::material("G4_AIR");
-  auto lxe   =   LXe_with_properties();
+  auto medium = get_medium(g.medium, g.xenon_fraction);
   auto ptfe  =  ptfe_with_properties();
   auto steel = steel_with_properties();
 
@@ -74,7 +88,7 @@ auto cylinder(const geometry_config& g){
       .r(g.vessel_inner / 2)
       .z(g.vessel_length)
       .vis(tblue)
-      .place(lxe)
+      .place(medium)
       .in(world)
       .now();
 
