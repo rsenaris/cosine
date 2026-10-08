@@ -92,6 +92,14 @@ cosine_exe = executable( 'cosine'
                                , install            : true
                                )
 
+#analysis_exe = executable( 'analysis'
+#                                  , ['analysis/analysis.cc']
+#                                  , include_directories: [cosine_lib_include, nain4_include,geant4_include]
+#                                  , dependencies       : cosine_lib_deps
+#                                  , link_with          : cosine_lib
+#                                  , install            : true
+#                                  )
+
 install_headers(cosine_lib_includes, preserve_path: true)
 
 pkg = import('pkgconfig')

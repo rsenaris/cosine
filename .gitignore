@@ -17,4 +17,6 @@ G4History.macro
 **/Testing
 out/
 log/
+.venv_old/
 .venv/
+scripts/__pycache__
