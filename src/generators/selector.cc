@@ -58,11 +58,17 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
   }
 
   case EventGenerator::S1: {
-    auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
-    pos -> offset_z(g.neck_length + g.drift_length / 2);
+    //We adapt the position to the case of the cylinder
+    //auto pos = std::make_unique<conical_volume_generator>(g.drift_length, g.el_r(), g.cath_r());
+    auto pos = std::make_unique<cylindrical_volume_generator>(g.drift_length, 0, g.drift_r());
+    //const G4ThreeVector pos = { 3 * g.drift_r() / 3, 0., g.drift_length / 2};
+    //We don't need the z offset because the cylinder is already centered at 0
+    //pos -> offset_z(g.neck_length + g.drift_length / 2);
+    
 
     gen = (new generic_generator("opticalphoton", s.nparticles))
       -> pos(std::move(pos))
+      //-> fix_pos(pos)
       -> dir(std::make_unique<n4::random::direction>())
       -> pol(std::make_unique<n4::random::direction>())
       -> ene(std::move(ene_generator))
@@ -126,7 +132,8 @@ std::unique_ptr<G4VUserPrimaryGeneratorAction> select_generator(const sim_config
       gen = (new generic_generator("geantino", s.nparticles))
       -> pos(std::move(pos))
       //-> dir(std::make_unique<n4::random::direction>())
-      -> fix_dir({0, 0, 1}) //better to see only the mesh
+      // -> fix_dir({0, 0, 1}) //better to see only the mesh
+      -> fix_dir({0, 0, -1}) // to the the cathode mesh
       //-> pol(std::make_unique<n4::random::direction>())
       -> fix_ene(41.5585 * keV)
       ;
