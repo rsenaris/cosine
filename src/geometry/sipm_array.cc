@@ -40,6 +40,8 @@ G4LogicalVolume* build_sipm_array(f64 sipm_size, f64 sipm_thick, f64 sipm_gap, u
     .sensitive(sens.release())
     .volume(silicon);
 
+    //sipm -> SetVisAttributes(n4::vis_attributes().visible(false));
+
   new G4LogicalSkinSurface("sipm_surface", sipm, silicon_surface());
 
   auto z = -sipm_thick / 2; //We put the SiPMs on the bottom half of the support (we can easily invert it with a rotation)
