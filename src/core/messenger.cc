@@ -72,6 +72,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SET (sipms_on_fp             );
   SET ( ptfe_on_fp             );
   SET(ptfe_on_walls            );
+  SET (mesh_cathode            );
 
   SET(xenon_fraction), // in ppm
 
@@ -81,6 +82,7 @@ messenger::messenger(sim_config& s, geometry_config& g)
   SETU(drift_diam          ,  mm);
   SETU(vessel_inner        ,  mm);
   SETU(ptfe_thick          ,  mm);
+  SETU(wire_mesh_pitch     ,  mm);
   
 
   SETU(calib_belt_router    ,  mm);

@@ -23,7 +23,7 @@ G4LogicalVolume* create_wire_mesh(G4double diam, G4double pitch, G4double wire_d
     .r(diam)
     .z(2 * wire_diam)
     .solid();
-  auto wire = n4::tubs("wire").r(wire_diam / 2).z(diam).solid();
+  auto wire = n4::tubs("wire").r(wire_diam  / 2).z(diam).solid();
 
   auto half_n_wires = std::floor(diam / 2 / pitch);
 
@@ -42,7 +42,7 @@ G4LogicalVolume* create_wire_mesh(G4double diam, G4double pitch, G4double wire_d
 
   for (auto i = 0; i < half_n_wires; i++) {
     for (auto s : {-1, 1} ) {
-      auto pos       = G4ThreeVector{0,  s * pitch * (i + 0.5), 0};
+      auto pos       = G4ThreeVector{s * pitch * (i + 0.5),  0, 0};
       auto transform = G4Transform3D(along_y_axis, pos);
       mesh -> AddNode(*wire, transform);
     }
@@ -104,29 +104,31 @@ posvec generate_hexagon_positions(G4double pitch, G4double rmax) {
   return out;
 }
 
-G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4double frame_width, G4double pitch, G4double mesh_thick, G4double hex_inradius, std::optional<G4bool> wire_top) {
+// G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double frame_thick, G4double frame_width, G4double pitch, G4double mesh_thick, G4double hex_inradius, std::optional<G4bool> wire_top) {
+G4LogicalVolume* create_hex_mesh(G4double frame_diam, G4double thick, G4double frame_width, G4double pitch, G4double hex_inradius, std::optional<G4bool> wire_top) {
   
   //Only for cylinder. If the boolean is passed as an argument we shift the position of the mesh grid.
   //If it's True we put it on top of the frame, if it's False we put it on the bottom (specular image of the other one)
   //If we don'tput the argument the default position is the center of the frame
   G4double mesh_pos = 0;
   if (wire_top.has_value()) {
-      mesh_pos = *wire_top ? frame_thick / 2 : -frame_thick / 2;
+      mesh_pos = *wire_top ? thick / 2 : -thick / 2;
   }
 
   
   auto protomesh = n4::tubs("frame")
     .r(frame_diam / 2)
-    .z(mesh_thick)
+    .z(thick)
     .solid();
 
   auto frame = n4::tubs("frame")
     .r_inner(frame_diam / 2)
     .r_delta(frame_width)
-    .z(frame_thick)
+    // .z(frame_thick)
+    .z(thick)
     .solid();
 
-  auto hex   = hexagon(hex_inradius, mesh_thick);
+  auto hex   = hexagon(hex_inradius, thick);
 
   G4SubtractionSolid* mesh = nullptr;
   for (auto p: generate_hexagon_positions(pitch, frame_diam/2)) {

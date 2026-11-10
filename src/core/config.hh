@@ -83,6 +83,7 @@ struct geometry_config {
   f64 vessel_outer;
   f64 drift_diam;
   f64 ptfe_thick;
+  f64 wire_mesh_pitch;
   
   
 
@@ -99,6 +100,7 @@ struct geometry_config {
   bool sipms_on_fp;
   bool  ptfe_on_fp;
   bool ptfe_on_walls;
+  bool mesh_cathode;
 
   f64 cath_diam() const { return 2 * form_factor * drift_length + el_diam; }
   f64 cath_r   () const { return cath_diam()/2; }
@@ -199,6 +201,8 @@ inline geometry_config geometry_config::cylinder() {
   .vessel_outer          = 154 * mm,
   .drift_diam            = 64 * mm,
   .ptfe_thick            = 1.0 * mm,
+  .wire_mesh_pitch       = 5. * mm,
+  
 
   .medium = Medium::XENON,
   .xenon_fraction = 0.0, //in ppm
@@ -206,6 +210,7 @@ inline geometry_config geometry_config::cylinder() {
 
   .sipms_on_fp   = false,
   .ptfe_on_fp    = false,
+  .mesh_cathode  = false,
   
   
   };
