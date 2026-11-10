@@ -108,6 +108,11 @@ std::vector<ConfPar> geometry_config::parameter_list() {
     WITHUNIT(cryostat_wall_thick, mm),
     WITHUNIT(d_ptfe_cryostat, mm),
     WITHUNIT(vessel_inner, mm),
+    WITHUNIT(vessel_length, mm),
+    WITHUNIT(vessel_outer, mm),
+    WITHUNIT(drift_diam, mm),
+    WITHUNIT(ptfe_thick, mm),
+    WITHUNIT(wire_mesh_pitch, mm),
 
     UNITLESS(calib_belt),
     WITHUNIT(calib_belt_router, mm),
