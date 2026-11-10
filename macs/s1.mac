@@ -1,5 +1,6 @@
 /sim/generator s1
 /sim/nparticles 330 # ~ 5900/17.9
+#/sim/nparticles 100000
 
 /sim/optical true
 
