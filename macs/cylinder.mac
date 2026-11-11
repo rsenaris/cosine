@@ -6,14 +6,18 @@
 /sim/d_shield_sipms         2      mm
 /sim/mesh_hex_pitch         10.15   mm
 /sim/mesh_thick             0.2    mm #antes eran mm
-/sim/mesh_hex_inradius      2      mm  #It seems like the limit for visualization is 1/4 of the pitch
+/sim/mesh_hex_inradius      5      mm  #It seems like the limit for visualization is 1/4 of the pitch
 /sim/thin_wire_pitch        5      mm
 /sim/thin_wire_diam         10     um # Use 0.1 * mm for visualization
 /sim/thin_wire_rot          45     deg
 /sim/sipm_size              6      mm
 /sim/sipm_thick             1      mm
-/sim/sipm_gap               0.2    mm
+/sim/sipm_gap               0.5    mm
+/sim/sipm_side_gap          0.2    mm
 /sim/n_sipm_side            10       # array of NxN
+/sim/sipm_block_gap         0.2   mm
+/sim/sipm_block_size        15     mm
+/sim/sipm_block_thick       2.5    mm
 /sim/cath_thick             5      mm
 /sim/frame_thick_mesh       3      mm
 /sim/frame_thick_wires      6      mm #Width of the frame that holds the anode wires 

@@ -62,7 +62,12 @@ struct geometry_config {
   f64 sipm_size;
   f64 sipm_thick;
   f64 sipm_gap;
+  f64 sipm_side_gap;
   u16 n_sipm_side;
+  u16 n_blocks_side;
+  f64 sipm_block_gap;
+  f64 sipm_block_size;
+  f64 sipm_block_thick;
   f64 cath_thick;
   f64 frame_thick_mesh;
   f64 frame_thick_wires;
@@ -139,7 +144,8 @@ inline geometry_config geometry_config::colina() {
   .thin_wire_rot         = 45   * deg,
   .sipm_size             = 6    * mm,
   .sipm_thick            = 1    * mm,
-  .sipm_gap              = 0.2  * mm,
+  .sipm_gap              = 0.5  * mm,
+  .sipm_side_gap         = 0.2  * mm, 
   .n_sipm_side           = 10,        // array of NxN
   .cath_thick            = 5 * mm,
   .frame_thick_mesh      = 2 * mm,
@@ -186,8 +192,13 @@ inline geometry_config geometry_config::cylinder() {
   .thin_wire_rot         = 45   * deg,
   .sipm_size             = 6    * mm,
   .sipm_thick            = 1    * mm,
-  .sipm_gap              = 0.2  * mm,
+  .sipm_gap              = 0.5  * mm,
+  .sipm_side_gap         = 0.2  * mm,
   .n_sipm_side           = 10,        // array of NxN
+  .n_blocks_side         = 5,           //array os 2NX2N (each block has 4 SIPMs. See sipm_array.cc)
+  .sipm_block_gap        = 0.2  * mm,
+  .sipm_block_size       = 15   * mm, 
+  .sipm_block_thick      = 2.5  * mm, 
   .cath_thick            = 5 * mm,
   .frame_thick_mesh      = 3 * mm,
   .frame_thick_wires     = 6 * mm,//Width of the frame that holds the anode wires 

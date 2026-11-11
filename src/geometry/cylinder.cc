@@ -142,7 +142,7 @@ auto cylinder(const geometry_config& g){
                               , g.mesh_hex_inradius
                                // wire_top boolean (see mesh.cc)
                             );
-  // mesh_el -> SetVisAttributes(invisible);
+  mesh_el -> SetVisAttributes(invisible);
   
   
   //Half of the thickness of the mesh for gate because in mesh.cc we position the frame on the relative 0 with half of its thickness to each direction
@@ -282,7 +282,8 @@ auto cylinder(const geometry_config& g){
 
 
   
-  auto sipm_array = build_sipm_array(g.sipm_size, g.sipm_thick, g.sipm_gap, g.n_sipm_side);
+  // auto sipm_array = build_sipm_array(g.sipm_size, g.sipm_thick, g.sipm_gap, g.n_sipm_side);
+  auto sipm_array = build_segmentated_sipm_array(g.n_blocks_side, g.sipm_block_gap, g.sipm_block_size, g.sipm_block_thick, g.sipm_size, g.sipm_thick, g.sipm_gap, g.sipm_side_gap, medium);
   n4::place(sipm_array)
     .at_z(g.drift_length/2 + 2 * g.frame_thick_mesh  + g.d_gate_wire + g.d_wire_shield + g.mesh_thick + g.d_shield_sipms + g.sipm_thick)
     .in(liquid)
